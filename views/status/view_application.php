@@ -477,6 +477,10 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Application'); ?>
 </div>
 
 <?php
+$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);
+
+$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
+
 $jscript = '
     $(\'[data-toggle="tooltip"]\').tooltip();
 
@@ -487,6 +491,19 @@ $jscript = '
     });
 
     $(".collapse-link").trigger("click");
+
+    $(".thumbnail").magnificPopup({
+        delegate: "a.show-image",
+        type: "image",
+        gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [0,1]
+        },
+        image: {
+            tError: "The image could not be loaded."
+        }
+    });
 ';
 
 $this->registerJs($jscript); ?>
