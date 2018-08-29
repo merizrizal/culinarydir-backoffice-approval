@@ -8,21 +8,21 @@ return [
                 'url' => [''],
                 'isDirect' => true,
             ],
-            'membership' => [
-                'label' => 'Membership',
-                'iconClass' => 'fa fa-star',
+            'newApplication' => [
+                'label' => 'New Application',
+                'iconClass' => 'fa fa-check',
                 'navigation' => [
-                    'allRegistry' => [
-                        'label' => 'All Registry',
-                        'url' => ['marketing/registry-business/index'],
+                    'pndgApplication' => [
+                        'label' => 'Pending',
+                        'url' => ['approval/status/pndg-application'],
                         'isDirect' => false,
                     ],
-                    'myRegistry' => [
-                        'label' => 'My Registry',
-                        'url' => ['marketing/registry-business/index', 'type' => 'my'],
+                    'icorctApplication' => [
+                        'label' => 'Incorrect',
+                        'url' => ['approval/status/icorct-application'],
                         'isDirect' => false,
                     ],
-                ]
+                ],
             ],
         ]
     ]

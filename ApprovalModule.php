@@ -13,7 +13,7 @@ class ApprovalModule extends \yii\base\Module
      * {@inheritdoc}
      */
     public $controllerNamespace = 'backoffice\modules\approval\controllers';
-    public $defaultRoute = 'status/index';
+    public $defaultRoute = 'status/pndg-application';
     public $name = 'Approval';
 
     /**
