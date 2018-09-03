@@ -18,8 +18,6 @@ use yii\filters\VerbFilter;
  */
 class StatusController extends \backoffice\controllers\BaseController
 {
-    private $variableParam = [];
-
     /**
      * @inheritdoc
      */
@@ -49,8 +47,6 @@ class StatusController extends \backoffice\controllers\BaseController
 
     public function actionViewApplication($id, $appBId)
     {
-        $this->variableParam['appBId'] = $appBId;
-
         $model = RegistryBusiness::find()
             ->joinWith([
                 'membershipType',
@@ -82,13 +78,13 @@ class StatusController extends \backoffice\controllers\BaseController
                 'applicationBusiness.logStatusApprovals.statusApproval',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval status_approval_req',
-                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval.logStatusApprovals log_status_approval_req' => function($query) {
-                    $query->andOnCondition(['log_status_approval_req.application_business_id' => $this->variableParam['appBId']]);
+                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval.logStatusApprovals log_status_approval_req' => function($query) use ($appBId) {
+                    $query->andOnCondition(['log_status_approval_req.application_business_id' => $appBId]);
                 },
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions log_status_approval_action_act',
-                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions.logStatusApproval log_status_approval_act' => function($query) {
-                    $query->andOnCondition(['log_status_approval_act.application_business_id' => $this->variableParam['appBId']]);
+                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions.logStatusApproval log_status_approval_act' => function($query) use ($appBId) {
+                    $query->andOnCondition(['log_status_approval_act.application_business_id' => $appBId]);
                 },
             ])
             ->andWhere(['registry_business.id' => $id])
@@ -261,7 +257,7 @@ class StatusController extends \backoffice\controllers\BaseController
 
                 if ($flag) {
                     if (!empty($modelStatusApproval['execute_action'])) {
-                        $flag = $this->run($modelStatusApproval['execute_action'], ['appBId' => $modelApplicationBusiness['id']]);
+                        $flag = $this->run($modelStatusApproval['execute_action'], ['appBId' => $modelApplicationBusiness['id'], 'regBId' => $rbid]);
                     }
                 }
 
@@ -311,6 +307,7 @@ class StatusController extends \backoffice\controllers\BaseController
         $dataProvider->query
             ->andWhere(['log_status_approval.status_approval_id' => $statusApproval])
             ->andWhere(['log_status_approval.is_actual' => 1])
+            ->andWhere('registry_business.application_business_counter = application_business.counter')
             ->distinct();
 
         Yii::$app->formatter->timeZone = 'Asia/Jakarta';
