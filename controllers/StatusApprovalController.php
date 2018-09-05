@@ -15,7 +15,7 @@ use core\models\BusinessImage;
 use core\models\BusinessContactPerson;
 use core\models\LogStatusApproval;
 use core\models\RegistryBusiness;
-use core\models\RegistryBusinessApprovalLog;
+use core\models\ContractMembership;
 use yii\filters\VerbFilter;
 
 
@@ -188,9 +188,8 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessImage = new BusinessImage();
                     $modelBusinessImage->business_id = $modelBusiness->id;
                     $modelBusinessImage->image = $value->image;
-
-                    $modelBusinessImage->type = !empty($post['profile'][$value->id]) ? 'Profile' : 'Gallery';
-                    $modelBusinessImage->is_primary = !empty($post['primary'][$value->id]) ? true : false;
+                    $modelBusinessImage->type = $value->type;
+                    $modelBusinessImage->is_primary = $value->is_primary;
 
 
                     if (!($flag = $modelBusinessImage->save())) {
@@ -219,12 +218,20 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
 
             if ($flag) {
 
-                $modelRegistryBusinessApprovalLog = new RegistryBusinessApprovalLog();
-                $modelRegistryBusinessApprovalLog->registry_business_id = $modelRegistryBusiness->id;
-                $modelRegistryBusinessApprovalLog->business_id = $modelBusiness->id;
-                $modelRegistryBusinessApprovalLog->membership_type_id = $modelRegistryBusiness->membership_type_id;
+                $modelContractMembership = new ContractMembership();
+                $modelContractMembership->registry_business_id = $modelRegistryBusiness->id;
+                $modelContractMembership->business_id = $modelBusiness->id;
+                $modelContractMembership->membership_type_id = $modelRegistryBusiness->membership_type_id;
+                $modelContractMembership->price = $modelRegistryBusiness->membershipType->price;
+                $modelContractMembership->started_at = Yii::$app->formatter->asDatetime(time());
 
-                $flag = $modelRegistryBusinessApprovalLog->save();
+                if (empty($modelRegistryBusiness->membershipType->time_limit)) {
+                    $modelContractMembership->due_at = null;
+                } else {
+                    $modelContractMembership->due_at = Yii::$app->formatter->asDatetime(time() + ($modelRegistryBusiness->membershipType->time_limit * 30 * 24 * 3600));
+                }
+
+                $flag = $modelContractMembership->save();
             }
         }
 

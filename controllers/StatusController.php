@@ -54,26 +54,11 @@ class StatusController extends \backoffice\controllers\BaseController
                 'district',
                 'village',
                 'userInCharge',
-                'registryBusinessCategories' => function($query) {
-                    $query->andOnCondition(['registry_business_category.is_active' => true]);
-                },
-                'registryBusinessCategories.category',
-                'registryBusinessProductCategories' => function($query) {
-                    $query->andOnCondition(['registry_business_product_category.is_active' => true]);
-                },
-                'registryBusinessHours' => function($query) {
-                    $query->andOnCondition(['registry_business_hour.is_open' => true])
-                        ->orderBy(['registry_business_hour.day' => SORT_ASC]);
-                },
-                'registryBusinessProductCategories.productCategory',
-                'registryBusinessFacilities' => function($query) {
-                    $query->andOnCondition(['registry_business_facility.is_active' => true]);
-                },
                 'registryBusinessFacilities.facility',
                 'registryBusinessImages',
-                'applicationBusiness.logStatusApprovals.statusApproval',
                 'applicationBusiness',
                 'applicationBusiness.logStatusApprovals',
+                'applicationBusiness.logStatusApprovals.statusApproval',
                 'applicationBusiness.logStatusApprovals.logStatusApprovalActions',
                 'applicationBusiness.logStatusApprovals.statusApproval',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0',
