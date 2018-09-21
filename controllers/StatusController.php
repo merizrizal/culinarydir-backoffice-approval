@@ -186,7 +186,7 @@ class StatusController extends \backoffice\controllers\BaseController
                             foreach ($modelStatusApprovalRequire as $key => $$dataStatusApprovalRequire) {
                                 $require[$key] = false;
 
-                                foreach ($checkLogApproval as $dataCheckLogStatusApproval) {
+                                foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
                                     if ($$dataStatusApprovalRequire['status_approval_id'] == $dataCheckLogStatusApproval['status_approval_id']) {
                                         $require[$key] = true;
                                         break;
