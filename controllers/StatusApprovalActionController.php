@@ -100,7 +100,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             foreach ($modelRegistryBusinessImage as $dataRegistryBusinessImage) {
 
                 $dataRegistryBusinessImage->type = !empty($post['profile'][$dataRegistryBusinessImage->id]) ? 'Profile' : 'Gallery';
-                $dataRegistryBusinessImage->is_primary = !empty($post['primary'][$dataRegistryBusinessImage->id]) ? true : false;
+                $dataRegistryBusinessImage->is_primary = !empty($post['thumbnail']) && $post['thumbnail'] == $dataRegistryBusinessImage->id ? true : false;
 
                 if (!($flag = $dataRegistryBusinessImage->save())) {
                     break;

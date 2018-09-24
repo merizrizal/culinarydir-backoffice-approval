@@ -379,7 +379,8 @@ $this->params['breadcrumbs'][] = $this->title; ?>
                                             </div>
                                             <div class="mt-10">
                                                 <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', false, ['class' => 'form-control', 'label' => 'Set as Profile']) ?>
-                                                <?= Html::checkbox('primary['. $registryBusinessImage['id'] .']', false, ['class' => 'form-control', 'label' => 'Set as Primary']) ?>
+                                                <br>
+                                                <?= Html::radio('thumbnail', false, ['class' => 'form-control', 'label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
                                             </div>
                                         </div>
                                     </div>
