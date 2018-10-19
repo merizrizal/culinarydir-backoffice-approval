@@ -6,8 +6,9 @@ use sycomponent\AjaxRequest;
 use sycomponent\NotificationDialog;
 
 /* @var $this yii\web\View */
-/* @var $searchModel core\models\search\RegistryBusinessSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $model core\models\RegistryBusiness */
+/* @var $form yii\widgets\ActiveForm */
+
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -23,21 +24,21 @@ $message1 = Yii::$app->session->getFlash('message1');
 $message2 = Yii::$app->session->getFlash('message2');
 
 if ($status !== null) :
-    $notif = new NotificationDialog([
-        'status' => $status,
-        'message1' => $message1,
-        'message2' => $message2,
-    ]);
+$notif = new NotificationDialog([
+    'status' => $status,
+    'message1' => $message1,
+    'message2' => $message2,
+]);
 
-    $notif->theScript();
-    echo $notif->renderDialog();
+$notif->theScript();
+echo $notif->renderDialog();
 
 endif;
 
 $this->title = Yii::t('app', 'Application') . ' ' . $model['name'];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Application'); ?>
+$this->params['breadcrumbs'][] = Yii::t('app', 'Application');
 
-<?= $ajaxRequest->component(false) ?>
+echo $ajaxRequest->component(false); ?>
 
 <div class="registry-business-view">
     <div class="row">
