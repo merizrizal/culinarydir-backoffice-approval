@@ -88,6 +88,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             $modelBusiness->phone1 = $modelRegistryBusiness->phone1;
             $modelBusiness->phone2 = $modelRegistryBusiness->phone2;
             $modelBusiness->phone3 = $modelRegistryBusiness->phone3;
+            $modelBusiness->note = $modelRegistryBusiness->note;
             $modelBusiness->user_in_charge = $modelRegistryBusiness->user_in_charge;
 
             if (($flag = $modelBusiness->save())) {
