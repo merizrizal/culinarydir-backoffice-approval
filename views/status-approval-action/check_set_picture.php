@@ -10,6 +10,9 @@ use backoffice\components\AppComponent;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
+/* @var $id backoffice\modules\approval\controllers\StatusApprovalActionController */
+/* @var $appBId backoffice\modules\approval\controllers\StatusApprovalActionController */
+/* @var $form yii\widgets\ActiveForm */
 
 $ajaxRequest = new AjaxRequest([
     'modelClass' => 'RegistryBusiness',
@@ -22,22 +25,22 @@ $message1 = Yii::$app->session->getFlash('message1');
 $message2 = Yii::$app->session->getFlash('message2');
 
 if ($status !== null) :
-    $notif = new NotificationDialog([
-        'status' => $status,
-        'message1' => $message1,
-        'message2' => $message2,
-    ]);
+$notif = new NotificationDialog([
+    'status' => $status,
+    'message1' => $message1,
+    'message2' => $message2,
+]);
 
-    $notif->theScript();
-    echo $notif->renderDialog();
+$notif->theScript();
+echo $notif->renderDialog();
 
 endif;
 
 $this->title = $model['name'];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $id, 'appBId' => $appBId]];
-$this->params['breadcrumbs'][] = $this->title; ?>
+$this->params['breadcrumbs'][] = $this->title;
 
-<?= $ajaxRequest->component() ?>
+echo $ajaxRequest->component(); ?>
 
 <div class="registry-business-view">
 
@@ -53,17 +56,13 @@ $this->params['breadcrumbs'][] = $this->title; ?>
                         'options' => [
 
                         ]
-                    ]); ?>
+                    ]);
 
-                        <?= Html::hiddenInput('check_set_picture', true) ?>
+                        echo Html::hiddenInput('check_set_picture', true);
 
-                        <?= Html::submitButton('<i class="fa fa-check-circle"></i> ' . 'OK & Save', ['class' => 'btn btn-success']) ?>
+                        echo Html::submitButton('<i class="fa fa-check-circle"></i> ' . 'OK & Save', ['class' => 'btn btn-success']);
 
-                        <?= Html::a('<i class="fa fa-times"></i> ' . 'Cancel',
-                            ['status/view-application', 'id' => $id, 'appBId' => $appBId],
-                            [
-                                'class' => 'btn btn-default',
-                            ]) ?>
+                        echo Html::a('<i class="fa fa-times"></i> ' . 'Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']) ?>
 
                         <div class="clearfix" style="margin-top: 15px"></div>
 
@@ -391,15 +390,11 @@ $this->params['breadcrumbs'][] = $this->title; ?>
 
                         </div>
 
-                        <?= Html::submitButton('<i class="fa fa-check-circle"></i> ' . 'OK & Save', ['class' => 'btn btn-success']) ?>
+                        <?php
+                        echo Html::submitButton('<i class="fa fa-check-circle"></i> ' . 'OK & Save', ['class' => 'btn btn-success']);
 
-                        <?= Html::a('<i class="fa fa-times"></i> ' . 'Cancel',
-                            ['status/view-application', 'id' => $id, 'appBId' => $appBId],
-                            [
-                                'class' => 'btn btn-default',
-                            ]) ?>
+                        echo Html::a('<i class="fa fa-times"></i> ' . 'Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']);
 
-                    <?php
                     ActiveForm::end(); ?>
 
                 </div>
@@ -411,7 +406,6 @@ $this->params['breadcrumbs'][] = $this->title; ?>
 </div>
 
 <?php
-
 $modalDialog = new ModalDialog([
     'clickedComponent' => 'a#delete',
     'modelAttributeId' => 'model-id',

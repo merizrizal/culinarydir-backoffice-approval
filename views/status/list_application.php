@@ -13,6 +13,8 @@ use core\models\MembershipType;
 /* @var $this yii\web\View */
 /* @var $searchModel core\models\search\RegistryBusinessSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $title backoffice\modules\approval\controllers\StatusController */
+/* @var $statusApproval backoffice\modules\approval\controllers\StatusController */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -28,22 +30,22 @@ $message1 = Yii::$app->session->getFlash('message1');
 $message2 = Yii::$app->session->getFlash('message2');
 
 if ($status !== null) :
-    $notif = new NotificationDialog([
-        'status' => $status,
-        'message1' => $message1,
-        'message2' => $message2,
-    ]);
+$notif = new NotificationDialog([
+    'status' => $status,
+    'message1' => $message1,
+    'message2' => $message2,
+]);
 
-    $notif->theScript();
-    echo $notif->renderDialog();
+$notif->theScript();
+echo $notif->renderDialog();
 
 endif;
 
 $this->title = $title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'New Application'), 'url' => ['status/pndg-application']];
-$this->params['breadcrumbs'][] = $this->title; ?>
+$this->params['breadcrumbs'][] = $this->title;
 
-<?= $ajaxRequest->component(false) ?>
+echo $ajaxRequest->component(false); ?>
 
 <div class="registry-business-index">
 
@@ -52,9 +54,9 @@ $this->params['breadcrumbs'][] = $this->title; ?>
         'clickedComponent' => 'a#delete',
         'modelAttributeId' => 'model-id',
         'modelAttributeName' => 'model-name',
-    ]); ?>
+    ]);
 
-    <?= GridView::widget([
+    echo GridView::widget([
         'id' => 'grid-view-registry-business',
         'dataProvider' => $dataProvider,
         'pjax' => false,
@@ -186,9 +188,9 @@ $this->params['breadcrumbs'][] = $this->title; ?>
 
 </div>
 
-<?= $modalDialog->renderDialog() ?>
+<?php 
+echo $modalDialog->renderDialog();
 
-<?php
 $jscript = ''
     . $modalDialog->getScript() . '
 
