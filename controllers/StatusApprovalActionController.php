@@ -32,8 +32,8 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             ]);
     }
 
-    public function actionFixIncorrect($id, $appBId, $logsaid, $actid) {
-
+    public function actionFixIncorrect($id, $appBId, $logsaid, $actid)
+    {
         $modelLogStatusApprovalAction = new LogStatusApprovalAction();
         $modelLogStatusApprovalAction->log_status_approval_id = $logsaid;
         $modelLogStatusApprovalAction->status_approval_action_id = $actid;
@@ -53,8 +53,8 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
         return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['/approval/status/view-application', 'id' => $id, 'appBId' => $appBId]));
     }
 
-    public function actionCheckSetPicture($id, $appBId, $logsaid, $actid) {
-
+    public function actionCheckSetPicture($id, $appBId, $logsaid, $actid)
+    {
         $model = RegistryBusiness::find()
             ->joinWith([
                'membershipType',
@@ -63,24 +63,29 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                 'village',
                 'userInCharge',
                 'registryBusinessCategories' => function($query) {
+                    
                     $query->andOnCondition(['registry_business_category.is_active' => true]);
                 },
                 'registryBusinessCategories.category',
                 'registryBusinessProductCategories' => function($query) {
+                    
                     $query->andOnCondition(['registry_business_product_category.is_active' => true]);
                 },
                 'registryBusinessHours' => function($query) {
+                    
                     $query->andOnCondition(['registry_business_hour.is_open' => true])
                         ->orderBy(['registry_business_hour.day' => SORT_ASC]);
                 },
                 'registryBusinessProductCategories.productCategory',
                 'registryBusinessFacilities' => function($query) {
+                    
                     $query->andOnCondition(['registry_business_facility.is_active' => true]);
                 },
                 'registryBusinessFacilities.facility',
                 'registryBusinessImages',
                 'applicationBusiness',
                 'applicationBusiness.logStatusApprovals' => function($query) {
+                    
                     $query->andOnCondition(['log_status_approval.is_actual' => true]);
                 },
                 'applicationBusiness.logStatusApprovals.statusApproval',
@@ -101,6 +106,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
 
                 $dataRegistryBusinessImage->type = !empty($post['profile'][$dataRegistryBusinessImage->id]) ? 'Profile' : 'Gallery';
                 $dataRegistryBusinessImage->is_primary = !empty($post['thumbnail']) && $post['thumbnail'] == $dataRegistryBusinessImage->id ? true : false;
+                $dataRegistryBusinessImage->category = $post['category'][$dataRegistryBusinessImage->id];
 
                 if (!($flag = $dataRegistryBusinessImage->save())) {
                     break;

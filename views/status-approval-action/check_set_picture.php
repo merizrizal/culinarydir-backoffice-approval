@@ -11,6 +11,9 @@ use backoffice\components\AppComponent;
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
 
+kartik\select2\Select2Asset::register($this);
+kartik\select2\ThemeKrajeeAsset::register($this);
+
 $ajaxRequest = new AjaxRequest([
     'modelClass' => 'RegistryBusiness',
 ]);
@@ -22,6 +25,7 @@ $message1 = Yii::$app->session->getFlash('message1');
 $message2 = Yii::$app->session->getFlash('message2');
 
 if ($status !== null) :
+
     $notif = new NotificationDialog([
         'status' => $status,
         'message1' => $message1,
@@ -378,6 +382,7 @@ $this->params['breadcrumbs'][] = $this->title; ?>
                                                 </div>
                                             </div>
                                             <div class="mt-10">
+                                            	<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', null, ['Suasana' => 'Suasana', 'Menu' => 'Menu'], ['class' => 'photo-category']) ?>
                                                 <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', false, ['class' => 'form-control', 'label' => 'Set as Profile']) ?>
                                                 <br>
                                                 <?= Html::radio('thumbnail', false, ['class' => 'form-control', 'label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
@@ -429,6 +434,11 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/i
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
+    $(".photo-category").select2({
+        theme: "krajee",
+        minimumResultsForSearch: -1
+    });
+
     $(".thumbnail").magnificPopup({
         delegate: "a.show-image",
         type: "image",

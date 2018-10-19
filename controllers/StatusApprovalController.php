@@ -41,8 +41,8 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             ]);
     }
 
-    public function actionResubmit($appBId, $regBId) {
-
+    public function actionResubmit($appBId, $regBId)
+    {
         $flag = false;
 
         if (($flag = LogStatusApproval::updateAll(['is_actual' => 0], ['application_business_id' => $appBId]) > 0)) {
@@ -71,8 +71,8 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
         return $flag;
     }
 
-    public function actionApprove($regBId) {
-
+    public function actionApprove($regBId)
+    {
         $flag = false;
 
         $modelRegistryBusiness = RegistryBusiness::findOne(['id' => $regBId]);
@@ -191,7 +191,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessImage->image = $value->image;
                     $modelBusinessImage->type = $value->type;
                     $modelBusinessImage->is_primary = $value->is_primary;
-
+                    $modelBusinessImage->category = $value->category;
 
                     if (!($flag = $modelBusinessImage->save())) {
                         break;
@@ -228,8 +228,10 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelContractMembership->started_at = Yii::$app->formatter->asDatetime(time());
 
                 if (empty($modelRegistryBusiness->membershipType->time_limit)) {
+                    
                     $modelContractMembership->due_at = null;
                 } else {
+                    
                     $modelContractMembership->due_at = Yii::$app->formatter->asDatetime(time() + ($modelRegistryBusiness->membershipType->time_limit * 30 * 24 * 3600));
                 }
 
