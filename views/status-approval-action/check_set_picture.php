@@ -381,10 +381,17 @@ echo $ajaxRequest->component(); ?>
                                                 </div>
                                             </div>
                                             <div class="mt-10">
-                                            	<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', null, ['Suasana' => 'Suasana', 'Menu' => 'Menu'], ['class' => 'photo-category']) ?>
+                                            
+                                            	<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', null, ['Ambience' => 'Suasana', 'Menu' => 'Menu'], ['class' => 'photo-category']) ?>
+                                            	
+                                            	<div class="clearfix" style="margin-bottom: 5px"></div>
+                                                
                                                 <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', false, ['class' => 'form-control', 'label' => 'Set as Profile']) ?>
-                                                <br>
+                                                
+                                                <div class="clearfix"></div>
+                                                
                                                 <?= Html::radio('thumbnail', false, ['class' => 'form-control', 'label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
+                                                
                                             </div>
                                         </div>
                                     </div>
