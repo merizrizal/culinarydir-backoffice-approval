@@ -210,6 +210,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                         $modelBusinessContactPerson->person_id = $value->person_id;
                         $modelBusinessContactPerson->is_primary_contact = $value->is_primary_contact;
                         $modelBusinessContactPerson->note = $value->note;
+                        $modelBusinessContactPerson->position = $value->position;
 
                         if (!($flag = $modelBusinessContactPerson->save())) {
                             break;
