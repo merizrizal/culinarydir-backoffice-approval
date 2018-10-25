@@ -178,6 +178,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessDetail->business_id = $modelBusiness->id;
                 $modelBusinessDetail->price_min = $modelRegistryBusiness->price_min;
                 $modelBusinessDetail->price_max = $modelRegistryBusiness->price_max;
+                $modelBusinessDetail->note_business_hour = $modelRegistryBusiness->note_business_hour;
 
                 $flag = $modelBusinessDetail->save();
             }
