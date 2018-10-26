@@ -82,6 +82,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             $modelBusiness = new Business();
             $modelBusiness->membership_type_id = $modelRegistryBusiness->membership_type_id;
             $modelBusiness->application_business_id = $modelRegistryBusiness->application_business_id;
+            $modelBusiness->about = $modelRegistryBusiness->about;
             $modelBusiness->name = $modelRegistryBusiness->name;
             $modelBusiness->unique_name = $modelRegistryBusiness->unique_name;
             $modelBusiness->email = $modelRegistryBusiness->email;
