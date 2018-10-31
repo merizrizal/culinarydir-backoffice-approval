@@ -12,6 +12,8 @@ use backoffice\components\AppComponent;
 /* @var $model core\models\RegistryBusiness */
 /* @var $id backoffice\modules\approval\controllers\StatusApprovalActionController */
 /* @var $appBId backoffice\modules\approval\controllers\StatusApprovalActionController */
+/* @var $actid backoffice\modules\approval\controllers\StatusApprovalActionController */
+/* @var $logsaid backoffice\modules\approval\controllers\StatusApprovalActionController */
 /* @var $form yii\widgets\ActiveForm */
 
 kartik\select2\Select2Asset::register($this);
@@ -46,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo $ajaxRequest->component(); ?>
 
-<div class="registry-business-view">
+<div class="registry-business-form">
     <div class="row">
         <div class="col-sm-12">
             <div class="x_panel">
@@ -443,11 +445,17 @@ echo $ajaxRequest->component(); ?>
                                             	
                                             	<div class="clearfix" style="margin-bottom: 5px"></div>
                                                 
-                                                <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', false, ['class' => 'form-control', 'label' => 'Set as Profile']) ?>
+                                                <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', false, ['label' => 'Set as Profile']) ?>
                                                 
                                                 <div class="clearfix"></div>
                                                 
-                                                <?= Html::radio('thumbnail', false, ['class' => 'form-control', 'label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
+                                                <?= Html::radio('thumbnail', false, ['label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
+                                                
+                                                <div class="clearfix"></div>
+                                                
+                                                <?php
+                                                echo Html::a('<i class="fa fa-arrow-left"></i>', ['up', 'id' => $registryBusinessImage['id'], 'bid' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default', 'title' => 'Left']);
+                                                echo Html::a('<i class="fa fa-arrow-right"></i>', ['down', 'id' => $registryBusinessImage['id'], 'bid' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default', 'title' => 'Right']); ?>
                                                 
                                             </div>
                                         </div>

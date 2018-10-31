@@ -9,7 +9,6 @@ use core\models\RegistryBusinessImage;
 use sycomponent\AjaxRequest;
 use yii\filters\VerbFilter;
 
-
 /**
  * StatusApprovalActionController implements the CRUD actions for Status model.
  */
@@ -57,7 +56,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
     {
         $model = RegistryBusiness::find()
             ->joinWith([
-               'membershipType',
+                'membershipType',
                 'city',
                 'district',
                 'village',
@@ -82,7 +81,10 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                     $query->andOnCondition(['registry_business_facility.is_active' => true]);
                 },
                 'registryBusinessFacilities.facility',
-                'registryBusinessImages',
+                'registryBusinessImages' => function($query) {
+                    
+                    $query->orderBy(['registry_business_image.order' => SORT_ASC]);
+                },
                 'applicationBusiness',
                 'applicationBusiness.logStatusApprovals' => function($query) {
                     
@@ -145,6 +147,86 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             'model' => $model,
             'id' => $id,
             'appBId' => $appBId,
+            'actid' => $actid,
+            'logsaid' => $logsaid,
         ]);
+    }
+    
+    public function actionUp($id, $bid, $appBId, $actid, $logsaid)
+    {
+        $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
+        
+        $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
+            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
+            ->andWhere(['order' => $modelRegistryBusinessImage->order - 1])
+            ->one();
+        
+        if ($modelRegistryBusinessImage->order > 1) {
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            $flag = false;
+            
+            $modelRegistryBusinessImageTemp->order = $modelRegistryBusinessImage->order;
+            
+            if (($flag = $modelRegistryBusinessImageTemp->save())) {
+                
+                $modelRegistryBusinessImage->order -= 1;
+                
+                $flag = $modelRegistryBusinessImage->save();
+            }
+            
+            if ($flag) {
+                
+                $transaction->commit();
+            } else {
+                
+                Yii::$app->session->setFlash('status', 'danger');
+                Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
+                Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
+                
+                $transaction->rollBack();
+            }
+        }
+        
+        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/check-set-picture', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
+    }
+    
+    public function actionDown($id, $bid, $appBId, $actid, $logsaid)
+    {
+        $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
+        
+        $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
+            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
+            ->andWhere(['order' => $modelRegistryBusinessImage->order + 1])
+            ->one();
+        
+        if ($modelRegistryBusinessImageTemp !== null) {
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            $flag = false;
+            
+            $modelRegistryBusinessImageTemp->order = $modelRegistryBusinessImage->order;
+            
+            if (($flag = $modelRegistryBusinessImageTemp->save())) {
+                
+                $modelRegistryBusinessImage->order += 1;
+                
+                $flag = $modelRegistryBusinessImage->save();
+            }
+            
+            if ($flag) {
+                
+                $transaction->commit();
+            } else {
+                
+                Yii::$app->session->setFlash('status', 'danger');
+                Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
+                Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
+                
+                $transaction->rollBack();
+            }
+        }
+        
+        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/check-set-picture', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
     }
 }

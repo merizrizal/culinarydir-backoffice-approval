@@ -194,6 +194,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessImage->type = $value->type;
                     $modelBusinessImage->is_primary = $value->is_primary;
                     $modelBusinessImage->category = $value->category;
+                    $modelBusinessImage->order = $value->order;
 
                     if (!($flag = $modelBusinessImage->save())) {
                         break;
