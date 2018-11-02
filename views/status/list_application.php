@@ -29,17 +29,17 @@ $status = Yii::$app->session->getFlash('status');
 $message1 = Yii::$app->session->getFlash('message1');
 $message2 = Yii::$app->session->getFlash('message2');
 
-if ($status !== null) :
-$notif = new NotificationDialog([
-    'status' => $status,
-    'message1' => $message1,
-    'message2' => $message2,
-]);
+if ($status !== null) {
 
-$notif->theScript();
-echo $notif->renderDialog();
-
-endif;
+    $notif = new NotificationDialog([
+        'status' => $status,
+        'message1' => $message1,
+        'message2' => $message2,
+    ]);
+    
+    $notif->theScript();
+    echo $notif->renderDialog();
+}
 
 $this->title = $title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'New Application'), 'url' => ['status/pndg-application']];
@@ -73,6 +73,7 @@ echo $ajaxRequest->component(false); ?>
                                 District::find()->orderBy('name')->asArray()->all(),
                                 'id',
                                 function($data) {
+                                    
                                     return $data['name'];
                                 }
                             ),
@@ -89,6 +90,7 @@ echo $ajaxRequest->component(false); ?>
                                 Village::find()->orderBy('name')->asArray()->all(),
                                 'id',
                                 function($data) {
+                                    
                                     return $data['name'];
                                 }
                             ),
@@ -137,6 +139,7 @@ echo $ajaxRequest->component(false); ?>
                                 MembershipType::find()->orderBy('order')->asArray()->all(),
                                 'name',
                                 function($data) {
+                                    
                                     return $data['name'];
                                 }
                             ),
@@ -161,6 +164,7 @@ echo $ajaxRequest->component(false); ?>
                     </div>',
                 'buttons' => [
                     'view-application' => function($url, $model, $key) {
+                        
                         return Html::a('<i class="fa fa-search-plus"></i>', ['view-application', 'id' => $model->id, 'appBId' => $model->application_business_id], [
                             'id' => 'view',
                             'class' => 'btn btn-primary',
@@ -176,6 +180,7 @@ echo $ajaxRequest->component(false); ?>
             'class' => 'table table-striped table-hover'
         ],
         'rowOptions' => function ($model, $key, $index, $grid) {
+            
             return ['id' => $model['id'], 'class' => 'row-grid-view-registry-business', 'style' => 'cursor: pointer;'];
         },
         'pager' => [
@@ -194,6 +199,14 @@ echo $modalDialog->renderDialog();
 $jscript = ''
     . $modalDialog->getScript() . '
 
+    $("#registrybusiness-district_id").select2({
+        theme: "krajee",
+    });
+
+    $("#registrybusiness-village_id").select2({
+        theme: "krajee",
+    });
+
     $("div.container.body").off("click");
     $("div.container.body").on("click", function(event) {
 
@@ -201,6 +214,7 @@ $jscript = ''
 
             $("td").not(event.target).popover("destroy");
         } else {
+
             $(".popover.in").popover("destroy");
         }
     });
@@ -212,6 +226,7 @@ $jscript = ''
         html: true,
         selector: "td",
         content: function () {
+
             var content = $(this).parent().find(".btn-container").html();
 
             return $(content);
@@ -232,14 +247,6 @@ $jscript = ''
 
             return false;
         });
-    });
-
-    $("#registrybusiness-district_id").select2({
-        theme: "krajee",
-    });
-
-    $("#registrybusiness-village_id").select2({
-        theme: "krajee",
     });
 ';
 

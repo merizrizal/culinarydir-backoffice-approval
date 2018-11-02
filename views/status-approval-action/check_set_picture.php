@@ -29,7 +29,7 @@ $status = Yii::$app->session->getFlash('status');
 $message1 = Yii::$app->session->getFlash('message1');
 $message2 = Yii::$app->session->getFlash('message2');
 
-if ($status !== null) :
+if ($status !== null) {
 
     $notif = new NotificationDialog([
         'status' => $status,
@@ -37,10 +37,9 @@ if ($status !== null) :
         'message2' => $message2,
     ]);
 
-$notif->theScript();
-echo $notif->renderDialog();
-
-endif;
+    $notif->theScript();
+    echo $notif->renderDialog();
+}
 
 $this->title = $model['name'];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $id, 'appBId' => $appBId]];

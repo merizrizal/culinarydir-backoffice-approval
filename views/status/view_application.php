@@ -9,7 +9,6 @@ use sycomponent\NotificationDialog;
 /* @var $model core\models\RegistryBusiness */
 /* @var $form yii\widgets\ActiveForm */
 
-
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
 
@@ -23,17 +22,17 @@ $status = Yii::$app->session->getFlash('status');
 $message1 = Yii::$app->session->getFlash('message1');
 $message2 = Yii::$app->session->getFlash('message2');
 
-if ($status !== null) :
-$notif = new NotificationDialog([
-    'status' => $status,
-    'message1' => $message1,
-    'message2' => $message2,
-]);
+if ($status !== null) {
 
-$notif->theScript();
-echo $notif->renderDialog();
-
-endif;
+    $notif = new NotificationDialog([
+        'status' => $status,
+        'message1' => $message1,
+        'message2' => $message2,
+    ]);
+    
+    $notif->theScript();
+    echo $notif->renderDialog();
+}
 
 $this->title = Yii::t('app', 'Application') . ' ' . $model['name'];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Application');
@@ -51,57 +50,67 @@ echo $ajaxRequest->component(false); ?>
                 <div class="x_content">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h4><?= Yii::t('app', 'User In Charge') ?>: <?= $model['userInCharge']['full_name'] ?></h4>
+                            <h4><?= Yii::t('app', 'User In Charge') ?> : <?= $model['userInCharge']['full_name'] ?></h4>
                         </div>
                     </div>
 
                     <div class="row mb-20">
-
                         <div class="col-md-3">
+                        
                             <?= Html::label(Yii::t('app', 'Name')) ?><br>
                             <?= $model['name'] ?>
+                            
                         </div>
                         <div class="col-md-3">
+                        
                             <?= Html::label(Yii::t('app', 'Unique Name')) ?><br>
                             <?= $model['unique_name'] ?>
+                            
                         </div>
                         <div class="col-md-3">
+                        
                             <?= Html::label(Yii::t('app', 'Email')) ?><br>
                             <?= $model['email'] ?>
+                            
                         </div>
                     </div>
 
                     <div class="row mb-20">
-
                         <div class="col-md-3">
+                        
                             <?= Html::label(Yii::t('app', 'Address Type')) ?><br>
                             <?= $model['address_type'] ?>
+                            
                         </div>
                         <div class="col-md-9">
+                        
                             <?= Html::label(Yii::t('app', 'Address')) ?><br>
                             <?= $model['address'] ?>
+                            
                         </div>
-
                     </div>
 
                     <div class="row mb-20">
-
                         <div class="col-lg-3 col-xs-6">
+                        
                             <?= Html::label(Yii::t('app', 'City ID')) ?><br>
                             <?= $model['city']['name'] ?>
+                            
                         </div>
 
                         <div class="col-lg-3 col-xs-6">
+                        
                             <?= Html::label(Yii::t('app', 'District ID')) ?><br>
                             <?= $model['district']['name'] ?>
+                            
                         </div>
 
                         <div class="col-lg-3 col-xs-6">
+                        
                             <?= Html::label(Yii::t('app', 'Village ID')) ?><br>
                             <?= $model['village']['name'] ?>
+                            
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -124,6 +133,7 @@ echo $ajaxRequest->component(false); ?>
                     ]);
 
                         foreach ($model['applicationBusiness']['logStatusApprovals'] as $dataLogStatusApproval):
+                        
                             if ($dataLogStatusApproval['is_actual']): ?>
 
                                 <div class="row">
@@ -134,6 +144,7 @@ echo $ajaxRequest->component(false); ?>
                                     <div class="col-md-5">
 
                                         <?= $dataLogStatusApproval['statusApproval']['note'] ?>
+                                        
                                         <div class="clearfix" style="margin-bottom: 5px"></div>
 
                                         <?php
@@ -147,6 +158,7 @@ echo $ajaxRequest->component(false); ?>
                                                 foreach ($dataStatusApprovalAction['logStatusApprovalActions'] as $value) {
 
                                                     if ($value['logStatusApproval']['application_business_counter'] == $model['applicationBusiness']['counter']) {
+                                                        
                                                         $btn = ' btn-success btn-action';
                                                         $url = '';
                                                         break;
@@ -155,7 +167,6 @@ echo $ajaxRequest->component(false); ?>
                                             }
 
                                             echo Html::a('<i class="fa fa-external-link-alt"></i> '. $dataStatusApprovalAction['name'], $url, ['class' => 'btn btn-xs' . $btn, 'data-method' => 'post']);
-                                            echo "&nbsp;";
                                         } ?>
 
                                     </div>
@@ -168,8 +179,11 @@ echo $ajaxRequest->component(false); ?>
                                             $flag = true;
 
                                             if (!empty($dataStatusApprovalRequire['statusApproval']['logStatusApprovals'])) {
+                                                
                                                 foreach ($dataStatusApprovalRequire['statusApproval']['logStatusApprovals'] as $value) {
+                                                    
                                                     if ($value['application_business_counter'] == $model['applicationBusiness']['counter']) {
+                                                        
                                                         $flag = false;
                                                         break;
                                                     }
@@ -177,6 +191,7 @@ echo $ajaxRequest->component(false); ?>
                                             }
 
                                             if ($flag) {
+                                                
                                                 $btn = $dataStatusApprovalRequire['statusApproval']['condition'] ? ' btn-primary' : ' btn-danger';
 
                                                 echo Html::button('<i class="fa fa-arrow-circle-right"></i> ' . $dataStatusApprovalRequire['statusApproval']['id'], [
