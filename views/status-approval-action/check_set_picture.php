@@ -335,8 +335,19 @@ echo $ajaxRequest->component(); ?>
                                                 
                                             </div>
                                             <div class="col-xs-6 col-sm-4">
-                                            
-                                                <?= $is24Hour ? Yii::t('app','24 Hours') : Yii::$app->formatter->asTime($businessHour['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHour['close_at'], 'short');?>
+                                            	
+                                            	<?php
+                                                echo $is24Hour ? Yii::t('app','24 Hours') : Yii::$app->formatter->asTime($businessHour['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHour['close_at'], 'short');
+                                                
+                                                if (!empty($businessHour['registryBusinessHourAdditionals'])) {
+                                                    
+                                                    foreach ($businessHour['registryBusinessHourAdditionals'] as $businessHourAdditional): ?>
+                                                        
+                                                    	<?= ', ' . Yii::$app->formatter->asTime($businessHourAdditional['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHourAdditional['close_at'], 'short'); ?>
+                                                        
+                                                    <?php
+                                                    endforeach;
+                                                } ?>
                                             
                                             </div>
                                         </div>

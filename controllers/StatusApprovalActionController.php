@@ -75,6 +75,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                     $query->andOnCondition(['registry_business_hour.is_open' => true])
                         ->orderBy(['registry_business_hour.day' => SORT_ASC]);
                 },
+                'registryBusinessHours.registryBusinessHourAdditionals',
                 'registryBusinessProductCategories.productCategory',
                 'registryBusinessFacilities' => function($query) {
                     
