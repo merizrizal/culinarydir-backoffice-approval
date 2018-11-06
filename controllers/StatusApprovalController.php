@@ -17,6 +17,7 @@ use core\models\LogStatusApproval;
 use core\models\RegistryBusiness;
 use core\models\ContractMembership;
 use yii\filters\VerbFilter;
+use core\models\BusinessHourAdditional;
 
 
 /**
@@ -75,7 +76,15 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
     {
         $flag = false;
 
-        $modelRegistryBusiness = RegistryBusiness::findOne(['id' => $regBId]);
+        $modelRegistryBusiness = RegistryBusiness::find()
+            ->joinWith([
+                'registryBusinessHours' => function($query) {
+                    $query->orderBy(['registry_business_hour.day' => SORT_ASC]);
+                },
+                'registryBusinessHours.registryBusinessHourAdditionals' 
+            ])
+            ->andWhere(['registry_business.id' => $regBId])
+            ->one();
 
         if (($flag = $modelRegistryBusiness->save())) {
 
@@ -103,11 +112,9 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessLocation->district_id = $modelRegistryBusiness->district_id;
                 $modelBusinessLocation->village_id = $modelRegistryBusiness->village_id;
                 $modelBusinessLocation->coordinate = $modelRegistryBusiness->coordinate;
-
-                $flag = $modelBusinessLocation->save();
             }
 
-            if ($flag) {
+            if ($flag = $modelBusinessLocation->save()) {
 
                 foreach ($modelRegistryBusiness->registryBusinessCategories as $value) {
 
@@ -118,6 +125,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessCategory->is_active = $value->is_active;
 
                     if (!($flag = $modelBusinessCategory->save())) {
+                        
                         break;
                     }
                 }
@@ -134,6 +142,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessProductCategory->is_active = $value->is_active;
 
                     if (!($flag = $modelBusinessProductCategory->save())) {
+                        
                         break;
                     }
                 }
@@ -150,6 +159,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessFacility->is_active = $value->is_active;
 
                     if (!($flag = $modelBusinessFacility->save())) {
+                        
                         break;
                     }
                 }
@@ -168,7 +178,24 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessHour->close_at = $value->close_at;
 
                     if (!($flag = $modelBusinessHour->save())) {
+                        
                         break;
+                    }
+                    
+                    foreach ($value->registryBusinessHourAdditionals as $i => $valueAdditional) {
+                        
+                        $modelBusinessHourAdditional = new BusinessHourAdditional();
+                        $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $valueAdditional->day . '-' . ($i+1);
+                        $modelBusinessHourAdditional->business_hour_id = $modelBusinessHour->id;
+                        $modelBusinessHourAdditional->day = $modelBusinessHour->day;
+                        $modelBusinessHourAdditional->is_open = $modelBusinessHour->is_open;
+                        $modelBusinessHourAdditional->open_at = $valueAdditional->open_at;
+                        $modelBusinessHourAdditional->close_at = $valueAdditional->close_at;
+                        
+                        if (!($flag = $modelBusinessHourAdditional->save())) {
+                            
+                            break;
+                        }
                     }
                 }
             }
@@ -197,6 +224,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessImage->order = $value->order;
 
                     if (!($flag = $modelBusinessImage->save())) {
+                        
                         break;
                     }
                 }
@@ -216,6 +244,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                         $modelBusinessContactPerson->position = $value->position;
 
                         if (!($flag = $modelBusinessContactPerson->save())) {
+                            
                             break;
                         }
                     }

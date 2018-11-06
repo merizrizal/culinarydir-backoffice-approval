@@ -329,12 +329,12 @@ echo $ajaxRequest->component(); ?>
                                         $is24Hour = (($businessHour['open_at'] == '00:00:00') && ($businessHour['close_at'] == '24:00:00')); ?>
 
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-2">
+                                            <div class="col-md-2 col-xs-6 col-sm-2">
                                             
                                                 <?= Html::label(Yii::t('app', $days[$businessHour['day'] - 1])) ?>
                                                 
                                             </div>
-                                            <div class="col-xs-6 col-sm-4">
+                                            <div class="col-md-8 col-xs-6 col-sm-4">
                                             	
                                             	<?php
                                                 echo $is24Hour ? Yii::t('app','24 Hours') : Yii::$app->formatter->asTime($businessHour['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHour['close_at'], 'short');
