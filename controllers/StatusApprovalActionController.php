@@ -86,6 +86,8 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                     
                     $query->orderBy(['registry_business_image.order' => SORT_ASC]);
                 },
+                'registryBusinessContactPeople',
+                'registryBusinessContactPeople.person',
                 'applicationBusiness',
                 'applicationBusiness.logStatusApprovals' => function($query) {
                     
