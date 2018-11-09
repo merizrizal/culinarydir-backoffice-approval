@@ -500,11 +500,11 @@ echo $ajaxRequest->component(); ?>
     			            foreach ($model['registryBusinessContactPeople'] as $i => $person):
     			            	
           			            $i++;
-        			            $is_primary = !empty($person['is_primary_contact']) ? Yii::t('app', 'Primary Contact') : ''; ?>
+          			            $is_primary = !empty($person['is_primary_contact']) ? ' - ' . Yii::t('app', 'Primary Contact') : ''; ?>
     			            	
     			            	<div class="row mb-20">
         			            	<div class="col-xs-12 mb-10">
-        			            		<strong><?= Yii::t('app', 'Contact') . ' ' . $i . ' - ' . $is_primary ?></strong>
+        			            		<strong><?= Yii::t('app', 'Contact') . ' ' . $i . $is_primary ?></strong>
         			            	</div>
     			            		<div class="col-xs-6 col-sm-3">
     			            		
@@ -563,7 +563,7 @@ echo $ajaxRequest->component(); ?>
 
                         <?= Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']); ?>
                         
-                        <div class="btn-group">
+                        <div class="btn-group dropup">
 
                             <?= Html::button('<i class="fa fa-pencil-alt"></i> Edit',
                                 [
