@@ -84,6 +84,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                     $query->andOnCondition(['registry_business_hour.is_open' => true])
                         ->orderBy(['registry_business_hour.day' => SORT_ASC]);
                 },
+                'registryBusinessHours.registryBusinessHourAdditionals',
                 'registryBusinessProductCategories.productCategory',
                 'registryBusinessFacilities' => function($query) {
                     
@@ -94,6 +95,8 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                     
                     $query->orderBy(['registry_business_image.order' => SORT_ASC]);
                 },
+                'registryBusinessContactPeople',
+                'registryBusinessContactPeople.person',
                 'applicationBusiness',
                 'applicationBusiness.logStatusApprovals' => function($query) {
                     
