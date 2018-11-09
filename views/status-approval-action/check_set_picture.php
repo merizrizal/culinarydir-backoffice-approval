@@ -485,89 +485,78 @@ echo $ajaxRequest->component(); ?>
                         </div>
                         
                         <hr>
-                        
+
                         <div class="row">
-                        	<div class="col-md-12">
-                            
-                                <h4><strong><?= Html::label('Contact Person', null, ['class' => 'control-label']) ?></strong></h4>
-                                
-                                <hr>
+                            <div class="col-xs-12">
+                                <h4><strong><?= Yii::t('app', 'Contact Person') ?></strong></h4>
                             </div>
                         </div>
+                        
+                        <hr>
                     		
         				<?php
     				    if (!empty($model['registryBusinessContactPeople'])):
     			            
     			            foreach ($model['registryBusinessContactPeople'] as $i => $person):
     			            	
-        			            $is_primary = !empty($person['is_primary_contact']) ? ' - ' . Yii::t('app', 'Primary Contact') : '';
-        			            
-    			                echo '<strong>' . Yii::t('app', 'Contact') . ' ' . ($i+1) . $is_primary . '</strong><br><br>'; ?>
+          			            $i++;
+        			            $is_primary = !empty($person['is_primary_contact']) ? Yii::t('app', 'Primary Contact') : ''; ?>
     			            	
     			            	<div class="row mb-20">
-    			            		<div class="col-md-3">
+        			            	<div class="col-xs-12 mb-10">
+        			            		<strong><?= Yii::t('app', 'Contact') . ' ' . $i . ' - ' . $is_primary ?></strong>
+        			            	</div>
+    			            		<div class="col-xs-6 col-sm-3">
     			            		
-        			            		<?php
-        			            		echo Html::label(Yii::t('app', 'Name')) . '<br>';
-            				            
-            			                echo $person['person']['first_name'] . ' ' . $person['person']['last_name']; ?>
+        			            		<?= Html::label(Yii::t('app', 'Name')) ?><br>
+            			                <?= $person['person']['first_name'] . ' ' . $person['person']['last_name']; ?>
         			                
         			                </div>
         			                
-        			                <div class="col-md-3">
+        			                <div class="col-xs-6 col-sm-3">
         			                	
-        			                	<?php
-        			                	echo Html::label(Yii::t('app', 'Position')) .  '<br>';
-        			                	
-        			                	echo $person['position']; ?>
+        			                	<?= Html::label(Yii::t('app', 'Position')) ?><br>
+        			                	<?= $person['position']; ?>
         			                	
         			                </div>
     			                </div>
     			                
     			                <div class="row mb-20">
-    			                	<div class="col-md-3">
+    			                	<div class="col-xs-6 col-sm-3">
     			                		
-    			                		<?php
-        			            		echo Html::label(Yii::t('app', 'Email')) . '<br>';
-            				            
-        			            		echo !empty($person['person']['email']) ? $person['person']['email'] : '-'; ?>
+    			                		<?= Html::label(Yii::t('app', 'Email')) ?><br>
+        			            		<?= !empty($person['person']['email']) ? $person['person']['email'] : '-'; ?>
     			                		
     			                	</div>
-    			                	
-    			                	<div class="col-md-3">
+    			                	<div class="col-xs-6 col-sm-3">
     			                		
-    			                		<?php
-        			            		echo Html::label(Yii::t('app', 'Phone')) . '<br>';
-            				            
-        			            		echo !empty($person['person']['phone']) ? $person['person']['phone'] : '-'; ?>
+    			                		<?= Html::label(Yii::t('app', 'Phone')) ?><br>
+    			                		<?= !empty($person['person']['phone']) ? $person['person']['phone'] : '-'; ?>
     			                		
     			                	</div>
-    			                	
-    			                	<div class="col-md-6">
+    			                	<div class="col-xs-12 col-sm-6">
     			                		
-    			                		<?php
-        			            		echo Html::label(Yii::t('app', 'Note')) . '<br>';
-            				            
-        			            		echo !empty($person['note']) ? $person['note'] : '-'; ?>
+    			                		<?= Html::label(Yii::t('app', 'Note')) ?><br>
+    			                		<?= !empty($person['note']) ? $person['note'] : '-'; ?>
     			                		
     			                	</div>
-    			                	
     			                </div>
     			                
     			                <hr>
     			                
     			            <?php
     			            endforeach;
-			            
 			            else: ?>
 			         	
     			         	<div class="row mb-20">
-    			         		<div class="col-md-3">
+    			         		<div class="col-xs-12">
     			         		
-    	         		  			<?= '-' ?>
+    	         		  			<?= Yii::t('app', 'Data Not Available') ?>
     			         		  
     		         		  	</div>
     			         	</div>
+    			         	
+    			         	<hr>
 		            
 		            	<?php
     				    endif; ?>
