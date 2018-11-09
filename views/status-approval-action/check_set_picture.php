@@ -16,9 +16,6 @@ use backoffice\components\AppComponent;
 /* @var $logsaid backoffice\modules\approval\controllers\StatusApprovalActionController */
 /* @var $form yii\widgets\ActiveForm */
 
-kartik\select2\Select2Asset::register($this);
-kartik\select2\ThemeKrajeeAsset::register($this);
-
 $ajaxRequest = new AjaxRequest([
     'modelClass' => 'RegistryBusiness',
 ]);
@@ -61,11 +58,30 @@ echo $ajaxRequest->component(); ?>
                         ]
                     ]);
 
-                        echo Html::hiddenInput('check_set_picture', true);
+                        echo Html::hiddenInput('check_set_picture', true); ?>
 
-                        echo Html::submitButton('<i class="fa fa-check-circle"></i> ' . 'OK & Save', ['class' => 'btn btn-success']);
+                        <?= Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']); ?>
+                        
+                        <div class="btn-group">
 
-                        echo Html::a('<i class="fa fa-times"></i> ' . 'Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']) ?>
+                            <?= Html::button('<i class="fa fa-pencil-alt"></i> Edit',
+                                [
+                                    'type' => 'button',
+                                    'class' => 'btn btn-primary dropdown-toggle',
+                                    'style' => 'color:white',
+                                    'data-toggle' => 'dropdown',
+                                    'aria-haspopup' => 'true',
+                                    'aria-expanded' => 'false',
+                                ]) ?>
+    
+                            <ul class="dropdown-menu">
+                                <li><?= Html::a(Yii::t('app', 'Business Information'), ['update-business-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                                <li><?= Html::a(Yii::t('app', 'Marketing Information'), ['update-marketing-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                                <li><?= Html::a(Yii::t('app', 'Gallery Photo'), ['update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                            </ul>
+                        </div>
+
+                        <?= Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']); ?>
 
                         <div class="clearfix" style="margin-top: 15px"></div>
 
@@ -122,15 +138,15 @@ echo $ajaxRequest->component(); ?>
                                 <?= $model['address_info'] ?>
                                 
                             </div>
-                            <div class="col-xs-6 col-sm-3">
+                        </div>
+
+                        <div class="row mb-20">
+                        	<div class="col-xs-6 col-sm-3">
                             
                                 <?= Html::label(Yii::t('app', 'City ID')) ?><br>
                                 <?= $model['city']['name'] ?>
                                 
                             </div>
-                        </div>
-
-                        <div class="row mb-20">
                             <div class="col-xs-6 col-sm-3">
                             
                                 <?= Html::label(Yii::t('app', 'District ID')) ?><br>
@@ -174,6 +190,15 @@ echo $ajaxRequest->component(); ?>
                             
                                 <?= Html::label(Yii::t('app', 'Phone3')) ?><br>
                                 <?= !empty($model['phone3']) ? $model['phone3'] : '-' ?>
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-20">
+                            <div class="col-xs-12">
+                            
+                                <?= Html::label(Yii::t('app', 'About')) ?><br>
+                                <?= !empty($model['about']) ? $model['about'] : '-' ?>
                                 
                             </div>
                         </div>
@@ -234,7 +259,7 @@ echo $ajaxRequest->component(); ?>
                                 foreach ($model['registryBusinessCategories'] as $registryBusinessCategory) {
 
                                     echo '
-                                        <div class="col-xs-6 col-sm-2">
+                                        <div class="col-xs-4 col-sm-2">
                                             ' . $registryBusinessCategory['category']['name'] . '
                                         </div>';
                                 }
@@ -281,7 +306,7 @@ echo $ajaxRequest->component(); ?>
                                     foreach ($productCategoryParent as $productCategory) {
 
                                         echo '
-                                            <div class="col-xs-6 col-sm-2">
+                                            <div class="col-xs-4 col-sm-2">
                                                 ' . $productCategory . '
                                             </div>';
                                     }
@@ -297,7 +322,7 @@ echo $ajaxRequest->component(); ?>
                                     foreach ($productCategoryChild as $productCategory) {
 
                                         echo '
-                                            <div class="col-xs-6 col-sm-2">
+                                            <div class="col-xs-4 col-sm-2">
                                                 ' . $productCategory . '
                                             </div>';
                                     }
@@ -329,14 +354,14 @@ echo $ajaxRequest->component(); ?>
                                         $is24Hour = (($businessHour['open_at'] == '00:00:00') && ($businessHour['close_at'] == '24:00:00')); ?>
 
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-2">
+                                            <div class="col-xs-4 col-sm-2">
                                             
                                                 <?= Html::label(Yii::t('app', $days[$businessHour['day'] - 1])) ?>
                                                 
                                             </div>
-                                            <div class="col-xs-6 col-sm-4">
+                                            <div class="col-xs-4 col-sm-4">
                                             
-                                                <?= $is24Hour ? Yii::t('app','24 Hours') : Yii::$app->formatter->asTime($businessHour['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHour['close_at'], 'short');?>
+                                                <?= $is24Hour ? Yii::t('app','24 Hours') : Yii::$app->formatter->asTime($businessHour['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHour['close_at'], 'short'); ?>
                                             
                                             </div>
                                         </div>
@@ -368,13 +393,13 @@ echo $ajaxRequest->component(); ?>
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-12 col-md-3">
+                            <div class="col-xs-4 col-sm-2">
                             
                                 <?= Html::label(Yii::t('app', 'Price Min')) ?><br>
                                 <?= Yii::$app->formatter->asCurrency($model['price_min']); ?>
                                 
                             </div>
-                            <div class="col-xs-12 col-md-3">
+                            <div class="col-xs-4 col-sm-2">
                             
                                 <?= Html::label(Yii::t('app', 'Price Max')) ?><br>
                                 <?= Yii::$app->formatter->asCurrency($model['price_max']); ?>
@@ -400,7 +425,7 @@ echo $ajaxRequest->component(); ?>
                                 foreach ($model['registryBusinessFacilities'] as $registryBusinessFacility) {
 
                                     echo '
-                                        <div class="col-xs-6 col-sm-2">
+                                        <div class="col-xs-4 col-sm-2">
                                             ' . $registryBusinessFacility['facility']['name'] . '
                                         </div>';
                                 }
@@ -438,25 +463,6 @@ echo $ajaxRequest->component(); ?>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="mt-10">
-                                            
-                                            	<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', null, ['Ambience' => 'Suasana', 'Menu' => 'Menu'], ['class' => 'photo-category']) ?>
-                                            	
-                                            	<div class="clearfix" style="margin-bottom: 5px"></div>
-                                                
-                                                <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', false, ['label' => 'Set as Profile']) ?>
-                                                
-                                                <div class="clearfix"></div>
-                                                
-                                                <?= Html::radio('thumbnail', false, ['label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
-                                                
-                                                <div class="clearfix"></div>
-                                                
-                                                <?php
-                                                echo Html::a('<i class="fa fa-arrow-left"></i>', ['up', 'id' => $registryBusinessImage['id'], 'bid' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default', 'title' => 'Left']);
-                                                echo Html::a('<i class="fa fa-arrow-right"></i>', ['down', 'id' => $registryBusinessImage['id'], 'bid' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default', 'title' => 'Right']); ?>
-                                                
-                                            </div>
                                         </div>
                                     </div>
 
@@ -466,19 +472,36 @@ echo $ajaxRequest->component(); ?>
 
                         </div>
 
-                        <?php
-                        echo Html::submitButton('<i class="fa fa-check-circle"></i> ' . 'OK & Save', ['class' => 'btn btn-success']);
+                        <?= Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']); ?>
+                        
+                        <div class="btn-group">
 
-                        echo Html::a('<i class="fa fa-times"></i> ' . 'Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']);
+                            <?= Html::button('<i class="fa fa-pencil-alt"></i> Edit',
+                                [
+                                    'type' => 'button',
+                                    'class' => 'btn btn-primary dropdown-toggle',
+                                    'style' => 'color:white',
+                                    'data-toggle' => 'dropdown',
+                                    'aria-haspopup' => 'true',
+                                    'aria-expanded' => 'false',
+                                ]) ?>
+    
+                            <ul class="dropdown-menu">
+                                <li><?= Html::a(Yii::t('app', 'Business Information'), ['update-business-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                                <li><?= Html::a(Yii::t('app', 'Marketing Information'), ['update-marketing-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                                <li><?= Html::a(Yii::t('app', 'Gallery Photo'), ['update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                            </ul>
+                        </div>
 
+                        <?= Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']); ?>
+
+                    <?php
                     ActiveForm::end(); ?>
 
                 </div>
-
             </div>
         </div>
     </div>
-
 </div>
 
 <?php
@@ -499,11 +522,6 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/i
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
-    $(".photo-category").select2({
-        theme: "krajee",
-        minimumResultsForSearch: -1
-    });
-
     $(".thumbnail").magnificPopup({
         delegate: "a.show-image",
         type: "image",

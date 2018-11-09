@@ -5,9 +5,18 @@ namespace backoffice\modules\approval\controllers;
 use Yii;
 use core\models\LogStatusApprovalAction;
 use core\models\RegistryBusiness;
+use core\models\RegistryBusinessCategory;
+use core\models\RegistryBusinessProductCategory;
+use core\models\RegistryBusinessHour;
+use core\models\RegistryBusinessFacility;
 use core\models\RegistryBusinessImage;
+use core\models\Category;
+use core\models\ProductCategory;
+use core\models\Facility;
 use sycomponent\AjaxRequest;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * StatusApprovalActionController implements the CRUD actions for Status model.
@@ -94,43 +103,18 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             ])
             ->andWhere(['registry_business.id' => $id])
             ->asArray()->one();
+            
+        if (!empty(Yii::$app->request->post()) && !empty(Yii::$app->request->post('check_set_picture'))) {
 
-        if (!empty($post = Yii::$app->request->post()) && !empty($post['check_set_picture'])) {
+            $modelLogStatusApprovalAction = new LogStatusApprovalAction();
+            $modelLogStatusApprovalAction->log_status_approval_id = $logsaid;
+            $modelLogStatusApprovalAction->status_approval_action_id = $actid;
 
-            $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;
-
-            $modelRegistryBusinessImage = RegistryBusinessImage::find()
-                ->andWhere(['registry_business_id' => $id])
-                ->all();
-
-            foreach ($modelRegistryBusinessImage as $dataRegistryBusinessImage) {
-
-                $dataRegistryBusinessImage->type = !empty($post['profile'][$dataRegistryBusinessImage->id]) ? 'Profile' : 'Gallery';
-                $dataRegistryBusinessImage->is_primary = !empty($post['thumbnail']) && $post['thumbnail'] == $dataRegistryBusinessImage->id ? true : false;
-                $dataRegistryBusinessImage->category = $post['category'][$dataRegistryBusinessImage->id];
-
-                if (!($flag = $dataRegistryBusinessImage->save())) {
-                    break;
-                }
-            }
-
-            if ($flag) {
-
-                $modelLogStatusApprovalAction = new LogStatusApprovalAction();
-                $modelLogStatusApprovalAction->log_status_approval_id = $logsaid;
-                $modelLogStatusApprovalAction->status_approval_action_id = $actid;
-
-                $flag = $modelLogStatusApprovalAction->save();
-            }
-
-            if ($flag) {
+            if ($modelLogStatusApprovalAction->save()) {
 
                 Yii::$app->session->setFlash('status', 'success');
                 Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Success'));
                 Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is success. Data has been saved'));
-
-                $transaction->commit();
 
                 return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['/approval/status/view-application', 'id' => $id, 'appBId' => $appBId]));
             } else {
@@ -138,8 +122,6 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                 Yii::$app->session->setFlash('status', 'danger');
                 Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
                 Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
-
-                $transaction->rollBack();
             }
         }
 
@@ -149,6 +131,478 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             'appBId' => $appBId,
             'actid' => $actid,
             'logsaid' => $logsaid,
+        ]);
+    }
+    
+    public function actionUpdateBusinessInfo($id, $appBId, $actid, $logsaid, $save = null)
+    {
+        $model = RegistryBusiness::findOne($id);
+        
+        if ($model->load(Yii::$app->request->post())) {
+            
+            if (empty($save)) {
+                
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            } else {
+                
+                $model->setCoordinate();
+                
+                if ($model->save()) {
+                    
+                    Yii::$app->session->setFlash('status', 'success');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Success'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is success. Data has been saved'));
+                } else {
+                    
+                    Yii::$app->session->setFlash('status', 'danger');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
+                }
+            }
+        }
+        
+        return $this->render('update_business_info', [
+            'model' => $model,
+            'id' => $id,
+            'appBId' => $appBId,
+            'actid' => $actid,
+            'logsaid' => $logsaid
+        ]);
+    }
+    
+    public function actionUpdateMarketingInfo($id, $appBId, $actid, $logsaid, $save = null)
+    {
+        $model = RegistryBusiness::find()
+            ->joinWith([
+                'registryBusinessCategories' => function($query) {
+                    
+                    $query->andOnCondition(['registry_business_category.is_active' => true]);
+                },
+                'registryBusinessCategories.category',
+                'registryBusinessProductCategories' => function($query) {
+                    
+                    $query->andOnCondition(['registry_business_product_category.is_active' => true]);
+                },
+                'registryBusinessProductCategories.productCategory',
+                'registryBusinessFacilities' => function($query) {
+                    
+                    $query->andOnCondition(['registry_business_facility.is_active' => true]);
+                },
+                'registryBusinessFacilities.facility',
+                'registryBusinessHours' => function($query) {
+                    
+                    $query->orderBy(['registry_business_hour.day' => SORT_ASC]);
+                },
+            ])
+            ->andWhere(['registry_business.id' => $id])
+            ->one();
+            
+        $modelCategory = Category::find()
+            ->orderBy('name')
+            ->asArray()->all();
+        
+        $modelProductCategoryParent = ProductCategory::find()
+            ->andWhere(['is_parent' => true])
+            ->orderBy('name')
+            ->asArray()->all();
+        
+        $modelProductCategoryChild = ProductCategory::find()
+            ->andWhere(['is_parent' => false])
+            ->orderBy('name')
+            ->asArray()->all();
+        
+        $modelFacility = Facility::find()
+            ->orderBy('name')
+            ->asArray()->all();
+            
+        $modelRegistryBusinessCategory = new RegistryBusinessCategory();
+        $dataRegistryBusinessCategory = [];
+        
+        $modelRegistryBusinessProductCategory = new RegistryBusinessProductCategory();
+        $dataRegistryBusinessProductCategoryParent = [];
+        $dataRegistryBusinessProductCategoryChild = [];
+        
+        $modelRegistryBusinessFacility = new RegistryBusinessFacility();
+        $dataRegistryBusinessFacility = [];
+        
+        $modelRegistryBusinessHour = new RegistryBusinessHour();
+        $dataRegistryBusinessHour = [];
+        
+        if ($model->load(($post = Yii::$app->request->post()))) {
+            
+            if (empty($save)) {
+                
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            } else {
+                
+                $transaction = Yii::$app->db->beginTransaction();
+                $flag = false;
+                
+                $model->price_min = !empty($model->price_min) ? $model->price_min : 0;
+                $model->price_max = !empty($model->price_max) ? $model->price_max : 0;
+                
+                if (($flag = $model->save())) {
+                    
+                    if (!empty($post['RegistryBusinessCategory']['category_id'])) {
+                        
+                        foreach ($post['RegistryBusinessCategory']['category_id'] as $categoryId) {
+                            
+                            $newModelRegistryBusinessCategory = RegistryBusinessCategory::findOne(['unique_id' => $model->id . '-' . $categoryId]);
+                            
+                            if (!empty($newModelRegistryBusinessCategory)) {
+                                
+                                $newModelRegistryBusinessCategory->is_active = true;
+                            } else {
+                                
+                                $newModelRegistryBusinessCategory = new RegistryBusinessCategory();
+                                $newModelRegistryBusinessCategory->unique_id = $model->id . '-' . $categoryId;
+                                $newModelRegistryBusinessCategory->registry_business_id = $model->id;
+                                $newModelRegistryBusinessCategory->category_id = $categoryId;
+                                $newModelRegistryBusinessCategory->is_active = true;
+                            }
+                            
+                            if (!($flag = $newModelRegistryBusinessCategory->save())) {
+                                
+                                break;
+                            } else {
+                                
+                                array_push($dataRegistryBusinessCategory, $newModelRegistryBusinessCategory->toArray());
+                            }
+                        }
+                        
+                        if ($flag) {
+                            
+                            foreach ($model->registryBusinessCategories as $existModelRegistryBusinessCategory) {
+                                
+                                $exist = false;
+                                
+                                foreach ($post['RegistryBusinessCategory']['category_id'] as $categoryId) {
+                                    
+                                    if ($existModelRegistryBusinessCategory['category_id'] == $categoryId) {
+                                        
+                                        $exist = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (!$exist) {
+                                    
+                                    $existModelRegistryBusinessCategory->is_active = false;
+                                    
+                                    if (!($flag = $existModelRegistryBusinessCategory->save())) {
+                                        
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    if (!empty($post['RegistryBusinessProductCategory']['product_category_id']['parent'])) {
+                        
+                        foreach ($post['RegistryBusinessProductCategory']['product_category_id']['parent'] as $productCategoryId) {
+                            
+                            $newModelRegistryBusinessProductCategory = RegistryBusinessProductCategory::findOne(['unique_id' => $model->id . '-' . $productCategoryId]);
+                            
+                            if (!empty($newModelRegistryBusinessProductCategory)) {
+                                
+                                $newModelRegistryBusinessProductCategory->is_active = true;
+                            } else {
+                                
+                                $newModelRegistryBusinessProductCategory = new RegistryBusinessProductCategory();
+                                $newModelRegistryBusinessProductCategory->unique_id = $model->id . '-' . $productCategoryId;
+                                $newModelRegistryBusinessProductCategory->registry_business_id = $model->id;
+                                $newModelRegistryBusinessProductCategory->product_category_id = $productCategoryId;
+                                $newModelRegistryBusinessProductCategory->is_active = true;
+                            }
+                            
+                            if (!($flag = $newModelRegistryBusinessProductCategory->save())) {
+                                
+                                break;
+                            } else {
+                                
+                                array_push($dataRegistryBusinessProductCategoryParent, $newModelRegistryBusinessProductCategory->toArray());
+                            }
+                        }
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    if (!empty($post['RegistryBusinessProductCategory']['product_category_id']['child'])) {
+                        
+                        foreach ($post['RegistryBusinessProductCategory']['product_category_id']['child'] as $productCategoryId) {
+                            
+                            $newModelRegistryBusinessProductCategory = RegistryBusinessProductCategory::findOne(['unique_id' => $model->id . '-' . $productCategoryId]);
+                            
+                            if (!empty($newModelRegistryBusinessProductCategory)) {
+                                
+                                $newModelRegistryBusinessProductCategory->is_active = true;
+                            } else {
+                                
+                                $newModelRegistryBusinessProductCategory = new RegistryBusinessProductCategory();
+                                $newModelRegistryBusinessProductCategory->unique_id = $model->id . '-' . $productCategoryId;
+                                $newModelRegistryBusinessProductCategory->registry_business_id = $model->id;
+                                $newModelRegistryBusinessProductCategory->product_category_id = $productCategoryId;
+                                $newModelRegistryBusinessProductCategory->is_active = true;
+                            }
+                            
+                            if (!($flag = $newModelRegistryBusinessProductCategory->save())) {
+                                
+                                break;
+                            } else {
+                                
+                                array_push($dataRegistryBusinessProductCategoryChild, $newModelRegistryBusinessProductCategory->toArray());
+                            }
+                        }
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    if (!empty($post['RegistryBusinessProductCategory']['product_category_id']['parent']) && !empty($post['RegistryBusinessProductCategory']['product_category_id']['child'])) {
+                        
+                        foreach ($model->registryBusinessProductCategories as $existModelRegistryBusinessProductCategory) {
+                            
+                            $exist = false;
+                            
+                            foreach ($post['RegistryBusinessProductCategory']['product_category_id'] as $dataProductCategory) {
+                                
+                                foreach ($dataProductCategory as $productCategoryId) {
+                                    
+                                    if ($existModelRegistryBusinessProductCategory['product_category_id'] == $productCategoryId) {
+                                        
+                                        $exist = true;
+                                        break 2;
+                                    }
+                                }
+                            }
+                            
+                            if (!$exist) {
+                                
+                                $existModelRegistryBusinessProductCategory->is_active = false;
+                                
+                                if (!($flag = $existModelRegistryBusinessProductCategory->save())) {
+                                    
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    if (!empty($post['RegistryBusinessFacility']['facility_id'])) {
+                        
+                        foreach ($post['RegistryBusinessFacility']['facility_id'] as $facilityId) {
+                            
+                            $newModelRegistryBusinessFacility = RegistryBusinessFacility::findOne(['unique_id' => $model->id . '-' . $facilityId]);
+                            
+                            if (!empty($newModelRegistryBusinessFacility)) {
+                                
+                                $newModelRegistryBusinessFacility->is_active = true;
+                            } else {
+                                
+                                $newModelRegistryBusinessFacility = new RegistryBusinessFacility();
+                                $newModelRegistryBusinessFacility->unique_id = $model->id . '-' . $facilityId;
+                                $newModelRegistryBusinessFacility->registry_business_id = $model->id;
+                                $newModelRegistryBusinessFacility->facility_id = $facilityId;
+                                $newModelRegistryBusinessFacility->is_active = true;
+                            }
+                            
+                            if (!($flag = $newModelRegistryBusinessFacility->save())) {
+                                
+                                break;
+                            } else {
+                                
+                                array_push($dataRegistryBusinessFacility, $newModelRegistryBusinessFacility->toArray());
+                            }
+                        }
+                        
+                        if ($flag) {
+                            
+                            foreach ($model->registryBusinessFacilities as $existModelRegistryBusinessFacility) {
+                                
+                                $exist = false;
+                                
+                                foreach ($post['RegistryBusinessFacility']['facility_id'] as $facilityId) {
+                                    
+                                    if ($existModelRegistryBusinessFacility['facility_id'] == $facilityId) {
+                                        
+                                        $exist = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (!$exist) {
+                                    
+                                    $existModelRegistryBusinessFacility->is_active = false;
+                                    
+                                    if (!($flag = $existModelRegistryBusinessFacility->save())) {
+                                        
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    $loopDays = ['1', '2', '3', '4', '5', '6', '7'];
+                    
+                    foreach ($loopDays as $day) {
+                        
+                        $dayName = 'day' . $day;
+                        
+                        if (!empty($post['RegistryBusinessHour'][$dayName])) {
+                            
+                            $newModelRegistryBusinessHourDay = RegistryBusinessHour::findOne(['unique_id' => $model->id . '-' . $day]);
+                            
+                            if (empty($newModelRegistryBusinessHourDay)) {
+                                
+                                $newModelRegistryBusinessHourDay = new RegistryBusinessHour();
+                                $newModelRegistryBusinessHourDay->registry_business_id = $model->id;
+                                $newModelRegistryBusinessHourDay->unique_id = $model->id . '-' . $day;
+                                $newModelRegistryBusinessHourDay->day = $day;
+                            }
+                            
+                            $newModelRegistryBusinessHourDay->is_open = !empty($post['RegistryBusinessHour'][$dayName]['is_open']) ? true : false;
+                            $newModelRegistryBusinessHourDay->open_at = !empty($post['RegistryBusinessHour'][$dayName]['open_at']) ? $post['RegistryBusinessHour'][$dayName]['open_at'] : null;
+                            $newModelRegistryBusinessHourDay->close_at = !empty($post['RegistryBusinessHour'][$dayName]['close_at']) ? $post['RegistryBusinessHour'][$dayName]['close_at'] : null;
+                            
+                            if (!$flag = $newModelRegistryBusinessHourDay->save()) {
+                                
+                                break;
+                            } else {
+                                
+                                array_push($dataRegistryBusinessHour, $newModelRegistryBusinessHourDay->toArray());
+                            }
+                        }
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    Yii::$app->session->setFlash('status', 'success');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Success'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is success. Data has been saved'));
+                    
+                    $transaction->commit();
+                } else {
+                    
+                    Yii::$app->session->setFlash('status', 'danger');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
+                    
+                    $transaction->rollBack();
+                }
+            }
+        }
+        
+        $registryBusinessProductCategoryParent = [];
+        $registryBusinessProductCategoryChild = [];
+        
+        foreach ($model->registryBusinessProductCategories as $existModelRegistryBusinessProductCategory) {
+            
+            if ($existModelRegistryBusinessProductCategory['productCategory']['is_parent']) {
+                
+                $registryBusinessProductCategoryParent[] = $existModelRegistryBusinessProductCategory;
+            } else {
+                
+                $registryBusinessProductCategoryChild[] = $existModelRegistryBusinessProductCategory;
+            }
+        }
+        
+        $dataRegistryBusinessCategory = empty($dataRegistryBusinessCategory) ? $model->registryBusinessCategories : $dataRegistryBusinessCategory;
+        $dataRegistryBusinessProductCategoryParent = empty($dataRegistryBusinessProductCategoryParent) ? $registryBusinessProductCategoryParent : $dataRegistryBusinessProductCategoryParent;
+        $dataRegistryBusinessProductCategoryChild = empty($dataRegistryBusinessProductCategoryChild) ? $registryBusinessProductCategoryChild : $dataRegistryBusinessProductCategoryChild;
+        $dataRegistryBusinessHour = empty($dataRegistryBusinessHour) ? $model->registryBusinessHours : $dataRegistryBusinessHour;
+        $dataRegistryBusinessFacility = empty($dataRegistryBusinessFacility) ? $model->registryBusinessFacilities : $dataRegistryBusinessFacility;
+        
+        return $this->render('update_marketing_info', [
+            'model' => $model,
+            'modelCategory' => $modelCategory,
+            'modelProductCategoryParent' => $modelProductCategoryParent,
+            'modelProductCategoryChild' => $modelProductCategoryChild,
+            'modelFacility' => $modelFacility,
+            'modelRegistryBusinessCategory' => $modelRegistryBusinessCategory,
+            'dataRegistryBusinessCategory' => $dataRegistryBusinessCategory,
+            'modelRegistryBusinessProductCategory' => $modelRegistryBusinessProductCategory,
+            'dataRegistryBusinessProductCategoryParent' => $dataRegistryBusinessProductCategoryParent,
+            'dataRegistryBusinessProductCategoryChild' => $dataRegistryBusinessProductCategoryChild,
+            'modelRegistryBusinessFacility' => $modelRegistryBusinessFacility,
+            'dataRegistryBusinessFacility' => $dataRegistryBusinessFacility,
+            'modelRegistryBusinessHour' => $modelRegistryBusinessHour,
+            'dataRegistryBusinessHour' => $dataRegistryBusinessHour,
+            'id' => $id,
+            'appBId' => $appBId,
+            'actid' => $actid,
+            'logsaid' => $logsaid
+        ]);
+    }
+    
+    public function actionUpdateGalleryPhoto($id, $appBId, $actid, $logsaid, $save = null)
+    {
+        $model = RegistryBusiness::find()
+            ->joinWith([
+                'registryBusinessImages' => function($query) {
+                
+                    $query->orderBy(['order' => SORT_ASC]);
+                }
+            ])
+            ->andWhere(['registry_business.id' => $id])
+            ->one();
+        
+        if (!empty(($post = Yii::$app->request->post()))) {
+            
+            if (!empty($save)) {
+                
+                $transaction = Yii::$app->db->beginTransaction();
+                    
+                foreach ($model->registryBusinessImages as $modelRegistryBusinessImage) {
+                    
+                    $modelRegistryBusinessImage->type = !empty($post['profile'][$modelRegistryBusinessImage->id]) ? 'Profile' : 'Gallery';
+                    $modelRegistryBusinessImage->is_primary = !empty($post['thumbnail']) && $post['thumbnail'] == $modelRegistryBusinessImage->id ? true : false;
+                    $modelRegistryBusinessImage->category = $post['category'][$modelRegistryBusinessImage->id];
+                    
+                    if (!($flag = $modelRegistryBusinessImage->save())) {
+                        
+                        break;
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    $transaction->commit();
+                    
+                    Yii::$app->session->setFlash('status', 'success');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Success'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is success. Data has been saved'));
+                } else {
+                    
+                    $transaction->rollBack();
+                    
+                    Yii::$app->session->setFlash('status', 'danger');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
+                }
+            }
+        }
+        
+        return $this->render('update_gallery_photo', [
+            'model' => $model,
+            'id' => $id,
+            'appBId' => $appBId,
+            'actid' => $actid,
+            'logsaid' => $logsaid
         ]);
     }
     
@@ -188,7 +642,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             }
         }
         
-        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/check-set-picture', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
+        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/update-gallery-photo', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
     }
     
     public function actionDown($id, $bid, $appBId, $actid, $logsaid)
@@ -227,6 +681,6 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             }
         }
         
-        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/check-set-picture', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
+        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/update-gallery-photo', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
     }
 }
