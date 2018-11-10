@@ -10,9 +10,6 @@ use core\models\RegistryBusinessProductCategory;
 use core\models\RegistryBusinessHour;
 use core\models\RegistryBusinessFacility;
 use core\models\RegistryBusinessImage;
-use core\models\Category;
-use core\models\ProductCategory;
-use core\models\Facility;
 use sycomponent\AjaxRequest;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -200,24 +197,6 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             ])
             ->andWhere(['registry_business.id' => $id])
             ->one();
-            
-        $modelCategory = Category::find()
-            ->orderBy('name')
-            ->asArray()->all();
-        
-        $modelProductCategoryParent = ProductCategory::find()
-            ->andWhere(['is_parent' => true])
-            ->orderBy('name')
-            ->asArray()->all();
-        
-        $modelProductCategoryChild = ProductCategory::find()
-            ->andWhere(['is_parent' => false])
-            ->orderBy('name')
-            ->asArray()->all();
-        
-        $modelFacility = Facility::find()
-            ->orderBy('name')
-            ->asArray()->all();
             
         $modelRegistryBusinessCategory = new RegistryBusinessCategory();
         $dataRegistryBusinessCategory = [];
@@ -532,10 +511,6 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
         
         return $this->render('update_marketing_info', [
             'model' => $model,
-            'modelCategory' => $modelCategory,
-            'modelProductCategoryParent' => $modelProductCategoryParent,
-            'modelProductCategoryChild' => $modelProductCategoryChild,
-            'modelFacility' => $modelFacility,
             'modelRegistryBusinessCategory' => $modelRegistryBusinessCategory,
             'dataRegistryBusinessCategory' => $dataRegistryBusinessCategory,
             'modelRegistryBusinessProductCategory' => $modelRegistryBusinessProductCategory,

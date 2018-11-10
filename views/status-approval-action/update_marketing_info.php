@@ -3,16 +3,15 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use core\models\Category;
+use core\models\ProductCategory;
+use core\models\Facility;
 use kartik\touchspin\TouchSpin;
 use sycomponent\AjaxRequest;
 use sycomponent\NotificationDialog;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
-/* @var $modelCategory core\models\Category */
-/* @var $modelProductCategoryParent core\models\ProductCategory */
-/* @var $modelProductCategoryChild core\models\ProductCategory */
-/* @var $modelFacility core\models\Facility */
 /* @var $dataRegistryBusinessCategory core\models\RegistryBusinessCategory */
 /* @var $modelRegistryBusinessCategory core\models\RegistryBusinessCategory */
 /* @var $dataRegistryBusinessProductCategoryParent core\models\RegistryBusinessProductCategory */
@@ -107,7 +106,7 @@ echo $ajaxRequest->component(); ?>
 
                                         echo $form->field($modelRegistryBusinessCategory, 'category_id')->dropDownList(
                                             ArrayHelper::map(
-                                                $modelCategory,
+                                                Category::find()->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 'name'
                                             ),
@@ -144,7 +143,7 @@ echo $ajaxRequest->component(); ?>
                                         
                                         echo $form->field($modelRegistryBusinessProductCategory, 'product_category_id[parent]')->dropDownList(
                                             ArrayHelper::map(
-                                                $modelProductCategoryParent,
+                                                ProductCategory::find()->andWhere(['is_parent' => true])->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 'name'
                                             ),
@@ -171,7 +170,7 @@ echo $ajaxRequest->component(); ?>
 
                                         echo $form->field($modelRegistryBusinessProductCategory, 'product_category_id[child]')->dropDownList(
                                             ArrayHelper::map(
-                                                $modelProductCategoryChild,
+                                                ProductCategory::find()->andWhere(['is_parent' => false])->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 'name'
                                             ),
@@ -208,7 +207,7 @@ echo $ajaxRequest->component(); ?>
 
                                         echo $form->field($modelRegistryBusinessFacility, 'facility_id')->dropDownList(
                                             ArrayHelper::map(
-                                                $modelFacility,
+                                                Facility::find()->orderBy('name')->asArray()->all(),
                                                 'id',
                                                 'name'
                                             ),
