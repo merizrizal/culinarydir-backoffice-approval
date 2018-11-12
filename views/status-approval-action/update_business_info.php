@@ -91,7 +91,10 @@ echo $ajaxRequest->component(); ?>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3">
                                 
-                                    <?= $form->field($model, 'address_type')->dropDownList(['Gang' => 'Gang', 'Jalan' => 'Jalan', 'Komplek' => 'Komplek'], ['prompt' => Yii::t('app', 'Address Type'), 'style' => 'width: 100%']) ?>
+                                    <?= $form->field($model, 'address_type')->dropDownList(['Gang' => 'Gang', 'Jalan' => 'Jalan', 'Komplek' => 'Komplek'], [
+                                        'prompt' => Yii::t('app', 'Address Type'),
+                                        'style' => 'width: 100%'
+                                    ]) ?>
                                 
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
