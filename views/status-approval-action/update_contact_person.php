@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 use sycomponent\AjaxRequest;
 use sycomponent\NotificationDialog;
+use core\models\Person;
+use core\models\RegistryBusinessContactPerson;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
@@ -84,26 +86,24 @@ echo $ajaxRequest->component(); ?>
                                 	           foreach ($dataRegistryBusinessContactPerson as $i => $dataContactPerson) :
                                 	               
                                 	               $i++;
-                                	               $modelRegistryBusinessContactPerson->is_primary_contact = $dataContactPerson['is_primary_contact']; ?>
+                                	               $modelPerson->first_name = $dataContactPerson['first_name'];
+                                	               $modelPerson->last_name = $dataContactPerson['last_name'];
+                                	               $modelPerson->phone = $dataContactPerson['phone'];
+                                	               $modelPerson->email = $dataContactPerson['email'];
+                                	               $modelRegistryBusinessContactPerson->position = $dataContactPerson['position'];
+                                	               $modelRegistryBusinessContactPerson->is_primary_contact = $dataContactPerson['is_primary_contact'];
+                                	               $modelRegistryBusinessContactPerson->note = $dataContactPerson['note'];?>
                                 	                
                                 	                <div class="mb-10 data-form">
                                                         <div class="row mt-10">
                                                             <div class="col-md-4 col-xs-6">
                                                             
-                                                                <?= $form->field($modelPerson, '[' . $i .']first_name')->textInput([
-                                                                    'maxlength' => true,
-                                                                    'placeholder' => Yii::t('app', 'First Name'),
-                                                                    'value' => $dataContactPerson['first_name']
-                                                                ]) ?>
+                                                                <?= $form->field($modelPerson, '[' . $i .']first_name')->textInput(['maxlength' => true, 'placeholder' => Yii::t('app', 'First Name')]) ?>
                                                                 
                                                             </div>
                                                             <div class="col-md-4 col-xs-6">
                                                             
-                                                                <?= $form->field($modelPerson, '[' . $i .']last_name')->textInput([
-                                                                    'maxlength' => true,
-                                                                    'placeholder' => Yii::t('app', 'Last Name'),
-                                                                    'value' => $dataContactPerson['last_name']
-                                                                ]) ?>
+                                                                <?= $form->field($modelPerson, '[' . $i .']last_name')->textInput(['maxlength' => true, 'placeholder' => Yii::t('app', 'Last Name')]) ?>
                                                                 
                                                             </div>
                                                             <div class="col-md-4 col-xs-12">
@@ -111,8 +111,7 @@ echo $ajaxRequest->component(); ?>
                                                             	<?= $form->field($modelRegistryBusinessContactPerson, '[' . $i .']position')->dropDownList(['Owner' => 'Owner', 'Manager' => 'Manager', 'Staff' => 'Staff'], [
                                                             	    'prompt' => Yii::t('app', 'Position'),
                                                             	    'class' => 'select-position',
-                                                            	    'style' => 'width: 100%',
-                                                            	    'value' => $dataContactPerson['position']
+                                                            	    'style' => 'width: 100%'
                                                             	]); ?>
                                                             	
                                                             </div>
@@ -125,8 +124,7 @@ echo $ajaxRequest->component(); ?>
                                                                     'mask' => ['999-999-9999', '9999-999-9999', '9999-9999-9999', '9999-99999-9999'],
                                                                     'options' => [
                                                                         'class' => 'form-control',
-                                                                        'placeholder' => Yii::t('app', 'Phone'),
-                                                                        'value' => $dataContactPerson['phone']
+                                                                        'placeholder' => Yii::t('app', 'Phone')
                                                                     ],
                                                                 ]) ?>
                                                                 
@@ -137,15 +135,15 @@ echo $ajaxRequest->component(); ?>
                                                                     'enableAjaxValidation' => true
                                                                 ])->textInput([
                                                                     'class' => 'form-control',
-                                                                    'placeholder' => 'Email',
-                                                                    'value' => $dataContactPerson['email']
+                                                                    'placeholder' => 'Email'
                                                                 ]) ?>
                                                                 
                                                             </div>
                                                             <div class="col-md-4 col-xs-6">
                                                             
                                                             	<?= $form->field($modelRegistryBusinessContactPerson, '[' . $i .']is_primary_contact')->checkbox([
-                                                            	    'class' => 'is-primary-checkbox'
+                                                            	    'class' => 'is-primary-checkbox',
+                                                            	    'checked' => 'checked'
                                                             	]) ?>
                                                             	
                                                             </div>
@@ -209,6 +207,10 @@ echo $ajaxRequest->component(); ?>
     </div>
 </div>
 
+<?php 
+$modelPerson = new Person(); 
+$modelRegistryBusinessContactPerson = new RegistryBusinessContactPerson(); ?>
+
 <div class="temp-form hide">
     <div class="mb-10 data-form">
         <div class="row mt-10">
@@ -231,7 +233,9 @@ echo $ajaxRequest->component(); ?>
             <div class="col-md-4 col-xs-12">
             
             	<?= $form->field($modelRegistryBusinessContactPerson, '[index]position')->dropDownList(['Owner' => 'Owner', 'Manager' => 'Manager', 'Staff' => 'Staff'], [
-            	    'prompt' => Yii::t('app', 'Position')
+            	    'prompt' => Yii::t('app', 'Position'),
+            	    'class' => 'select-position',
+            	    'style' => 'width: 100%'
             	]); ?>
             	
             </div>
@@ -371,7 +375,7 @@ $jscript = '
         return contentClone;
     };
 
-    $(".select-position").select2({
+    $(".main-form").find(".select-position").select2({
         theme: "krajee",
         placeholder: "' . Yii::t('app', 'Position') . '",
         minimumResultsForSearch: "Infinity"
@@ -401,7 +405,7 @@ $jscript = '
 
         Yii::$app->params['checkbox-radio-script'](null, null, '#registrybusinesscontactperson-" + indexCount + "-is_primary_contact') . '
 
-        $("#registrybusinesscontactperson-" + indexCount + "-position").select2({
+        $(".main-form").find(".select-position").select2({
             theme: "krajee",
             placeholder: "' . Yii::t('app', 'Position') . '",
             minimumResultsForSearch: "Infinity"

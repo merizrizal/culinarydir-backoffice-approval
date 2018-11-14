@@ -604,6 +604,8 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
         $modelRegistryBusinessContactPerson = new RegistryBusinessContactPerson();
         $dataRegistryBusinessContactPerson = [];
         
+        $isEmpty = false;
+        
         if (!empty($post = Yii::$app->request->post())) {
             
             if (empty($save)) {
@@ -614,6 +616,8 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                 
                 $transaction = Yii::$app->db->beginTransaction();
                 $flag = true;
+                
+                $isEmpty = empty($post['Person']) && empty($post['RegistryBusinessContactPerson']);
                 
                 if (!empty($post['RegistryBusinessContactPersonDeleted'])) {
                     
@@ -636,9 +640,9 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                         }
                         
                         $newModelPerson->first_name = $dataPerson['first_name'];
-                        $newModelPerson->last_name = $dataPerson['last_name'];
-                        $newModelPerson->phone = $dataPerson['phone'];
-                        $newModelPerson->email = $dataPerson['email'];
+                        $newModelPerson->last_name = !empty($dataPerson['last_name']) ? $dataPerson['last_name'] : null;
+                        $newModelPerson->phone = !empty($dataPerson['phone']) ? $dataPerson['phone'] : null;
+                        $newModelPerson->email = !empty($dataPerson['email']) ? $dataPerson['email'] : null;
                         
                         if (!($flag = $newModelPerson->save())) {
                             
@@ -656,7 +660,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                             
                             $newModelRegistryBusinessContactPerson->position = $post['RegistryBusinessContactPerson'][$i]['position'];
                             $newModelRegistryBusinessContactPerson->is_primary_contact = !empty($post['RegistryBusinessContactPerson'][$i]['is_primary_contact']) ? true : false;
-                            $newModelRegistryBusinessContactPerson->note = $post['RegistryBusinessContactPerson'][$i]['note'];
+                            $newModelRegistryBusinessContactPerson->note = !empty($post['RegistryBusinessContactPerson'][$i]['note']) ? $post['RegistryBusinessContactPerson'][$i]['note'] : null;
                             
                             if (!($flag = $newModelRegistryBusinessContactPerson->save())) {
                                 
@@ -687,15 +691,14 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             }
         }
         
-        if (empty($dataRegistryBusinessContactPerson)) {
+        $dataContactPerson = [];
+        
+        foreach ($model->registryBusinessContactPeople as $dataRegistryBusinessContactPeople) {
             
-            foreach ($model->registryBusinessContactPeople as $dataContactPerson) {
-                
-                $dataContactPerson = ArrayHelper::merge($dataContactPerson->toArray(), $dataContactPerson->person->toArray());
-                
-                array_push($dataRegistryBusinessContactPerson, $dataContactPerson);
-            }
+            $dataContactPerson[] = ArrayHelper::merge($dataRegistryBusinessContactPeople->toArray(), $dataRegistryBusinessContactPeople->person->toArray());
         }
+        
+        $dataRegistryBusinessContactPerson = empty($dataRegistryBusinessContactPerson) && !$isEmpty ? $dataContactPerson : $dataRegistryBusinessContactPerson;
         
         return $this->render('update_contact_person', [
             'model' => $model,
