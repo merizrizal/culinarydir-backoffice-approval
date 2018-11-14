@@ -4,16 +4,19 @@ namespace backoffice\modules\approval\controllers;
 
 use Yii;
 use core\models\LogStatusApprovalAction;
+use core\models\Person;
 use core\models\RegistryBusiness;
 use core\models\RegistryBusinessCategory;
 use core\models\RegistryBusinessProductCategory;
 use core\models\RegistryBusinessHour;
 use core\models\RegistryBusinessFacility;
 use core\models\RegistryBusinessImage;
+use core\models\RegistryBusinessContactPerson;
 use sycomponent\AjaxRequest;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /**
  * StatusApprovalActionController implements the CRUD actions for Status model.
@@ -581,6 +584,128 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             'appBId' => $appBId,
             'actid' => $actid,
             'logsaid' => $logsaid
+        ]);
+    }
+    
+    public function actionUpdateContactPerson($id, $appBId, $actid, $logsaid, $save = null)
+    {
+        $model = RegistryBusiness::find()
+            ->joinWith([
+                'registryBusinessContactPeople' => function($query) {
+                
+                    $query->orderBy(['registry_business_contact_person.id' => SORT_ASC]);
+                },
+                'registryBusinessContactPeople.person'
+            ])
+            ->andWhere(['registry_business.id' => $id])
+            ->one();
+            
+        $modelPerson = new Person();
+        $modelRegistryBusinessContactPerson = new RegistryBusinessContactPerson();
+        $dataRegistryBusinessContactPerson = [];
+        
+        if (!empty($post = Yii::$app->request->post())) {
+            
+            if (empty($save)) {
+                
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            } else {
+                
+                $transaction = Yii::$app->db->beginTransaction();
+                $flag = true;
+                
+                if (!empty($post['RegistryBusinessContactPersonDeleted'])) {
+                    
+                    if (($flag = RegistryBusinessContactPerson::deleteAll(['person_id' => $post['RegistryBusinessContactPersonDeleted']]))) {
+                        
+                        $flag = Person::deleteAll(['id' => $post['RegistryBusinessContactPersonDeleted']]);
+                    }
+                }
+                
+                if (!empty($post['Person']) && !empty($post['RegistryBusinessContactPerson'])) {
+                    
+                    foreach ($post['Person'] as $i => $dataPerson) {
+                            
+                        if (!empty($post['RegistryBusinessContactPersonExisted'][$i])) {
+                            
+                            $newModelPerson = Person::findOne(['id' => $post['RegistryBusinessContactPersonExisted'][$i]]);
+                        } else {
+                            
+                            $newModelPerson = new Person();
+                        }
+                        
+                        $newModelPerson->first_name = $dataPerson['first_name'];
+                        $newModelPerson->last_name = $dataPerson['last_name'];
+                        $newModelPerson->phone = $dataPerson['phone'];
+                        $newModelPerson->email = $dataPerson['email'];
+                        
+                        if (!($flag = $newModelPerson->save())) {
+                            
+                            break;
+                        } else {
+                            
+                            $newModelRegistryBusinessContactPerson = RegistryBusinessContactPerson::findOne(['person_id' => $newModelPerson->id]);
+                            
+                            if (empty($newModelRegistryBusinessContactPerson)) {
+                                
+                                $newModelRegistryBusinessContactPerson = new RegistryBusinessContactPerson();
+                                $newModelRegistryBusinessContactPerson->registry_business_id = $model->id;
+                                $newModelRegistryBusinessContactPerson->person_id = $newModelPerson->id;
+                            }
+                            
+                            $newModelRegistryBusinessContactPerson->position = $post['RegistryBusinessContactPerson'][$i]['position'];
+                            $newModelRegistryBusinessContactPerson->is_primary_contact = !empty($post['RegistryBusinessContactPerson'][$i]['is_primary_contact']) ? true : false;
+                            $newModelRegistryBusinessContactPerson->note = $post['RegistryBusinessContactPerson'][$i]['note'];
+                            
+                            if (!($flag = $newModelRegistryBusinessContactPerson->save())) {
+                                
+                                break;
+                            } else {
+                                
+                                array_push($dataRegistryBusinessContactPerson, ArrayHelper::merge($newModelRegistryBusinessContactPerson->toArray(), $newModelPerson->toArray()));
+                            }
+                        }
+                    }
+                }
+                
+                if ($flag) {
+                    
+                    Yii::$app->session->setFlash('status', 'success');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Success'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is success. Data has been saved'));
+                    
+                    $transaction->commit();
+                } else {
+                    
+                    Yii::$app->session->setFlash('status', 'danger');
+                    Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
+                    Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
+                    
+                    $transaction->rollBack();
+                }
+            }
+        }
+        
+        if (empty($dataRegistryBusinessContactPerson)) {
+            
+            foreach ($model->registryBusinessContactPeople as $dataContactPerson) {
+                
+                $dataContactPerson = ArrayHelper::merge($dataContactPerson->toArray(), $dataContactPerson->person->toArray());
+                
+                array_push($dataRegistryBusinessContactPerson, $dataContactPerson);
+            }
+        }
+        
+        return $this->render('update_contact_person', [
+            'model' => $model,
+            'modelPerson' => $modelPerson,
+            'modelRegistryBusinessContactPerson' => $modelRegistryBusinessContactPerson,
+            'dataRegistryBusinessContactPerson' => $dataRegistryBusinessContactPerson,
+            'id' => $id,
+            'appBId' => $appBId,
+            'actid' => $actid,
+            'logsaid' => $logsaid,
         ]);
     }
     
