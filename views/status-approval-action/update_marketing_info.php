@@ -19,8 +19,6 @@ use sycomponent\NotificationDialog;
 /* @var $modelRegistryBusinessProductCategory core\models\RegistryBusinessProductCategory */
 /* @var $dataRegistryBusinessFacility core\models\RegistryBusinessFacility */
 /* @var $modelRegistryBusinessFacility core\models\RegistryBusinessFacility */
-/* @var $dataRegistryBusinessHour core\models\RegistryBusinessHour */
-/* @var $modelRegistryBusinessHour core\models\RegistryBusinessHour */
 /* @var $id backoffice\modules\approval\controllers\StatusApprovalActionController */
 /* @var $appBId backoffice\modules\approval\controllers\StatusApprovalActionController */
 /* @var $actid backoffice\modules\approval\controllers\StatusApprovalActionController */
@@ -223,109 +221,6 @@ echo $ajaxRequest->component(); ?>
                             </div>
 
                             <div class="form-group">
-                                <div class="row mb-10">
-                                    <div class="col-xs-12">
-                                    
-                                    	<?= Html::label(Yii::t('app', 'Business Hour')) ?>
-                                        <?= Html::button(Yii::t('app', 'Set All'), ['class' => 'btn btn-primary btn-xs set-all-business-hour']) ?>
-                                        
-                                    </div>
-                                </div>
-
-                                <?php
-                                $days = Yii::$app->params['days'];
-                                $hours = Yii::$app->params['hours'];
-
-                                foreach ($days as $i => $day):
-
-                                    $i++;
-                                    $is24Hour = false;
-
-                                    foreach ($dataRegistryBusinessHour as $registryBusinessHour) {
-
-                                        if ($registryBusinessHour['day'] == $i) {
-
-                                            $modelRegistryBusinessHour->is_open = $registryBusinessHour['is_open'];
-                                            $modelRegistryBusinessHour->open_at = $registryBusinessHour['open_at'];
-                                            $modelRegistryBusinessHour->close_at = $registryBusinessHour['close_at'];
-
-                                            if ($modelRegistryBusinessHour->open_at == '00:00:00' && $modelRegistryBusinessHour->close_at == '24:00:00') {
-                                                $is24Hour = true;
-                                            }
-
-                                            break;
-                                        }
-                                    } ?>
-
-                                    <div class="row">
-                                        <div class="col-xs-2 col-sm-1">
-                                            
-                                            <?= Yii::t('app', $days[$i - 1]) ?>
-                                        
-                                        </div>
-                                        <div class="col-xs-3 col-sm-2">
-
-                                            <?= $form->field($modelRegistryBusinessHour, '[day' . $i . ']is_open')
-                                                ->checkbox([
-                                                    'label' => Yii::t('app', 'Open'),
-                                                    'class' => 'business-hour-is-open day-' . $i,
-                                                    'data-day' => $i,
-                                                ]); ?>
-
-                                        </div>
-                                        <div class="col-xs-3 col-sm-2">
-                                            <div class="form-group">
-
-                                                <?= Html::checkbox('always24', $is24Hour, [
-                                                    'label' => Yii::t('app', '24 Hours'),
-                                                    'data-day' => $i,
-                                                    'class' => 'business-hour-24h',
-                                                    'disabled' => !$modelRegistryBusinessHour->is_open,
-                                                    'id' => 'business-hour-24h-' . $i
-                                                ]); ?>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="visible-xs clearfix"></div>
-
-                                        <div class="col-xs-4 col-sm-3 col-lg-2">
-
-                                            <?= $form->field($modelRegistryBusinessHour, '[day' . $i . ']open_at')
-                                                ->dropDownList($hours, [
-                                                    'prompt' => '',
-                                                    'class' => 'business-hour-time open',
-                                                    'style' => 'width: 100%',
-                                                    'disabled' => !$modelRegistryBusinessHour->is_open,
-                                                ]); ?>
-
-                                        </div>
-                                        <div class="col-xs-4 col-sm-3 col-lg-2">
-
-                                            <?= $form->field($modelRegistryBusinessHour, '[day' . $i . ']close_at')
-                                                ->dropDownList($hours, [
-                                                    'prompt' => '',
-                                                    'class' => 'business-hour-time close',
-                                                    'style' => 'width: 100%',
-                                                    'disabled' => !$modelRegistryBusinessHour->is_open,
-                                                ]); ?>
-
-                                        </div>
-                                    </div>
-
-                                <?php
-                                endforeach; ?>
-                                
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-9">
-
-                                        <?= $form->field($model, 'note_business_hour')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Note')]) ?>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-12">
                                     
@@ -396,8 +291,6 @@ echo $ajaxRequest->component(); ?>
 </div>
 
 <?php
-$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
-
 $cssscript = '
     .select2-grid-system ul.select2-results__options > li.select2-results__option {
         float: left;
@@ -420,8 +313,6 @@ $cssscript = '
 ';
 
 $this->registerCss($cssscript);
-
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
     $("#registrybusinesscategory-category_id").select2({
@@ -447,86 +338,6 @@ $jscript = '
         dropdownCssClass: "select2-grid-system",
         placeholder: "' . Yii::t('app', 'Facility') . '"
     });
-
-    $(".business-hour-time.open").select2({
-        theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Time Open') . '"
-    });
-
-    $(".business-hour-time.close").select2({
-        theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Time Close') . '"
-    });
-
-    $(".business-hour-is-open").on("ifChecked",function(e){
-
-        var elemDay = $(this).data("day");
-
-        $("#business-hour-24h-" + elemDay).iCheck("enable");
-
-        $("#registrybusinesshour-day"  + elemDay + "-open_at").removeAttr("disabled");
-        $("#registrybusinesshour-day"  + elemDay + "-close_at").removeAttr("disabled");
-    });
-
-    $(".business-hour-is-open").on("ifUnchecked",function(e){
-
-        var elemDay = $(this).data("day");
-
-        $("#business-hour-24h-" + elemDay).iCheck("disable");
-        $("#business-hour-24h-" + elemDay).iCheck("uncheck");
-
-        $("#registrybusinesshour-day"  + elemDay + "-open_at").attr("disabled","disabled");
-        $("#registrybusinesshour-day"  + elemDay + "-open_at").val(null).trigger("change");
-
-        $("#registrybusinesshour-day"  + elemDay + "-close_at").attr("disabled","disabled");
-        $("#registrybusinesshour-day"  + elemDay + "-close_at").val(null).trigger("change");
-    });
-
-    $(".business-hour-24h").on("ifChecked",function(e){
-
-        var elemDay = $(this).data("day");
-
-        $("#registrybusinesshour-day"  + elemDay + "-open_at").val("00:00:00").trigger("change");
-        $("#registrybusinesshour-day"  + elemDay + "-close_at").val("24:00:00").trigger("change");
-    });
-
-    $(".business-hour-24h").on("ifUnchecked",function(e){
-
-        var elemDay = $(this).data("day");
-
-        $("#registrybusinesshour-day"  + elemDay + "-open_at").val(null).trigger("change");
-        $("#registrybusinesshour-day"  + elemDay + "-close_at").val(null).trigger("change");
-    });
-
-    $(".set-all-business-hour").on("click", function() {
-
-        $(".business-hour-is-open").each(function() {
-
-            var thisObj = $(this);
-            var rootParentThisObj = thisObj.parent().parent().parent().parent().parent();
-
-            var businessHourIsOpenDay1 = $(".business-hour-is-open.day-1");
-            var rootParentbusinessHourIsOpen = $(".business-hour-is-open.day-1").parent().parent().parent().parent().parent();
-
-            var businessHourIsOpen = "uncheck";
-            var businessHour24h = "uncheck";
-
-            if (businessHourIsOpenDay1.is(":checked")) {
-                businessHourIsOpen = "check";
-            }
-
-            if (rootParentbusinessHourIsOpen.find(".business-hour-24h").is(":checked")) {
-                businessHour24h = "check";
-            }
-
-            $(this).iCheck(businessHourIsOpen);
-            rootParentThisObj.find(".business-hour-24h").iCheck(businessHour24h);
-            rootParentThisObj.find(".business-hour-time.open").val(rootParentbusinessHourIsOpen.find(".business-hour-time.open").val()).trigger("change");
-            rootParentThisObj.find(".business-hour-time.close").val(rootParentbusinessHourIsOpen.find(".business-hour-time.close").val()).trigger("change");
-        });
-
-        return false;
-    });
 ';
 
-$this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>
+$this->registerJs($jscript); ?>

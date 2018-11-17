@@ -77,6 +77,7 @@ echo $ajaxRequest->component(); ?>
                                 <li><?= Html::a(Yii::t('app', 'Business Information'), ['update-business-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                                 <li><?= Html::a(Yii::t('app', 'Marketing Information'), ['update-marketing-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                                 <li><?= Html::a(Yii::t('app', 'Gallery Photo'), ['update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                                <li><?= Html::a(Yii::t('app', 'Operational Hours'), ['update-business-hour', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                                 <li><?= Html::a(Yii::t('app', 'Contact Person'), ['update-contact-person', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                             </ul>
                         </div>
@@ -555,6 +556,7 @@ echo $ajaxRequest->component(); ?>
                                 <li><?= Html::a(Yii::t('app', 'Business Information'), ['update-business-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                                 <li><?= Html::a(Yii::t('app', 'Marketing Information'), ['update-marketing-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                                 <li><?= Html::a(Yii::t('app', 'Gallery Photo'), ['update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                                <li><?= Html::a(Yii::t('app', 'Operational Hours'), ['update-business-hour', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                                 <li><?= Html::a(Yii::t('app', 'Contact Person'), ['update-contact-person', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
                             </ul>
                         </div>
