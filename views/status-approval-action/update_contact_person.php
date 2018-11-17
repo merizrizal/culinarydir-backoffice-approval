@@ -81,11 +81,10 @@ echo $ajaxRequest->component(); ?>
                                         <div class="main-form">
                                 	
                                         	<?php
-                                	        if (!empty($dataRegistryBusinessContactPerson)) :
+                                	        if (!empty($dataRegistryBusinessContactPerson)):
                                 	        
-                                	           foreach ($dataRegistryBusinessContactPerson as $i => $dataContactPerson) :
-                                	               
-                                	               $i++;
+                                	           foreach ($dataRegistryBusinessContactPerson as $i => $dataContactPerson):
+                                	           
                                 	               $modelPerson->first_name = $dataContactPerson['first_name'];
                                 	               $modelPerson->last_name = $dataContactPerson['last_name'];
                                 	               $modelPerson->phone = $dataContactPerson['phone'];
@@ -166,7 +165,7 @@ echo $ajaxRequest->component(); ?>
                                                         <hr>
                                                     </div>
                                                     
-                                                    <?php                                	            
+                                                <?php                                	            
                                                 endforeach;
                                 	        endif; ?>
                                 	        
@@ -381,11 +380,7 @@ $jscript = '
         minimumResultsForSearch: "Infinity"
     });
 
-    addValidator(indexCount);
-
     $(".add-contact-person").on("click", function() {
-
-        indexCount++;
 
         var formContactPerson = $(".temp-form").clone();
 
@@ -411,6 +406,8 @@ $jscript = '
             minimumResultsForSearch: "Infinity"
         });
 
+        indexCount++;
+
         return false;
     });
 
@@ -421,6 +418,7 @@ $jscript = '
         if (lastData.find(".deleted-contact").length) {
 
             var inputName = lastData.find(".deleted-contact").attr("name");
+
             inputName = inputName.replace("Existed", "Deleted");
             lastData.find(".deleted-contact").attr("name", inputName);
             lastData.children().not(".deleted-contact").remove();
