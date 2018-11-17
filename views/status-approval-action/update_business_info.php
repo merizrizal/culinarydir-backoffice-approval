@@ -113,18 +113,18 @@ echo $ajaxRequest->component(); ?>
                                 <div class="col-xs-6 col-sm-3">
                                 
                                     <?= $form->field($model, 'city_id')->dropDownList(
-                                            ArrayHelper::map(
-                                                City::find()->orderBy('name')->asArray()->all(),
-                                                'id',
-                                                function($data) {
-                                                    
-                                                    return $data['name'];
-                                                }
-                                            ),
-                                            [
-                                                'prompt' => '',
-                                                'style' => 'width: 100%'
-                                            ]) ?>
+                                        ArrayHelper::map(
+                                            City::find()->orderBy('name')->asArray()->all(),
+                                            'id',
+                                            function($data) {
+                                                
+                                                return $data['name'];
+                                            }
+                                        ),
+                                        [
+                                            'prompt' => '',
+                                            'style' => 'width: 100%'
+                                        ]) ?>
                                             
                                 </div>
                                 <div class="col-xs-6 col-sm-3">

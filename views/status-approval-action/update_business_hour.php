@@ -359,7 +359,7 @@ $jscript = '
         
         var deletedHour = thisObj.parent().parent().siblings(".data-hour-form").last().find(".deleted-hour");
 
-        var indexHourCount = (deletedHour.length ? deletedHour.data("count") : 0);
+        var indexHourCount = deletedHour.length ? deletedHour.data("count") : 0;
 
         if ($("#business-hour-24h-" + thisObj.val()).is(":checked")) {
 
@@ -443,7 +443,7 @@ $jscript = '
             $("#delete-business-hour-day" + thisObj.val()).show();
         });
 
-        thisObj.parent().find("#add-business-hour-day" + thisObj.val()).on("click", function() {
+        $("#add-business-hour-day" + thisObj.val()).on("click", function() {
             
             indexHourCount++;
     
@@ -476,7 +476,7 @@ $jscript = '
             return false;
         });
 
-        thisObj.parent().find("#delete-business-hour-day" + thisObj.val()).on("click", function() {
+        $("#delete-business-hour-day" + thisObj.val()).on("click", function() {
 
             var lastData = thisObj.parent().parent().siblings(".data-hour-form").last();
 

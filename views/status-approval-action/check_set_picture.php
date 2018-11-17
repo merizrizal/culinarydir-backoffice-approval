@@ -499,32 +499,32 @@ echo $ajaxRequest->component(); ?>
         				<?php
     				    if (!empty($model['registryBusinessContactPeople'])): ?>
     			            
-        				    <table class="table-contact-person">
-            				    <tr>
-            				    <th class="table-contact-person-th"><?= Html::label(Yii::t('app', 'Name')) ?></th>
-    			            		<th class="table-contact-person-th"><?= Html::label(Yii::t('app', 'Position')) ?></th>
-    			            		<th class="table-contact-person-th"><?= Html::label(Yii::t('app', 'Email')) ?></th>
-    			            		<th class="table-contact-person-th"><?= Html::label(Yii::t('app', 'Phone')) ?></th>
-    			            		<th class="table-contact-person-th"><?= Html::label(Yii::t('app', 'Note')) ?></th>
-    			            		<th class="table-contact-person-th"><?= Html::label(Yii::t('app', 'Is Primary Contact')) ?></th>
+        				    <table class="table table-responsive">
+    				        	<tr>
+    			            		<th><?= Html::label(Yii::t('app', 'Name')) ?></th>
+    			            		<th><?= Html::label(Yii::t('app', 'Position')) ?></th>
+    			            		<th><?= Html::label(Yii::t('app', 'Email')) ?></th>
+    			            		<th><?= Html::label(Yii::t('app', 'Phone')) ?></th>
+    			            		<th><?= Html::label(Yii::t('app', 'Note')) ?></th>
+    			            		<th><?= Html::label(Yii::t('app', 'Is Primary Contact')) ?></th>
     			            	</tr>
-    				        
-        				    	<?php
-        			            foreach ($model['registryBusinessContactPeople'] as $person): ?>
-        			                
-            			            <tr>
-            			            	<td class="table-contact-person-td"><?= $person['person']['first_name'] . ' ' . $person['person']['last_name']; ?></td>
-        			            		<td class="table-contact-person-td"><?= $person['position']; ?></td>
-        			            		<td class="table-contact-person-td"><?= !empty($person['person']['email']) ? $person['person']['email'] : '-'; ?></td>
-        			            		<td class="table-contact-person-td"><?= !empty($person['person']['phone']) ? $person['person']['phone'] : '-'; ?></td>
-        			            		<td class="table-contact-person-td"><?= !empty($person['note']) ? $person['note'] : '-'; ?></td>
-        			            		<td class="table-contact-person-td"><?= !empty($person['is_primary_contact']) ? ' YA ' : ' TIDAK ' ?></td>
-            			            </tr>
-        			                
-        			            <?php
-        			            endforeach; ?>
-    			            
-    			            </table>
+				        
+    				    	<?php
+    				    	foreach ($model['registryBusinessContactPeople'] as $dataRegistryBusinessContactPerson): ?>
+    			                
+        			            <tr>
+        			            	<td><?= $dataRegistryBusinessContactPerson['person']['first_name'] . ' ' . $dataRegistryBusinessContactPerson['person']['last_name']; ?></td>
+    			            		<td><?= $dataRegistryBusinessContactPerson['position']; ?></td>
+    			            		<td><?= !empty($dataRegistryBusinessContactPerson['person']['email']) ? $dataRegistryBusinessContactPerson['person']['email'] : '-'; ?></td>
+    			            		<td><?= !empty($dataRegistryBusinessContactPerson['person']['phone']) ? $dataRegistryBusinessContactPerson['person']['phone'] : '-'; ?></td>
+    			            		<td><?= !empty($dataRegistryBusinessContactPerson['note']) ? $dataRegistryBusinessContactPerson['note'] : '-'; ?></td>
+    			            		<td><?= !empty($dataRegistryBusinessContactPerson['is_primary_contact']) ? ' YA ' : ' TIDAK ' ?></td>
+        			            </tr>
+    			                
+    			            <?php
+    			            endforeach; ?>
+			            
+			            </table>
     			            
 			            <?php
 			            else: ?>
