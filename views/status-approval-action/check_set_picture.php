@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use sycomponent\AjaxRequest;
-use sycomponent\ModalDialog;
 use sycomponent\NotificationDialog;
 use sycomponent\Tools;
 use backoffice\components\AppComponent;
@@ -258,11 +257,11 @@ echo $ajaxRequest->component(); ?>
                         	<?php
                             if (!empty($model['registryBusinessCategories'])) {
                                 
-                                foreach ($model['registryBusinessCategories'] as $registryBusinessCategory) {
+                                foreach ($model['registryBusinessCategories'] as $dataRegistryBusinessCategory) {
 
                                     echo '
                                         <div class="col-xs-4 col-sm-2">
-                                            ' . $registryBusinessCategory['category']['name'] . '
+                                            ' . $dataRegistryBusinessCategory['category']['name'] . '
                                         </div>';
                                 }
                             } ?>
@@ -287,14 +286,14 @@ echo $ajaxRequest->component(); ?>
 
                             if (!empty($model['registryBusinessProductCategories'])) {
                                 
-                                foreach ($model['registryBusinessProductCategories'] as $value) {
+                                foreach ($model['registryBusinessProductCategories'] as $dataRegistryBusinessProductCategory) {
 
-                                    if ($value['productCategory']['is_parent']) {
+                                    if ($dataRegistryBusinessProductCategory['productCategory']['is_parent']) {
 
-                                        $productCategoryParent[$value['product_category_id']] = $value['productCategory']['name'];
+                                        $productCategoryParent[$dataRegistryBusinessProductCategory['product_category_id']] = $dataRegistryBusinessProductCategory['productCategory']['name'];
                                     } else {
 
-                                        $productCategoryChild[$value['product_category_id']] = $value['productCategory']['name'];
+                                        $productCategoryChild[$dataRegistryBusinessProductCategory['product_category_id']] = $dataRegistryBusinessProductCategory['productCategory']['name'];
                                     }
                                 }
 
@@ -351,30 +350,27 @@ echo $ajaxRequest->component(); ?>
 
                                 if (!empty($model['registryBusinessHours'])):
                                 
-                                    foreach ($model['registryBusinessHours'] as $businessHour):
+                                    foreach ($model['registryBusinessHours'] as $dataRegistryBusinessHour):
 
-                                        $is24Hour = (($businessHour['open_at'] == '00:00:00') && ($businessHour['close_at'] == '24:00:00')); ?>
+                                        $is24Hour = (($dataRegistryBusinessHour['open_at'] == '00:00:00') && ($dataRegistryBusinessHour['close_at'] == '24:00:00')); ?>
 
                                         <div class="row">
                                             <div class="col-xs-4 col-sm-2">
                                             
-                                                <?= Html::label(Yii::t('app', $days[$businessHour['day'] - 1])) ?>
+                                                <?= Html::label(Yii::t('app', $days[$dataRegistryBusinessHour['day'] - 1])) ?>
                                                 
                                             </div>
-
                                             <div class="col-xs-4 col-sm-4">
                                             	
                                             	<?php
-                                                echo $is24Hour ? Yii::t('app','24 Hours') : Yii::$app->formatter->asTime($businessHour['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHour['close_at'], 'short');
+                                            	echo $is24Hour ? Yii::t('app','24 Hours') : Yii::$app->formatter->asTime($dataRegistryBusinessHour['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($dataRegistryBusinessHour['close_at'], 'short');
                                                 
-                                                if (!empty($businessHour['registryBusinessHourAdditionals'])) {
+                                            	if (!empty($dataRegistryBusinessHour['registryBusinessHourAdditionals'])) {
                                                     
-                                                    foreach ($businessHour['registryBusinessHourAdditionals'] as $businessHourAdditional): ?>
-                                                        
-                                                    	<?= ', ' . Yii::$app->formatter->asTime($businessHourAdditional['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($businessHourAdditional['close_at'], 'short'); ?>
-                                                        
-                                                    <?php
-                                                    endforeach;
+                                            	    foreach ($dataRegistryBusinessHour['registryBusinessHourAdditionals'] as $dataRegistryBusinessHourAdditional) {
+                                            	    
+                                            	        echo ', ' . Yii::$app->formatter->asTime($dataRegistryBusinessHourAdditional['open_at'], 'short') . ' - ' . Yii::$app->formatter->asTime($dataRegistryBusinessHourAdditional['close_at'], 'short');
+                                            	    }
                                                 } ?>
                                             
                                             </div>
@@ -436,11 +432,11 @@ echo $ajaxRequest->component(); ?>
                             <?php
                             if (!empty($model['registryBusinessFacilities'])) {
                                 
-                                foreach ($model['registryBusinessFacilities'] as $registryBusinessFacility) {
+                                foreach ($model['registryBusinessFacilities'] as $dataRegistryBusinessFacility) {
 
                                     echo '
                                         <div class="col-xs-4 col-sm-2">
-                                            ' . $registryBusinessFacility['facility']['name'] . '
+                                            ' . $dataRegistryBusinessFacility['facility']['name'] . '
                                         </div>';
                                 }
                             } ?>
@@ -462,18 +458,18 @@ echo $ajaxRequest->component(); ?>
                             <?php
                             if (!empty($model['registryBusinessImages'])):
                             
-                                foreach ($model['registryBusinessImages'] as $registryBusinessImage): ?>
+                                foreach ($model['registryBusinessImages'] as $dataRegistryBusinessImage): ?>
 
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="thumbnail">
                                             <div class="image view view-first">
                                             
-                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $registryBusinessImage['image'], 200, 150), ['style' => 'width: 100%; display: block;']);  ?>
+                                                <?= Html::img(Yii::getAlias('@uploadsUrl') . Tools::thumb('/img/registry_business/', $dataRegistryBusinessImage['image'], 200, 150), ['style' => 'width: 100%; display: block;']);  ?>
                                                 
                                                 <div class="mask">
                                                     <p>&nbsp;</p>
                                                     <div class="tools tools-bottom">
-                                                        <a class="show-image direct" href="<?= Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $registryBusinessImage['image'] ?>"><i class="fa fa-search"></i></a>
+                                                        <a class="show-image direct" href="<?= Yii::getAlias('@uploadsUrl') . '/img/registry_business/' . $dataRegistryBusinessImage['image'] ?>"><i class="fa fa-search"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -498,7 +494,7 @@ echo $ajaxRequest->component(); ?>
                     		
         				<?php
     				    if (!empty($model['registryBusinessContactPeople'])): ?>
-    			            
+    		
         				    <table class="table table-responsive">
     				        	<tr>
     			            		<th><?= Html::label(Yii::t('app', 'Name')) ?></th>
@@ -542,7 +538,7 @@ echo $ajaxRequest->component(); ?>
 		            	<?php
     				    endif; ?>
 
-                        <?= Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']); ?>
+                        <?= Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']) ?>
                         
                         <div class="btn-group dropup">
 
@@ -577,16 +573,6 @@ echo $ajaxRequest->component(); ?>
 </div>
 
 <?php
-$modalDialog = new ModalDialog([
-    'clickedComponent' => 'a#delete',
-    'modelAttributeId' => 'model-id',
-    'modelAttributeName' => 'model-name',
-]);
-
-$modalDialog->theScript(false);
-
-echo $modalDialog->renderDialog();
-
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);
 
