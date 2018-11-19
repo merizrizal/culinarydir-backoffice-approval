@@ -43,7 +43,7 @@ if ($status !== null) {
     echo $notif->renderDialog();
 }
 
-$this->title = 'Update ' . Yii::t('app', 'Contact Person') . ' : ' . $model->name;
+$this->title = 'Update ' . Yii::t('app', 'Operational Hours') . ' : ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $id, 'appBId' => $appBId]];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
 $this->params['breadcrumbs'][] = 'Update ' . Yii::t('app', 'Operational Hours');
@@ -166,7 +166,7 @@ echo $ajaxRequest->component(); ?>
                                             	
                                             	<?= Html::hiddenInput('day', $i, ['class' => 'days-count']) ?>
                                             	
-                                                <?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Add'), ['class' => 'btn btn-default', 'id' =>'add-business-hour-' . $dayName]) ?>
+                                                <?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Add'), ['class' => 'btn btn-default', 'id' => 'add-business-hour-' . $dayName]) ?>
                                                 <?= Html::button('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['class' => 'btn btn-default', 'id' => 'delete-business-hour-' . $dayName]) ?>
                                                 
                                             </div>
