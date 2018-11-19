@@ -687,11 +687,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
         
         if (!empty($post = Yii::$app->request->post())) {
             
-            if (empty($save)) {
-                
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            } else {
+            if (!empty($save)) {
                 
                 $transaction = Yii::$app->db->beginTransaction();
                 $flag = false;
