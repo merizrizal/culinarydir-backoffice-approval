@@ -773,16 +773,6 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                     }
                 }
                 
-                if (!empty($post['RegistryBusiness']['note_business_hour'])) {
-                    
-                    $model->note_business_hour = $post['RegistryBusiness']['note_business_hour'];
-                    
-                    if ($flag) {
-                        
-                        $flag = $model->save();
-                    }
-                }
-                
                 if ($flag) {
                     
                     $model->note_business_hour = !empty($post['RegistryBusiness']['note_business_hour']) ? $post['RegistryBusiness']['note_business_hour'] : null;
