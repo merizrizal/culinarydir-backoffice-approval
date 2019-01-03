@@ -85,9 +85,7 @@ echo $ajaxRequest->component(); ?>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                    
                                         <?= Html::label(Yii::t('app', 'Business Category')) ?>
-                                        
                                     </div>
                                     <div class="col-xs-12">
 
@@ -122,9 +120,7 @@ echo $ajaxRequest->component(); ?>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                    
                                         <?= Html::label(Yii::t('app', 'Product Category')) ?>
-                                        
                                     </div>
                                     <div class="col-xs-12">
 
@@ -186,9 +182,7 @@ echo $ajaxRequest->component(); ?>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                    
                                         <?= Html::label(Yii::t('app', 'Facility')) ?>
-                                    
                                     </div>
                                     <div class="col-xs-12">
 
@@ -223,9 +217,7 @@ echo $ajaxRequest->component(); ?>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                    
                                         <?= Html::label(Yii::t('app', 'Average Spending')) ?>
-                                    
                                     </div>
                                     <div class="col-xs-5 col-sm-4 col-lg-3">
 
