@@ -71,35 +71,45 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                 'district',
                 'village',
                 'userInCharge',
-                'registryBusinessCategories' => function($query) {
+                'registryBusinessCategories' => function ($query) {
                     
                     $query->andOnCondition(['registry_business_category.is_active' => true]);
                 },
                 'registryBusinessCategories.category',
-                'registryBusinessProductCategories' => function($query) {
+                'registryBusinessProductCategories' => function ($query) {
                     
                     $query->andOnCondition(['registry_business_product_category.is_active' => true]);
                 },
-                'registryBusinessHours' => function($query) {
+                'registryBusinessHours' => function ($query) {
                     
                     $query->andOnCondition(['registry_business_hour.is_open' => true])
                         ->orderBy(['registry_business_hour.day' => SORT_ASC]);
                 },
                 'registryBusinessHours.registryBusinessHourAdditionals',
                 'registryBusinessProductCategories.productCategory',
-                'registryBusinessFacilities' => function($query) {
+                'registryBusinessFacilities' => function ($query) {
                     
                     $query->andOnCondition(['registry_business_facility.is_active' => true]);
                 },
                 'registryBusinessFacilities.facility',
-                'registryBusinessImages' => function($query) {
+                'registryBusinessPayments' => function ($query) {
+                
+                    $query->andOnCondition(['registry_business_payment.is_active' => true]);
+                },
+                'registryBusinessPayments.paymentMethod',
+                'registryBusinessDeliveries' => function ($query) {
+                
+                    $query->andOnCondition(['registry_business_delivery.is_active' => true]);
+                },
+                'registryBusinessDeliveries.deliveryMethod',
+                'registryBusinessImages' => function ($query) {
                     
                     $query->orderBy(['registry_business_image.order' => SORT_ASC]);
                 },
                 'registryBusinessContactPeople',
                 'registryBusinessContactPeople.person',
                 'applicationBusiness',
-                'applicationBusiness.logStatusApprovals' => function($query) {
+                'applicationBusiness.logStatusApprovals' => function ($query) {
                     
                     $query->andOnCondition(['log_status_approval.is_actual' => true]);
                 },
@@ -179,17 +189,17 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
     {
         $model = RegistryBusiness::find()
             ->joinWith([
-                'registryBusinessCategories' => function($query) {
+                'registryBusinessCategories' => function ($query) {
                     
                     $query->andOnCondition(['registry_business_category.is_active' => true]);
                 },
                 'registryBusinessCategories.category',
-                'registryBusinessProductCategories' => function($query) {
+                'registryBusinessProductCategories' => function ($query) {
                     
                     $query->andOnCondition(['registry_business_product_category.is_active' => true]);
                 },
                 'registryBusinessProductCategories.productCategory',
-                'registryBusinessFacilities' => function($query) {
+                'registryBusinessFacilities' => function ($query) {
                     
                     $query->andOnCondition(['registry_business_facility.is_active' => true]);
                 },
@@ -490,7 +500,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
     {
         $model = RegistryBusiness::find()
             ->joinWith([
-                'registryBusinessImages' => function($query) {
+                'registryBusinessImages' => function ($query) {
                 
                     $query->orderBy(['order' => SORT_ASC]);
                 }
@@ -547,7 +557,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
     {
         $model = RegistryBusiness::find()
             ->joinWith([
-                'registryBusinessContactPeople' => function($query) {
+                'registryBusinessContactPeople' => function ($query) {
                 
                     $query->orderBy(['registry_business_contact_person.id' => SORT_ASC]);
                 },
@@ -668,7 +678,7 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
     {
         $model = RegistryBusiness::find()
             ->joinWith([
-                'registryBusinessHours' => function($query) {
+                'registryBusinessHours' => function ($query) {
                 
                     $query->orderBy(['registry_business_hour.day' => SORT_ASC]);
                 },
@@ -764,6 +774,16 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
                                 }
                             }
                         }
+                    }
+                }
+                
+                if (!empty($post['RegistryBusiness']['note_business_hour'])) {
+                    
+                    $model->note_business_hour = $post['RegistryBusiness']['note_business_hour'];
+                    
+                    if ($flag) {
+                        
+                        $flag = $model->save();
                     }
                 }
                 

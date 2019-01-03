@@ -73,7 +73,6 @@ echo $ajaxRequest->component(); ?>
                         </div>
 
                         <div class="x_content">
-
                             <div class="form-group">
                                 <div class="row mb-10">
                                     <div class="col-md-12">
@@ -112,9 +111,7 @@ echo $ajaxRequest->component(); ?>
 									<div class="main-hour-form">
                                         <div class="row">
                                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
-
                                                 <?= Yii::t('app', $day) ?>
-
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
 
@@ -221,7 +218,12 @@ echo $ajaxRequest->component(); ?>
                                     
                                 <?php
                                 endforeach; ?>
-
+                                
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-9">
+                                        <?= $form->field($model, 'note_business_hour')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Note')]) ?>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
