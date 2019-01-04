@@ -56,17 +56,15 @@ echo $ajaxRequest->component(); ?>
                     ],
                     'fieldConfig' => [
                         'parts' => [
-                            '{inputClass}' => 'col-lg-12'
+                            '{inputClass}' => 'col-lg-6'
                         ],
                         'template' => '
                             <div class="row">
                                 <div class="col-lg-3">
                                     {label}
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="{inputClass}">
-                                        {input}
-                                    </div>
+                                <div class="{inputClass}">
+                                    {input}
                                 </div>
                                 <div class="col-lg-3">
                                     {error}
@@ -114,8 +112,7 @@ echo $ajaxRequest->component(); ?>
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-lg-3"></div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-offset-3 col-lg-6">
                                 
                                     <?php
                                     $icon = '<i class="fa fa-save"></i> ';

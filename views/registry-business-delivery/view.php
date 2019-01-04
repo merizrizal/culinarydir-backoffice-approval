@@ -49,23 +49,11 @@ echo $ajaxRequest->component(); ?>
             <div class="x_panel">
                 <div class="x_content">
 
-                    <?= Html::a('<i class="fa fa-upload"></i> ' . 'Create',
-                        ['create', 'id' => $model->registry_business_id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid],
-                        [
-                            'class' => 'btn btn-success',
-                            'style' => 'color:white'
-                        ]) ?>
+                    <?= Html::a('<i class="fa fa-upload"></i> ' . 'Create', ['create', 'id' => $model->registry_business_id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], [ 'class' => 'btn btn-success']) ?>
 
-                    <?= Html::a('<i class="fa fa-pencil-alt"></i> ' . 'Edit',
-                        ['update', 'id' => $model->id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid],
-                        [
-                            'class' => 'btn btn-primary',
-                            'style' => 'color:white'
-                        ]) ?>
+                    <?= Html::a('<i class="fa fa-pencil-alt"></i> ' . 'Edit', ['update', 'id' => $model->id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-primary']) ?>
 
-                    <?= Html::a('<i class="fa fa-trash-alt"></i> ' . 'Delete',
-                        ['delete', 'id' => $model->id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid],
-                        [
+                    <?= Html::a('<i class="fa fa-trash-alt"></i> ' . 'Delete', ['delete', 'id' => $model->id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], [
                             'id' => 'delete',
                             'class' => 'btn btn-danger',
                             'style' => 'color:white',
@@ -74,11 +62,7 @@ echo $ajaxRequest->component(); ?>
                             'model-name' => $model->deliveryMethod->delivery_name,
                         ]) ?>
 
-                    <?= Html::a('<i class="fa fa-times"></i> ' . 'Cancel',
-                        ['index', 'id' => $model->registry_business_id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid],
-                        [
-                            'class' => 'btn btn-default',
-                        ]) ?>
+                    <?= Html::a('<i class="fa fa-times"></i> ' . 'Cancel', ['index', 'id' => $model->registry_business_id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default']) ?>
 
                     <div class="clearfix" style="margin-top: 15px"></div>
 
