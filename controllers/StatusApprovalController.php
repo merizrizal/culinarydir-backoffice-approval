@@ -21,7 +21,6 @@ use core\models\BusinessHourAdditional;
 use core\models\BusinessPayment;
 use core\models\BusinessDelivery;
 
-
 /**
  * StatusApprovalController implements the CRUD actions for Status model.
  */
@@ -259,7 +258,6 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 foreach ($modelRegistryBusiness->registryBusinessPayments as $dataRegistryBusinessPayment) {
                     
                     $modelBusinessPayment = new BusinessPayment();
-                    $modelBusinessPayment->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessPayment->payment_method_id;
                     $modelBusinessPayment->business_id = $modelBusiness->id;
                     $modelBusinessPayment->payment_method_id = $dataRegistryBusinessPayment->payment_method_id;
                     $modelBusinessPayment->is_active = $dataRegistryBusinessPayment->is_active;
@@ -276,7 +274,6 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 foreach ($modelRegistryBusiness->registryBusinessDeliveries as $dataRegistryBusinessDelivery) {
                     
                     $modelBusinessDelivery = new BusinessDelivery();
-                    $modelBusinessDelivery->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessDelivery->delivery_method_id;
                     $modelBusinessDelivery->business_id = $modelBusiness->id;
                     $modelBusinessDelivery->delivery_method_id = $dataRegistryBusinessDelivery->delivery_method_id;
                     $modelBusinessDelivery->is_active = $dataRegistryBusinessDelivery->is_active;
