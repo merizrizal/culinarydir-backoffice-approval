@@ -60,11 +60,9 @@ echo $ajaxRequest->component(); ?>
                         echo Html::hiddenInput('check_set_picture', true);
                         
                         $actionButton =
-                            Html::button('<i class="fa fa-pencil-alt"></i> Edit',
-                            [
+                            Html::button('<i class="fa fa-pencil-alt"></i> Edit', [
                                 'type' => 'button',
                                 'class' => 'btn btn-primary dropdown-toggle',
-                                'style' => 'color:white',
                                 'data-toggle' => 'dropdown',
                                 'aria-haspopup' => 'true',
                                 'aria-expanded' => 'false',
@@ -86,9 +84,9 @@ echo $ajaxRequest->component(); ?>
                         echo '
                             <div class ="btn-group">
                                 ' . $actionButton . '
-                            </div>&nbsp;&nbsp;';
+                            </div>';
 
-                        echo Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']); ?>
+                        echo ' ' . Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']); ?>
 
                         <div class="clearfix" style="margin-top: 15px"></div>
 
@@ -578,9 +576,9 @@ echo $ajaxRequest->component(); ?>
                         echo '
                             <div class ="btn-group dropup">
                                 ' . $actionButton . '
-                            </div>&nbsp;&nbsp;';
+                            </div>';
                         
-                        echo Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']);
+                        echo ' ' . Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']);
                         
                     ActiveForm::end(); ?>
 

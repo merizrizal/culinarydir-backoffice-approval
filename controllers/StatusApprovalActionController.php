@@ -5,7 +5,6 @@ namespace backoffice\modules\approval\controllers;
 use Yii;
 use core\models\LogStatusApprovalAction;
 use core\models\RegistryBusiness;
-use core\models\RegistryBusinessImage;
 use sycomponent\AjaxRequest;
 use yii\filters\VerbFilter;
 
@@ -136,83 +135,5 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             'actid' => $actid,
             'logsaid' => $logsaid,
         ]);
-    }
-    
-    public function actionUp($id, $bid, $appBId, $actid, $logsaid)
-    {
-        $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
-        
-        $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
-            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
-            ->andWhere(['order' => $modelRegistryBusinessImage->order - 1])
-            ->one();
-        
-        if ($modelRegistryBusinessImage->order > 1) {
-            
-            $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;
-            
-            $modelRegistryBusinessImageTemp->order = $modelRegistryBusinessImage->order;
-            
-            if (($flag = $modelRegistryBusinessImageTemp->save())) {
-                
-                $modelRegistryBusinessImage->order -= 1;
-                
-                $flag = $modelRegistryBusinessImage->save();
-            }
-            
-            if ($flag) {
-                
-                $transaction->commit();
-            } else {
-                
-                Yii::$app->session->setFlash('status', 'danger');
-                Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
-                Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
-                
-                $transaction->rollBack();
-            }
-        }
-        
-        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/update-gallery-photo', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
-    }
-    
-    public function actionDown($id, $bid, $appBId, $actid, $logsaid)
-    {
-        $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
-        
-        $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
-            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
-            ->andWhere(['order' => $modelRegistryBusinessImage->order + 1])
-            ->one();
-        
-        if ($modelRegistryBusinessImageTemp !== null) {
-            
-            $transaction = Yii::$app->db->beginTransaction();
-            $flag = false;
-            
-            $modelRegistryBusinessImageTemp->order = $modelRegistryBusinessImage->order;
-            
-            if (($flag = $modelRegistryBusinessImageTemp->save())) {
-                
-                $modelRegistryBusinessImage->order += 1;
-                
-                $flag = $modelRegistryBusinessImage->save();
-            }
-            
-            if ($flag) {
-                
-                $transaction->commit();
-            } else {
-                
-                Yii::$app->session->setFlash('status', 'danger');
-                Yii::$app->session->setFlash('message1', Yii::t('app', 'Update Data Is Fail'));
-                Yii::$app->session->setFlash('message2', Yii::t('app', 'Update data process is fail. Data fail to save'));
-                
-                $transaction->rollBack();
-            }
-        }
-        
-        return AjaxRequest::redirect($this, Yii::$app->urlManager->createUrl(['approval/status-approval-action/update-gallery-photo', 'id' => $bid, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]));
     }
 }
