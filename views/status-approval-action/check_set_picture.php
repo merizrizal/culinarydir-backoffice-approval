@@ -58,33 +58,37 @@ echo $ajaxRequest->component(); ?>
                     ]);
 
                         echo Html::hiddenInput('check_set_picture', true);
-
-                        echo Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']); ?>
                         
-                        <div class="btn-group">
-
-                            <?= Html::button('<i class="fa fa-pencil-alt"></i> Edit',
-                                [
-                                    'type' => 'button',
-                                    'class' => 'btn btn-primary dropdown-toggle',
-                                    'style' => 'color:white',
-                                    'data-toggle' => 'dropdown',
-                                    'aria-haspopup' => 'true',
-                                    'aria-expanded' => 'false',
-                                ]) ?>
+                        $actionButton =
+                            Html::button('<i class="fa fa-pencil-alt"></i> Edit',
+                            [
+                                'type' => 'button',
+                                'class' => 'btn btn-primary dropdown-toggle',
+                                'style' => 'color:white',
+                                'data-toggle' => 'dropdown',
+                                'aria-haspopup' => 'true',
+                                'aria-expanded' => 'false',
+                            ]) . '
     
                             <ul class="dropdown-menu">
-                                <li><?= Html::a(Yii::t('app', 'Business Information'), ['update-business-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Marketing Information'), ['update-marketing-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Gallery Photo'), ['update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Operational Hours'), ['update-business-hour', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Contact Person'), ['update-contact-person', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Payment Methods'), ['registry-business-payment/index', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Delivery Methods'), ['registry-business-delivery/index', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
+                                <li>' . Html::a(Yii::t('app', 'Business Information'), ['registry-business/update-business-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) . '</li>
+                                <li>' . Html::a(Yii::t('app', 'Marketing Information'), ['registry-business/update-marketing-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) . '</li>
+                                <li>' . Html::a(Yii::t('app', 'Gallery Photo'), ['registry-business/update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) . '</li>
+                                <li>' . Html::a(Yii::t('app', 'Operational Hours'), ['registry-business/update-business-hour', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) . '</li>
+                                <li>' . Html::a(Yii::t('app', 'Contact Person'), ['registry-business/update-contact-person', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) . '</li>
+                                <li>' . Html::a(Yii::t('app', 'Payment Methods'), ['registry-business-payment/index', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid])  . '</li>
+                                <li>' . Html::a(Yii::t('app', 'Delivery Methods'), ['registry-business-delivery/index', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) . '</li>
                             </ul>
-                        </div>
+                        ';
 
-                        <?= Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']); ?>
+                        echo Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']);
+                        
+                        echo '
+                            <div class ="btn-group">
+                                ' . $actionButton . '
+                            </div>&nbsp;&nbsp;';
+
+                        echo Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']); ?>
 
                         <div class="clearfix" style="margin-top: 15px"></div>
 
@@ -568,35 +572,14 @@ echo $ajaxRequest->component(); ?>
                                     <div class="col-sm-3 col-xs-5"> - </div>
                                     <div class="col-sm-9 col-xs-7"> - </div>';
                             }
+
+                        echo '<hr>' . Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']);
                         
-                        echo '<hr>';
-
-                        echo Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']); ?>
+                        echo '
+                            <div class ="btn-group dropup">
+                                ' . $actionButton . '
+                            </div>&nbsp;&nbsp;';
                         
-                        <div class="btn-group dropup">
-
-                            <?= Html::button('<i class="fa fa-pencil-alt"></i> Edit',
-                                [
-                                    'type' => 'button',
-                                    'class' => 'btn btn-primary dropdown-toggle',
-                                    'style' => 'color:white',
-                                    'data-toggle' => 'dropdown',
-                                    'aria-haspopup' => 'true',
-                                    'aria-expanded' => 'false',
-                                ]) ?>
-    
-                            <ul class="dropdown-menu">
-                                <li><?= Html::a(Yii::t('app', 'Business Information'), ['update-business-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Marketing Information'), ['update-marketing-info', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Gallery Photo'), ['update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Operational Hours'), ['update-business-hour', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Contact Person'), ['update-contact-person', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Payment Methods'), ['registry-business-payment/index', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                                <li><?= Html::a(Yii::t('app', 'Delivery Methods'), ['registry-business-delivery/index', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]) ?></li>
-                            </ul>
-                        </div>
-
-                        <?php
                         echo Html::a('<i class="fa fa-times"></i> Cancel', ['status/view-application', 'id' => $id, 'appBId' => $appBId], ['class' => 'btn btn-default']);
                         
                     ActiveForm::end(); ?>

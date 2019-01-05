@@ -42,7 +42,7 @@ if ($status !== null) {
 
 $this->title = 'Update ' . Yii::t('app', 'Gallery Photo') . ' : ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $id, 'appBId' => $appBId]];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['status-approval-action/check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
 $this->params['breadcrumbs'][] = 'Update ' . Yii::t('app', 'Gallery Photo');
 
 echo $ajaxRequest->component(); ?>
@@ -123,7 +123,7 @@ echo $ajaxRequest->component(); ?>
 
                                     <?php
                                     echo Html::submitButton('<i class="fa fa-save"></i> Update', ['class' => 'btn btn-primary']);
-                                    echo Html::a('<i class="fa fa-times"></i> Cancel', ['check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default']); ?>
+                                    echo Html::a('<i class="fa fa-times"></i> Cancel', ['status-approval-action/check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default']); ?>
 
                                 </div>
                             </div>

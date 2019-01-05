@@ -44,7 +44,7 @@ if ($status !== null) {
 
 $this->title = 'Update ' . Yii::t('app', 'Business Information') . ' : ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $id, 'appBId' => $appBId]];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['status-approval-action/check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
 $this->params['breadcrumbs'][] = 'Update ' . Yii::t('app', 'Business Information');
 
 echo $ajaxRequest->component(); ?>
@@ -75,9 +75,7 @@ echo $ajaxRequest->component(); ?>
 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6">
-                                
                                     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => Yii::t('app', 'Name')]) ?>
-                                    
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
                                 
@@ -98,14 +96,10 @@ echo $ajaxRequest->component(); ?>
                                 
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
-                                
                                     <?= $form->field($model, 'address')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Address')]) ?>
-                                
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                
                                     <?= $form->field($model, 'address_info')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Address Info')]) ?>
-                                
                                 </div>
                             </div>
 
@@ -145,22 +139,16 @@ echo $ajaxRequest->component(); ?>
 
                             <div class="row">
                                 <div class="col-xs-9 col-sm-6">
-                                
                                     <?= $form->field($model, 'coordinate')->textInput(['maxlength' => true, 'placeholder' => Yii::t('app', 'Coordinate')]) ?>
-                                
                                 </div>
                                 <div class="col-xs-3 col-sm-3">
-                                
                                     <?= Html::a('<i class="fa fa-map-marker-alt"></i> ' . Yii::t('app', 'Open Map'), 'https://www.google.co.id/maps/@-6.9171962,107.6185384,14.75z?hl=en', ['class' => 'btn btn-primary btn-block direct', 'target' => '_blank']) ?>
-                                
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-xs-6 col-sm-3">
-                                
                                     <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'placeholder' => Yii::t('app', 'Email')]) ?>
-                                
                                 </div>
                                 <div class="col-xs-6 col-sm-3">
                                 
@@ -211,9 +199,7 @@ echo $ajaxRequest->component(); ?>
                             
                             <div class="row">
                                 <div class="col-xs-12 col-sm-9">
-                                
                                     <?= $form->field($model, 'note')->textarea(['rows' => 3, 'placeholder' => Yii::t('app', 'Note')]) ?>
-                                
                                 </div>
                             </div>
 
@@ -222,7 +208,7 @@ echo $ajaxRequest->component(); ?>
 
                                     <?php
                                     echo Html::submitButton('<i class="fa fa-save"></i> Update', ['class' => 'btn btn-primary']);
-                                    echo Html::a('<i class="fa fa-times"></i> Cancel', ['check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default']); ?>
+                                    echo Html::a('<i class="fa fa-times"></i> Cancel', ['status-approval-action/check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default']); ?>
 
                                 </div>
                             </div>
@@ -239,7 +225,6 @@ echo $ajaxRequest->component(); ?>
 </div>
 
 <?php
-
 $jscript = '
     function district(executeRemote, afterSuccess) {
 

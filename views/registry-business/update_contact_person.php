@@ -45,7 +45,7 @@ if ($status !== null) {
 
 $this->title = 'Update ' . Yii::t('app', 'Contact Person') . ' : ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $id, 'appBId' => $appBId]];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['status-approval-action/check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
 $this->params['breadcrumbs'][] = 'Update ' . Yii::t('app', 'Contact Person');
 
 echo $ajaxRequest->component(); ?>
@@ -179,10 +179,8 @@ echo $ajaxRequest->component(); ?>
                             	        
                             	        <div class="row">
                                             <div class="col-md-12">
-                                            
                                                 <?= Html::button('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Add'), ['class' => 'btn btn-default add-contact-person']); ?>
                                                 <?= Html::button('<i class="fa fa-trash"></i> ' . Yii::t('app', 'Delete'), ['class' => 'btn btn-default delete-contact-person']); ?>
-                                                
                                             </div>
                                     	</div>
                                     </div>
@@ -196,7 +194,7 @@ echo $ajaxRequest->component(); ?>
 
                                     <?php
                                     echo Html::submitButton('<i class="fa fa-save"></i> Update', ['class' => 'btn btn-primary']);
-                                    echo Html::a('<i class="fa fa-times"></i> Cancel', ['check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default']); ?>
+                                    echo Html::a('<i class="fa fa-times"></i> Cancel', ['status-approval-action/check-set-picture', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default']); ?>
 
                                 </div>
                             </div>
@@ -272,9 +270,7 @@ $modelRegistryBusinessContactPerson = new RegistryBusinessContactPerson(); ?>
                 
             </div>
             <div class="col-md-4 col-xs-6">
-            
             	<?= $form->field($modelRegistryBusinessContactPerson, '[index]is_primary_contact')->checkbox() ?>
-            	
             </div>
         </div>
 
