@@ -12,17 +12,17 @@ use sycomponent\NotificationDialog;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
-/* @var $dataRegistryBusinessCategory core\models\RegistryBusinessCategory */
+/* @var $dataRegistryBusinessCategory array */
 /* @var $modelRegistryBusinessCategory core\models\RegistryBusinessCategory */
-/* @var $dataRegistryBusinessProductCategoryParent core\models\RegistryBusinessProductCategory */
-/* @var $dataRegistryBusinessProductCategoryChild core\models\RegistryBusinessProductCategory */
+/* @var $dataRegistryBusinessProductCategoryParent array */
+/* @var $dataRegistryBusinessProductCategoryChild array */
 /* @var $modelRegistryBusinessProductCategory core\models\RegistryBusinessProductCategory */
-/* @var $dataRegistryBusinessFacility core\models\RegistryBusinessFacility */
+/* @var $dataRegistryBusinessFacility array */
 /* @var $modelRegistryBusinessFacility core\models\RegistryBusinessFacility */
-/* @var $id backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $appBId backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $actid backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $logsaid backoffice\modules\approval\controllers\StatusApprovalActionController */
+/* @var $id string */
+/* @var $appBId string */
+/* @var $actid string */
+/* @var $logsaid string */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $day string */
 

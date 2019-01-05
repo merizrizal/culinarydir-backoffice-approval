@@ -8,10 +8,10 @@ use sycomponent\NotificationDialog;
 
 /* @var $this yii\web\View */
 /* @var $searchModel core\models\search\RegistryBusinessDeliverySearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $appBId backoffice\modules\approval\controllers\RegistryBusinessDeliveryController */
-/* @var $actid backoffice\modules\approval\controllers\RegistryBusinessDeliveryController */
-/* @var $logsaid backoffice\modules\approval\controllers\RegistryBusinessDeliveryController */
+/* @var $dataProvider array */
+/* @var $appBId string */
+/* @var $actid string */
+/* @var $logsaid string */
 /* @var $modelRegistryBusiness core\models\RegistryBusiness */
 
 $ajaxRequest = new AjaxRequest([

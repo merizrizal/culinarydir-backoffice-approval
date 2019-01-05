@@ -8,15 +8,15 @@ use core\models\RegistryBusinessHourAdditional;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
-/* @var $dataRegistryBusinessHour core\models\RegistryBusinessHour */
+/* @var $dataRegistryBusinessHour array */
 /* @var $modelRegistryBusinessHour core\models\RegistryBusinessHour */
-/* @var $dataRegistryBusinessHourAdditional core\models\RegistryBusinessHourAdditional */
+/* @var $dataRegistryBusinessHourAdditional array */
 /* @var $modelRegistryBusinessHourAdditional core\models\RegistryBusinessHourAdditional */
 /* @var $day string */
-/* @var $id backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $appBId backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $actid backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $logsaid backoffice\modules\approval\controllers\StatusApprovalActionController */
+/* @var $id string */
+/* @var $appBId string */
+/* @var $actid string */
+/* @var $logsaid string */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);

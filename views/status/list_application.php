@@ -13,8 +13,8 @@ use core\models\MembershipType;
 /* @var $this yii\web\View */
 /* @var $searchModel core\models\search\RegistryBusinessSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $title backoffice\modules\approval\controllers\StatusController */
-/* @var $statusApproval backoffice\modules\approval\controllers\StatusController */
+/* @var $title string */
+/* @var $statusApproval string */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -72,7 +72,7 @@ echo $ajaxRequest->component(false); ?>
                             ArrayHelper::map(
                                 District::find()->orderBy('name')->asArray()->all(),
                                 'id',
-                                function($data) {
+                                function ($data) {
                                     
                                     return $data['name'];
                                 }
@@ -89,7 +89,7 @@ echo $ajaxRequest->component(false); ?>
                             ArrayHelper::map(
                                 Village::find()->orderBy('name')->asArray()->all(),
                                 'id',
-                                function($data) {
+                                function ($data) {
                                     
                                     return $data['name'];
                                 }
@@ -131,14 +131,13 @@ echo $ajaxRequest->component(false); ?>
             'created_at:date',
             'name',
             'unique_name',
-
             [
                 'attribute' => 'membershipType.name',
                 'format' => 'raw',
                 'filter' =>  ArrayHelper::map(
                                 MembershipType::find()->orderBy('order')->asArray()->all(),
                                 'name',
-                                function($data) {
+                                function ($data) {
                                     
                                     return $data['name'];
                                 }
@@ -163,7 +162,7 @@ echo $ajaxRequest->component(false); ?>
                         </div>
                     </div>',
                 'buttons' => [
-                    'view-application' => function($url, $model, $key) {
+                    'view-application' => function ($url, $model, $key) {
                         
                         return Html::a('<i class="fa fa-search-plus"></i>', ['view-application', 'id' => $model->id, 'appBId' => $model->application_business_id], [
                             'id' => 'view',

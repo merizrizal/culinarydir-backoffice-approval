@@ -56,60 +56,44 @@ echo $ajaxRequest->component(false); ?>
 
                     <div class="row mb-20">
                         <div class="col-md-3">
-                        
                             <?= Html::label(Yii::t('app', 'Name')) ?><br>
                             <?= $model['name'] ?>
-                            
                         </div>
                         <div class="col-md-3">
-                        
                             <?= Html::label(Yii::t('app', 'Unique Name')) ?><br>
                             <?= $model['unique_name'] ?>
-                            
                         </div>
                         <div class="col-md-3">
-                        
                             <?= Html::label(Yii::t('app', 'Email')) ?><br>
                             <?= $model['email'] ?>
-                            
                         </div>
                     </div>
 
                     <div class="row mb-20">
                         <div class="col-md-3">
-                        
                             <?= Html::label(Yii::t('app', 'Address Type')) ?><br>
                             <?= $model['address_type'] ?>
-                            
                         </div>
                         <div class="col-md-9">
-                        
                             <?= Html::label(Yii::t('app', 'Address')) ?><br>
                             <?= $model['address'] ?>
-                            
                         </div>
                     </div>
 
                     <div class="row mb-20">
                         <div class="col-lg-3 col-xs-6">
-                        
                             <?= Html::label(Yii::t('app', 'City ID')) ?><br>
                             <?= $model['city']['name'] ?>
-                            
                         </div>
 
                         <div class="col-lg-3 col-xs-6">
-                        
                             <?= Html::label(Yii::t('app', 'District ID')) ?><br>
                             <?= $model['district']['name'] ?>
-                            
                         </div>
 
                         <div class="col-lg-3 col-xs-6">
-                        
                             <?= Html::label(Yii::t('app', 'Village ID')) ?><br>
                             <?= $model['village']['name'] ?>
-                            
                         </div>
                     </div>
                 </div>
@@ -210,6 +194,7 @@ echo $ajaxRequest->component(false); ?>
 
                                     </div>
                                 </div>
+                                
                             <?php
                             endif;
                         endforeach;

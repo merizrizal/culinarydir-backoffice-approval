@@ -10,9 +10,9 @@ use core\models\DeliveryMethod;
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusinessDelivery */
 /* @var $modelRegistryBusiness core\models\RegistryBusiness */
-/* @var $appBId backoffice\modules\approval\controllers\RegistryBusinessDeliveryController */
-/* @var $actid backoffice\modules\approval\controllers\RegistryBusinessDeliveryController */
-/* @var $logsaid backoffice\modules\approval\controllers\RegistryBusinessDeliveryController */
+/* @var $appBId string */
+/* @var $actid string */
+/* @var $logsaid string */
 /* @var $form yii\widgets\ActiveForm */
 
 kartik\select2\Select2Asset::register($this);

@@ -8,9 +8,9 @@ use sycomponent\NotificationDialog;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusinessPayment */
-/* @var $appBId backoffice\modules\approval\controllers\RegistryBusinessPaymentController */
-/* @var $actid backoffice\modules\approval\controllers\RegistryBusinessPaymentController */
-/* @var $logsaid backoffice\modules\approval\controllers\RegistryBusinessPaymentController */
+/* @var $appBId string */
+/* @var $actid string */
+/* @var $logsaid string */
 
 $ajaxRequest = new AjaxRequest([
     'modelClass' => 'RegistryBusinessPayment',

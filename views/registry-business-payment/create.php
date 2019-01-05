@@ -3,9 +3,9 @@
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusinessPayment */
 /* @var $modelRegistryBusiness core\models\RegistryBusiness */
-/* @var $appBId backoffice\modules\approval\controllers\RegistryBusinessPaymentController */
-/* @var $actid backoffice\modules\approval\controllers\RegistryBusinessPaymentController */
-/* @var $logsaid backoffice\modules\approval\controllers\RegistryBusinessPaymentController */
+/* @var $appBId string */
+/* @var $actid string */
+/* @var $logsaid string */
 
 $this->title = 'Create ' . Yii::t('app', 'Payment Methods');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $modelRegistryBusiness['id'], 'appBId' => $appBId]];

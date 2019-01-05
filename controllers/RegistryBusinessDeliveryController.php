@@ -9,7 +9,6 @@ use core\models\search\RegistryBusinessDeliverySearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-use yii\widgets\ActiveForm;
 
 /**
  * RegistryBusinessDeliveryController implements the CRUD actions for RegistryBusinessDelivery model.
@@ -87,11 +86,7 @@ class RegistryBusinessDeliveryController extends \backoffice\controllers\BaseCon
 
         if ($model->load(Yii::$app->request->post())) {
 
-            if (empty($save)) {
-
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            } else {
+            if (!empty($save)) {
                 
                 $model->registry_business_id = $id;
 
@@ -138,11 +133,7 @@ class RegistryBusinessDeliveryController extends \backoffice\controllers\BaseCon
 
         if ($model->load(Yii::$app->request->post())) {
 
-            if (empty($save)) {
-
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            } else {
+            if (!empty($save)) {
 
                 if ($model->save()) {
 

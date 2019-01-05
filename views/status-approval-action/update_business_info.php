@@ -11,10 +11,10 @@ use dosamigos\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
-/* @var $id backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $appBId backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $actid backoffice\modules\approval\controllers\StatusApprovalActionController */
-/* @var $logsaid backoffice\modules\approval\controllers\StatusApprovalActionController */
+/* @var $id string */
+/* @var $appBId string */
+/* @var $actid string */
+/* @var $logsaid string */
 /* @var $form yii\widgets\ActiveForm */
 
 kartik\select2\Select2Asset::register($this);
