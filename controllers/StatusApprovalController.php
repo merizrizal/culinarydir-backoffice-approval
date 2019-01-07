@@ -261,6 +261,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessPayment->business_id = $modelBusiness->id;
                     $modelBusinessPayment->payment_method_id = $dataRegistryBusinessPayment->payment_method_id;
                     $modelBusinessPayment->is_active = $dataRegistryBusinessPayment->is_active;
+                    $modelBusinessPayment->note = $dataRegistryBusinessPayment->note;
                     
                     if (!($flag = $modelBusinessPayment->save())) {
                         
@@ -277,6 +278,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessDelivery->business_id = $modelBusiness->id;
                     $modelBusinessDelivery->delivery_method_id = $dataRegistryBusinessDelivery->delivery_method_id;
                     $modelBusinessDelivery->is_active = $dataRegistryBusinessDelivery->is_active;
+                    $modelBusinessDelivery->note = $dataRegistryBusinessDelivery->note;
                     
                     if (!($flag = $modelBusinessDelivery->save())) {
                         
