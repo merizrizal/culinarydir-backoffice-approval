@@ -187,7 +187,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     foreach ($dataRegistryBusinessHour->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
                         
                         $modelBusinessHourAdditional = new BusinessHourAdditional();
-                        $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $dataRegistryBusinessHourAdditional->day . '-' . ($i+1);
+                        $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $dataRegistryBusinessHourAdditional->day . '-' . ($i + 1);
                         $modelBusinessHourAdditional->business_hour_id = $modelBusinessHour->id;
                         $modelBusinessHourAdditional->day = $modelBusinessHour->day;
                         $modelBusinessHourAdditional->is_open = $modelBusinessHour->is_open;
