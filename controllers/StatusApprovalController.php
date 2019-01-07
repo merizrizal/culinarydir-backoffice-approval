@@ -10,16 +10,16 @@ use core\models\BusinessCategory;
 use core\models\BusinessProductCategory;
 use core\models\BusinessFacility;
 use core\models\BusinessHour;
+use core\models\BusinessHourAdditional;
 use core\models\BusinessDetail;
 use core\models\BusinessImage;
 use core\models\BusinessContactPerson;
 use core\models\LogStatusApproval;
 use core\models\RegistryBusiness;
 use core\models\ContractMembership;
-use yii\filters\VerbFilter;
-use core\models\BusinessHourAdditional;
 use core\models\BusinessPayment;
 use core\models\BusinessDelivery;
+use yii\filters\VerbFilter;
 
 /**
  * StatusApprovalController implements the CRUD actions for Status model.
@@ -184,7 +184,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                         break;
                     }
                     
-                    foreach ($value->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
+                    foreach ($dataRegistryBusinessHour->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
                         
                         $modelBusinessHourAdditional = new BusinessHourAdditional();
                         $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $dataRegistryBusinessHourAdditional->day . '-' . ($i+1);

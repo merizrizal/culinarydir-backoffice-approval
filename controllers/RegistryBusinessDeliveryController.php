@@ -7,8 +7,8 @@ use core\models\RegistryBusiness;
 use core\models\RegistryBusinessDelivery;
 use core\models\search\RegistryBusinessDeliverySearch;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\Response;
+use yii\filters\VerbFilter;
 
 /**
  * RegistryBusinessDeliveryController implements the CRUD actions for RegistryBusinessDelivery model.
@@ -40,13 +40,12 @@ class RegistryBusinessDeliveryController extends \backoffice\controllers\BaseCon
     {
         $searchModel = new RegistryBusinessDeliverySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query
-            ->andWhere(['registry_business_id' => $id]);
+        $dataProvider->query->andWhere(['registry_business_id' => $id]);
         
         $modelRegistryBusiness = RegistryBusiness::find()
             ->andWhere(['id' => $id])
             ->asArray()->one();
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

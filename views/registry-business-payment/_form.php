@@ -93,8 +93,7 @@ echo $ajaxRequest->component(); ?>
 
                         <?= $form->field($model, 'payment_method_id')->dropDownList(
                             ArrayHelper::map(
-                                PaymentMethod::find()
-                                    ->orderBy('payment_name')->asArray()->all(),
+                                PaymentMethod::find()->orderBy('payment_name')->asArray()->all(),
                                 'id',
                                 function ($data) {
                                     
