@@ -88,224 +88,221 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             ->andWhere(['registry_business.id' => $regBId])
             ->one();
 
-        if (($flag = $modelRegistryBusiness->save())) {
+        $modelBusiness = new Business();
+        $modelBusiness->membership_type_id = $modelRegistryBusiness->membership_type_id;
+        $modelBusiness->application_business_id = $modelRegistryBusiness->application_business_id;
+        $modelBusiness->about = $modelRegistryBusiness->about;
+        $modelBusiness->name = $modelRegistryBusiness->name;
+        $modelBusiness->unique_name = $modelRegistryBusiness->unique_name;
+        $modelBusiness->email = $modelRegistryBusiness->email;
+        $modelBusiness->phone1 = $modelRegistryBusiness->phone1;
+        $modelBusiness->phone2 = $modelRegistryBusiness->phone2;
+        $modelBusiness->phone3 = $modelRegistryBusiness->phone3;
+        $modelBusiness->note = $modelRegistryBusiness->note;
+        $modelBusiness->user_in_charge = $modelRegistryBusiness->user_in_charge;
 
-            $modelBusiness = new Business();
-            $modelBusiness->membership_type_id = $modelRegistryBusiness->membership_type_id;
-            $modelBusiness->application_business_id = $modelRegistryBusiness->application_business_id;
-            $modelBusiness->about = $modelRegistryBusiness->about;
-            $modelBusiness->name = $modelRegistryBusiness->name;
-            $modelBusiness->unique_name = $modelRegistryBusiness->unique_name;
-            $modelBusiness->email = $modelRegistryBusiness->email;
-            $modelBusiness->phone1 = $modelRegistryBusiness->phone1;
-            $modelBusiness->phone2 = $modelRegistryBusiness->phone2;
-            $modelBusiness->phone3 = $modelRegistryBusiness->phone3;
-            $modelBusiness->note = $modelRegistryBusiness->note;
-            $modelBusiness->user_in_charge = $modelRegistryBusiness->user_in_charge;
+        if (($flag = $modelBusiness->save())) {
 
-            if (($flag = $modelBusiness->save())) {
+            $modelBusinessLocation = new BusinessLocation();
+            $modelBusinessLocation->business_id = $modelBusiness->id;
+            $modelBusinessLocation->address_type = $modelRegistryBusiness->address_type;
+            $modelBusinessLocation->address = $modelRegistryBusiness->address;
+            $modelBusinessLocation->address_info = $modelRegistryBusiness->address_info;
+            $modelBusinessLocation->city_id = $modelRegistryBusiness->city_id;
+            $modelBusinessLocation->district_id = $modelRegistryBusiness->district_id;
+            $modelBusinessLocation->village_id = $modelRegistryBusiness->village_id;
+            $modelBusinessLocation->coordinate = $modelRegistryBusiness->coordinate;
+        }
 
-                $modelBusinessLocation = new BusinessLocation();
-                $modelBusinessLocation->business_id = $modelBusiness->id;
-                $modelBusinessLocation->address_type = $modelRegistryBusiness->address_type;
-                $modelBusinessLocation->address = $modelRegistryBusiness->address;
-                $modelBusinessLocation->address_info = $modelRegistryBusiness->address_info;
-                $modelBusinessLocation->city_id = $modelRegistryBusiness->city_id;
-                $modelBusinessLocation->district_id = $modelRegistryBusiness->district_id;
-                $modelBusinessLocation->village_id = $modelRegistryBusiness->village_id;
-                $modelBusinessLocation->coordinate = $modelRegistryBusiness->coordinate;
-            }
+        if ($flag = $modelBusinessLocation->save()) {
 
-            if ($flag = $modelBusinessLocation->save()) {
+            foreach ($modelRegistryBusiness->registryBusinessCategories as $dataRegistryBusinessCategory) {
 
-                foreach ($modelRegistryBusiness->registryBusinessCategories as $dataRegistryBusinessCategory) {
+                $modelBusinessCategory = new BusinessCategory();
+                $modelBusinessCategory->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessCategory->category_id;
+                $modelBusinessCategory->business_id = $modelBusiness->id;
+                $modelBusinessCategory->category_id = $dataRegistryBusinessCategory->category_id;
+                $modelBusinessCategory->is_active = $dataRegistryBusinessCategory->is_active;
 
-                    $modelBusinessCategory = new BusinessCategory();
-                    $modelBusinessCategory->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessCategory->category_id;
-                    $modelBusinessCategory->business_id = $modelBusiness->id;
-                    $modelBusinessCategory->category_id = $dataRegistryBusinessCategory->category_id;
-                    $modelBusinessCategory->is_active = $dataRegistryBusinessCategory->is_active;
-
-                    if (!($flag = $modelBusinessCategory->save())) {
-                        
-                        break;
-                    }
-                }
-            }
-
-            if ($flag) {
-
-                foreach ($modelRegistryBusiness->registryBusinessProductCategories as $dataRegistryBusinessProductCategory) {
-
-                    $modelBusinessProductCategory = new BusinessProductCategory();
-                    $modelBusinessProductCategory->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessProductCategory->product_category_id;
-                    $modelBusinessProductCategory->business_id = $modelBusiness->id;
-                    $modelBusinessProductCategory->product_category_id = $dataRegistryBusinessProductCategory->product_category_id;
-                    $modelBusinessProductCategory->is_active = $dataRegistryBusinessProductCategory->is_active;
-
-                    if (!($flag = $modelBusinessProductCategory->save())) {
-                        
-                        break;
-                    }
-                }
-            }
-
-            if ($flag) {
-
-                foreach ($modelRegistryBusiness->registryBusinessFacilities as $dataRegistryBusinessFacility) {
-
-                    $modelBusinessFacility = new BusinessFacility();
-                    $modelBusinessFacility->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessFacility->facility_id;
-                    $modelBusinessFacility->business_id = $modelBusiness->id;
-                    $modelBusinessFacility->facility_id = $dataRegistryBusinessFacility->facility_id;
-                    $modelBusinessFacility->is_active = $dataRegistryBusinessFacility->is_active;
-
-                    if (!($flag = $modelBusinessFacility->save())) {
-                        
-                        break;
-                    }
-                }
-            }
-
-            if ($flag) {
-
-                foreach ($modelRegistryBusiness->registryBusinessHours as $dataRegistryBusinessHour) {
-
-                    $modelBusinessHour = new BusinessHour();
-                    $modelBusinessHour->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessHour->day;
-                    $modelBusinessHour->business_id = $modelBusiness->id;
-                    $modelBusinessHour->day = $dataRegistryBusinessHour->day;
-                    $modelBusinessHour->is_open = $dataRegistryBusinessHour->is_open;
-                    $modelBusinessHour->open_at = $dataRegistryBusinessHour->open_at;
-                    $modelBusinessHour->close_at = $dataRegistryBusinessHour->close_at;
-
-                    if (!($flag = $modelBusinessHour->save())) {
-                        
-                        break;
-                    }
+                if (!($flag = $modelBusinessCategory->save())) {
                     
-                    foreach ($dataRegistryBusinessHour->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
-                        
-                        $modelBusinessHourAdditional = new BusinessHourAdditional();
-                        $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $dataRegistryBusinessHourAdditional->day . '-' . ($i + 1);
-                        $modelBusinessHourAdditional->business_hour_id = $modelBusinessHour->id;
-                        $modelBusinessHourAdditional->day = $modelBusinessHour->day;
-                        $modelBusinessHourAdditional->is_open = $modelBusinessHour->is_open;
-                        $modelBusinessHourAdditional->open_at = $dataRegistryBusinessHourAdditional->open_at;
-                        $modelBusinessHourAdditional->close_at = $dataRegistryBusinessHourAdditional->close_at;
-                        
-                        if (!($flag = $modelBusinessHourAdditional->save())) {
-                            
-                            break;
-                        }
-                    }
+                    break;
                 }
             }
+        }
 
-            if ($flag) {
+        if ($flag) {
 
-                $modelBusinessDetail = new BusinessDetail();
-                $modelBusinessDetail->business_id = $modelBusiness->id;
-                $modelBusinessDetail->price_min = $modelRegistryBusiness->price_min;
-                $modelBusinessDetail->price_max = $modelRegistryBusiness->price_max;
-                $modelBusinessDetail->note_business_hour = $modelRegistryBusiness->note_business_hour;
+            foreach ($modelRegistryBusiness->registryBusinessProductCategories as $dataRegistryBusinessProductCategory) {
 
-                $flag = $modelBusinessDetail->save();
-            }
+                $modelBusinessProductCategory = new BusinessProductCategory();
+                $modelBusinessProductCategory->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessProductCategory->product_category_id;
+                $modelBusinessProductCategory->business_id = $modelBusiness->id;
+                $modelBusinessProductCategory->product_category_id = $dataRegistryBusinessProductCategory->product_category_id;
+                $modelBusinessProductCategory->is_active = $dataRegistryBusinessProductCategory->is_active;
 
-            if ($flag) {
-
-                foreach ($modelRegistryBusiness->registryBusinessImages as $dataRegistryBusinessImage) {
-
-                    $modelBusinessImage = new BusinessImage();
-                    $modelBusinessImage->business_id = $modelBusiness->id;
-                    $modelBusinessImage->image = $dataRegistryBusinessImage->image;
-                    $modelBusinessImage->type = $dataRegistryBusinessImage->type;
-                    $modelBusinessImage->is_primary = $dataRegistryBusinessImage->is_primary;
-                    $modelBusinessImage->category = $dataRegistryBusinessImage->category;
-                    $modelBusinessImage->order = $dataRegistryBusinessImage->order;
-
-                    if (!($flag = $modelBusinessImage->save())) {
-                        
-                        break;
-                    }
+                if (!($flag = $modelBusinessProductCategory->save())) {
+                    
+                    break;
                 }
             }
+        }
 
-            if ($flag) {
+        if ($flag) {
 
-                if (!empty($modelRegistryBusiness->registryBusinessContactPeople)) {
+            foreach ($modelRegistryBusiness->registryBusinessFacilities as $dataRegistryBusinessFacility) {
 
-                    foreach ($modelRegistryBusiness->registryBusinessContactPeople as $dataRegistryBusinessContactPerson) {
+                $modelBusinessFacility = new BusinessFacility();
+                $modelBusinessFacility->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessFacility->facility_id;
+                $modelBusinessFacility->business_id = $modelBusiness->id;
+                $modelBusinessFacility->facility_id = $dataRegistryBusinessFacility->facility_id;
+                $modelBusinessFacility->is_active = $dataRegistryBusinessFacility->is_active;
 
-                        $modelBusinessContactPerson = new BusinessContactPerson();
-                        $modelBusinessContactPerson->business_id = $modelBusiness->id;
-                        $modelBusinessContactPerson->person_id = $dataRegistryBusinessContactPerson->person_id;
-                        $modelBusinessContactPerson->is_primary_contact = $dataRegistryBusinessContactPerson->is_primary_contact;
-                        $modelBusinessContactPerson->note = $dataRegistryBusinessContactPerson->note;
-                        $modelBusinessContactPerson->position = $dataRegistryBusinessContactPerson->position;
-
-                        if (!($flag = $modelBusinessContactPerson->save())) {
-                            
-                            break;
-                        }
-                    }
+                if (!($flag = $modelBusinessFacility->save())) {
+                    
+                    break;
                 }
             }
-            
-            if ($flag) {
+        }
+
+        if ($flag) {
+
+            foreach ($modelRegistryBusiness->registryBusinessHours as $dataRegistryBusinessHour) {
+
+                $modelBusinessHour = new BusinessHour();
+                $modelBusinessHour->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessHour->day;
+                $modelBusinessHour->business_id = $modelBusiness->id;
+                $modelBusinessHour->day = $dataRegistryBusinessHour->day;
+                $modelBusinessHour->is_open = $dataRegistryBusinessHour->is_open;
+                $modelBusinessHour->open_at = $dataRegistryBusinessHour->open_at;
+                $modelBusinessHour->close_at = $dataRegistryBusinessHour->close_at;
+
+                if (!($flag = $modelBusinessHour->save())) {
+                    
+                    break;
+                }
                 
-                foreach ($modelRegistryBusiness->registryBusinessPayments as $dataRegistryBusinessPayment) {
+                foreach ($dataRegistryBusinessHour->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
                     
-                    $modelBusinessPayment = new BusinessPayment();
-                    $modelBusinessPayment->business_id = $modelBusiness->id;
-                    $modelBusinessPayment->payment_method_id = $dataRegistryBusinessPayment->payment_method_id;
-                    $modelBusinessPayment->is_active = $dataRegistryBusinessPayment->is_active;
-                    $modelBusinessPayment->note = $dataRegistryBusinessPayment->note;
+                    $modelBusinessHourAdditional = new BusinessHourAdditional();
+                    $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $dataRegistryBusinessHourAdditional->day . '-' . ($i + 1);
+                    $modelBusinessHourAdditional->business_hour_id = $modelBusinessHour->id;
+                    $modelBusinessHourAdditional->day = $modelBusinessHour->day;
+                    $modelBusinessHourAdditional->is_open = $modelBusinessHour->is_open;
+                    $modelBusinessHourAdditional->open_at = $dataRegistryBusinessHourAdditional->open_at;
+                    $modelBusinessHourAdditional->close_at = $dataRegistryBusinessHourAdditional->close_at;
                     
-                    if (!($flag = $modelBusinessPayment->save())) {
+                    if (!($flag = $modelBusinessHourAdditional->save())) {
                         
                         break;
                     }
                 }
             }
+        }
+
+        if ($flag) {
+
+            $modelBusinessDetail = new BusinessDetail();
+            $modelBusinessDetail->business_id = $modelBusiness->id;
+            $modelBusinessDetail->price_min = $modelRegistryBusiness->price_min;
+            $modelBusinessDetail->price_max = $modelRegistryBusiness->price_max;
+            $modelBusinessDetail->note_business_hour = $modelRegistryBusiness->note_business_hour;
+
+            $flag = $modelBusinessDetail->save();
+        }
+
+        if ($flag) {
+
+            foreach ($modelRegistryBusiness->registryBusinessImages as $dataRegistryBusinessImage) {
+
+                $modelBusinessImage = new BusinessImage();
+                $modelBusinessImage->business_id = $modelBusiness->id;
+                $modelBusinessImage->image = $dataRegistryBusinessImage->image;
+                $modelBusinessImage->type = $dataRegistryBusinessImage->type;
+                $modelBusinessImage->is_primary = $dataRegistryBusinessImage->is_primary;
+                $modelBusinessImage->category = $dataRegistryBusinessImage->category;
+                $modelBusinessImage->order = $dataRegistryBusinessImage->order;
+
+                if (!($flag = $modelBusinessImage->save())) {
+                    
+                    break;
+                }
+            }
+        }
+
+        if ($flag) {
+
+            if (!empty($modelRegistryBusiness->registryBusinessContactPeople)) {
+
+                foreach ($modelRegistryBusiness->registryBusinessContactPeople as $dataRegistryBusinessContactPerson) {
+
+                    $modelBusinessContactPerson = new BusinessContactPerson();
+                    $modelBusinessContactPerson->business_id = $modelBusiness->id;
+                    $modelBusinessContactPerson->person_id = $dataRegistryBusinessContactPerson->person_id;
+                    $modelBusinessContactPerson->is_primary_contact = $dataRegistryBusinessContactPerson->is_primary_contact;
+                    $modelBusinessContactPerson->note = $dataRegistryBusinessContactPerson->note;
+                    $modelBusinessContactPerson->position = $dataRegistryBusinessContactPerson->position;
+
+                    if (!($flag = $modelBusinessContactPerson->save())) {
+                        
+                        break;
+                    }
+                }
+            }
+        }
             
-            if ($flag) {
+        if ($flag) {
+            
+            foreach ($modelRegistryBusiness->registryBusinessPayments as $dataRegistryBusinessPayment) {
                 
-                foreach ($modelRegistryBusiness->registryBusinessDeliveries as $dataRegistryBusinessDelivery) {
+                $modelBusinessPayment = new BusinessPayment();
+                $modelBusinessPayment->business_id = $modelBusiness->id;
+                $modelBusinessPayment->payment_method_id = $dataRegistryBusinessPayment->payment_method_id;
+                $modelBusinessPayment->is_active = $dataRegistryBusinessPayment->is_active;
+                $modelBusinessPayment->note = $dataRegistryBusinessPayment->note;
+                
+                if (!($flag = $modelBusinessPayment->save())) {
                     
-                    $modelBusinessDelivery = new BusinessDelivery();
-                    $modelBusinessDelivery->business_id = $modelBusiness->id;
-                    $modelBusinessDelivery->delivery_method_id = $dataRegistryBusinessDelivery->delivery_method_id;
-                    $modelBusinessDelivery->is_active = $dataRegistryBusinessDelivery->is_active;
-                    $modelBusinessDelivery->note = $dataRegistryBusinessDelivery->note;
-                    
-                    if (!($flag = $modelBusinessDelivery->save())) {
-                        
-                        break;
-                    }
+                    break;
                 }
             }
-
-            if ($flag) {
-
-                $modelContractMembership = new ContractMembership();
-                $modelContractMembership->registry_business_id = $modelRegistryBusiness->id;
-                $modelContractMembership->business_id = $modelBusiness->id;
-                $modelContractMembership->membership_type_id = $modelRegistryBusiness->membership_type_id;
-                $modelContractMembership->price = $modelRegistryBusiness->membershipType->price;
-                $modelContractMembership->started_at = Yii::$app->formatter->asDatetime(time());
-
-                if (empty($modelRegistryBusiness->membershipType->time_limit)) {
+        }
+            
+        if ($flag) {
+            
+            foreach ($modelRegistryBusiness->registryBusinessDeliveries as $dataRegistryBusinessDelivery) {
+                
+                $modelBusinessDelivery = new BusinessDelivery();
+                $modelBusinessDelivery->business_id = $modelBusiness->id;
+                $modelBusinessDelivery->delivery_method_id = $dataRegistryBusinessDelivery->delivery_method_id;
+                $modelBusinessDelivery->is_active = $dataRegistryBusinessDelivery->is_active;
+                $modelBusinessDelivery->note = $dataRegistryBusinessDelivery->note;
+                
+                if (!($flag = $modelBusinessDelivery->save())) {
                     
-                    $modelContractMembership->due_at = null;
-                } else {
-                    
-                    $modelContractMembership->due_at = Yii::$app->formatter->asDatetime(time() + ($modelRegistryBusiness->membershipType->time_limit * 30 * 24 * 3600));
+                    break;
                 }
-
-                $flag = $modelContractMembership->save();
             }
+        }
+
+        if ($flag) {
+
+            $modelContractMembership = new ContractMembership();
+            $modelContractMembership->registry_business_id = $modelRegistryBusiness->id;
+            $modelContractMembership->business_id = $modelBusiness->id;
+            $modelContractMembership->membership_type_id = $modelRegistryBusiness->membership_type_id;
+            $modelContractMembership->price = $modelRegistryBusiness->membershipType->price;
+            $modelContractMembership->started_at = Yii::$app->formatter->asDatetime(time());
+
+            if (empty($modelRegistryBusiness->membershipType->time_limit)) {
+                
+                $modelContractMembership->due_at = null;
+            } else {
+                
+                $modelContractMembership->due_at = Yii::$app->formatter->asDatetime(time() + ($modelRegistryBusiness->membershipType->time_limit * 30 * 24 * 3600));
+            }
+
+            $flag = $modelContractMembership->save();
         }
 
         return $flag;

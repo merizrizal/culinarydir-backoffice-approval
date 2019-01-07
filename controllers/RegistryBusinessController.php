@@ -77,7 +77,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateMarketingInfo($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateMarketingInfo($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -384,7 +384,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateGalleryPhoto($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateGalleryPhoto($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -441,7 +441,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateContactPerson($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateContactPerson($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -562,7 +562,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateBusinessHour($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateBusinessHour($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -724,9 +724,9 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
         
         $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
-        ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
-        ->andWhere(['order' => $modelRegistryBusinessImage->order - 1])
-        ->one();
+            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
+            ->andWhere(['order' => $modelRegistryBusinessImage->order - 1])
+            ->one();
         
         if ($modelRegistryBusinessImage->order > 1) {
             
@@ -763,9 +763,9 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
         
         $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
-        ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
-        ->andWhere(['order' => $modelRegistryBusinessImage->order + 1])
-        ->one();
+            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
+            ->andWhere(['order' => $modelRegistryBusinessImage->order + 1])
+            ->one();
         
         if ($modelRegistryBusinessImageTemp !== null) {
             
