@@ -184,7 +184,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                         break;
                     }
                     
-                    foreach ($value->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
+                    foreach ($dataRegistryBusinessHour->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
                         
                         $modelBusinessHourAdditional = new BusinessHourAdditional();
                         $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $dataRegistryBusinessHourAdditional->day . '-' . ($i+1);
