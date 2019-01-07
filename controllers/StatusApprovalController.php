@@ -215,15 +215,15 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
 
             if ($flag) {
 
-                foreach ($modelRegistryBusiness->registryBusinessImages as $value) {
+                foreach ($modelRegistryBusiness->registryBusinessImages as $dataRegistryBusinessImage) {
 
                     $modelBusinessImage = new BusinessImage();
                     $modelBusinessImage->business_id = $modelBusiness->id;
-                    $modelBusinessImage->image = $value->image;
-                    $modelBusinessImage->type = $value->type;
-                    $modelBusinessImage->is_primary = $value->is_primary;
-                    $modelBusinessImage->category = $value->category;
-                    $modelBusinessImage->order = $value->order;
+                    $modelBusinessImage->image = $dataRegistryBusinessImage->image;
+                    $modelBusinessImage->type = $dataRegistryBusinessImage->type;
+                    $modelBusinessImage->is_primary = $dataRegistryBusinessImage->is_primary;
+                    $modelBusinessImage->category = $dataRegistryBusinessImage->category;
+                    $modelBusinessImage->order = $dataRegistryBusinessImage->order;
 
                     if (!($flag = $modelBusinessImage->save())) {
                         
@@ -261,6 +261,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessPayment->business_id = $modelBusiness->id;
                     $modelBusinessPayment->payment_method_id = $dataRegistryBusinessPayment->payment_method_id;
                     $modelBusinessPayment->is_active = $dataRegistryBusinessPayment->is_active;
+                    $modelBusinessPayment->note = $dataRegistryBusinessPayment->note;
                     
                     if (!($flag = $modelBusinessPayment->save())) {
                         
@@ -277,6 +278,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessDelivery->business_id = $modelBusiness->id;
                     $modelBusinessDelivery->delivery_method_id = $dataRegistryBusinessDelivery->delivery_method_id;
                     $modelBusinessDelivery->is_active = $dataRegistryBusinessDelivery->is_active;
+                    $modelBusinessDelivery->note = $dataRegistryBusinessDelivery->note;
                     
                     if (!($flag = $modelBusinessDelivery->save())) {
                         

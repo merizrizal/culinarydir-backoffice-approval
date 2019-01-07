@@ -62,13 +62,13 @@ class StatusController extends \backoffice\controllers\BaseController
                 'applicationBusiness.logStatusApprovals.statusApproval',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval status_approval_req',
-                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval.logStatusApprovals log_status_approval_req' => function($query) use ($appBId) {
+                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval.logStatusApprovals log_status_approval_req' => function ($query) use ($appBId) {
                     
                     $query->andOnCondition(['log_status_approval_req.application_business_id' => $appBId]);
                 },
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions log_status_approval_action_act',
-                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions.logStatusApproval log_status_approval_act' => function($query) use ($appBId) {
+                'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions.logStatusApproval log_status_approval_act' => function ($query) use ($appBId) {
                     
                     $query->andOnCondition(['log_status_approval_act.application_business_id' => $appBId]);
                 },
