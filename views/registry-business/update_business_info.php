@@ -15,7 +15,6 @@ use dosamigos\ckeditor\CKEditor;
 /* @var $appBId string */
 /* @var $actid string */
 /* @var $logsaid string */
-/* @var $form yii\widgets\ActiveForm */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);

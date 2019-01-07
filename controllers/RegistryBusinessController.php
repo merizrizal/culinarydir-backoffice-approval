@@ -40,7 +40,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
             ]);
     }
 
-    public function actionUpdateBusinessInfo($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateBusinessInfo($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::findOne($id);
         
@@ -112,11 +112,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         
         if ($model->load(($post = Yii::$app->request->post()))) {
             
-            if (empty($save)) {
-                
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            } else {
+            if (!empty($save)) {
                 
                 $transaction = Yii::$app->db->beginTransaction();
                 $flag = false;
