@@ -13,7 +13,6 @@ use sycomponent\Tools;
 /* @var $appBId string */
 /* @var $actid string */
 /* @var $logsaid string */
-/* @var $form yii\widgets\ActiveForm */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -54,7 +53,7 @@ echo $ajaxRequest->component(); ?>
                 <div class="registry-business-form">
 
                     <?php
-                    $form = ActiveForm::begin([
+                    ActiveForm::begin([
                         'id' => 'registry-business-form',
                         'action' => ['update-gallery-photo', 'id' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid],
                         'options' => [
@@ -119,7 +118,7 @@ echo $ajaxRequest->component(); ?>
                             </div>
                             
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-xs-12">
 
                                     <?php
                                     echo Html::submitButton('<i class="fa fa-save"></i> Update', ['class' => 'btn btn-primary']);

@@ -6,15 +6,14 @@ use Yii;
 use core\models\RegistryBusiness;
 use core\models\RegistryBusinessPayment;
 use core\models\search\RegistryBusinessPaymentSearch;
-use backoffice\controllers\BaseController;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\Response;
+use yii\filters\VerbFilter;
 
 /**
  * RegistryBusinessPaymentController implements the CRUD actions for RegistryBusinessPayment model.
  */
-class RegistryBusinessPaymentController extends BaseController
+class RegistryBusinessPaymentController extends \backoffice\controllers\BaseController
 {
     /**
      * @inheritdoc
@@ -41,8 +40,7 @@ class RegistryBusinessPaymentController extends BaseController
     {
         $searchModel = new RegistryBusinessPaymentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query
-            ->andWhere(['registry_business_id' => $id]);
+        $dataProvider->query->andWhere(['registry_business_id' => $id]);
         
         $modelRegistryBusiness = RegistryBusiness::find()
             ->andWhere(['id' => $id])

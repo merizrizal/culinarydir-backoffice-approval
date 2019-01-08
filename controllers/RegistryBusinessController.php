@@ -40,7 +40,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
             ]);
     }
 
-    public function actionUpdateBusinessInfo($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateBusinessInfo($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::findOne($id);
         
@@ -77,7 +77,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateMarketingInfo($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateMarketingInfo($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -112,11 +112,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         
         if ($model->load(($post = Yii::$app->request->post()))) {
             
-            if (empty($save)) {
-                
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            } else {
+            if (!empty($save)) {
                 
                 $transaction = Yii::$app->db->beginTransaction();
                 $flag = false;
@@ -388,7 +384,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateGalleryPhoto($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateGalleryPhoto($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -445,7 +441,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateContactPerson($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateContactPerson($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -566,7 +562,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         ]);
     }
     
-    public function actionUpdateBusinessHour($id, $appBId, $actid, $logsaid, $save = null)
+    public function actionUpdateBusinessHour($id, $save = null, $appBId, $actid, $logsaid)
     {
         $model = RegistryBusiness::find()
             ->joinWith([
@@ -728,9 +724,9 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
         
         $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
-        ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
-        ->andWhere(['order' => $modelRegistryBusinessImage->order - 1])
-        ->one();
+            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
+            ->andWhere(['order' => $modelRegistryBusinessImage->order - 1])
+            ->one();
         
         if ($modelRegistryBusinessImage->order > 1) {
             
@@ -767,9 +763,9 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         $modelRegistryBusinessImage = RegistryBusinessImage::findOne($id);
         
         $modelRegistryBusinessImageTemp = RegistryBusinessImage::find()
-        ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
-        ->andWhere(['order' => $modelRegistryBusinessImage->order + 1])
-        ->one();
+            ->andWhere(['registry_business_id' => $modelRegistryBusinessImage->registry_business_id])
+            ->andWhere(['order' => $modelRegistryBusinessImage->order + 1])
+            ->one();
         
         if ($modelRegistryBusinessImageTemp !== null) {
             

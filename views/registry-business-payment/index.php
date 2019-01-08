@@ -9,10 +9,10 @@ use sycomponent\NotificationDialog;
 /* @var $this yii\web\View */
 /* @var $searchModel core\models\search\RegistryBusinessPaymentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $modelRegistryBusiness array */
 /* @var $appBId string */
 /* @var $actid string */
 /* @var $logsaid string */
-/* @var $modelRegistryBusiness core\models\RegistryBusiness */
 
 $ajaxRequest = new AjaxRequest([
     'modelClass' => 'RegistryBusinessPayment',
@@ -77,11 +77,11 @@ echo $ajaxRequest->component(true); ?>
         'toolbar' => [
             [
                 'content' => Html::a('<i class="fa fa-sync-alt"></i>', ['index', 'id' => $modelRegistryBusiness['id'], 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], [
-                            'id' => 'refresh',
-                            'class' => 'btn btn-success',
-                            'data-placement' => 'top',
-                            'data-toggle' => 'tooltip',
-                            'title' => 'Refresh'
+                    'id' => 'refresh',
+                    'class' => 'btn btn-success',
+                    'data-placement' => 'top',
+                    'data-toggle' => 'tooltip',
+                    'title' => 'Refresh'
                 ])
             ],
         ],

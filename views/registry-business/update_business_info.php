@@ -15,7 +15,6 @@ use dosamigos\ckeditor\CKEditor;
 /* @var $appBId string */
 /* @var $actid string */
 /* @var $logsaid string */
-/* @var $form yii\widgets\ActiveForm */
 
 kartik\select2\Select2Asset::register($this);
 kartik\select2\ThemeKrajeeAsset::register($this);
@@ -104,7 +103,7 @@ echo $ajaxRequest->component(); ?>
                             </div>
 
                             <div class="row">
-                                <div class="col-xs-6 col-sm-3">
+                                <div class="col-xs-4 col-sm-3">
                                 
                                     <?= $form->field($model, 'city_id')->dropDownList(
                                         ArrayHelper::map(
@@ -121,14 +120,14 @@ echo $ajaxRequest->component(); ?>
                                         ]) ?>
                                             
                                 </div>
-                                <div class="col-xs-6 col-sm-3">
+                                <div class="col-xs-4 col-sm-3">
                                 
                                     <?= $form->field($model, 'district_id')->textInput([
                                         'style' => 'width: 100%'
                                     ]) ?>
                                     
                                 </div>
-                                <div class="col-xs-6 col-sm-3">
+                                <div class="col-xs-4 col-sm-3">
                                 
                                     <?= $form->field($model, 'village_id')->textInput([
                                         'style' => 'width: 100%'
