@@ -352,7 +352,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         $registryBusinessProductCategoryParent = [];
         $registryBusinessProductCategoryChild = [];
         
-        foreach ($model->registryBusinessProductCategories as $existModelRegistryBusinessProductCategory) {
+        foreach ($model['registryBusinessProductCategories'] as $existModelRegistryBusinessProductCategory) {
             
             if ($existModelRegistryBusinessProductCategory['productCategory']['is_parent']) {
                 
@@ -363,10 +363,10 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
             }
         }
         
-        $dataRegistryBusinessCategory = empty($dataRegistryBusinessCategory) ? $model->registryBusinessCategories : $dataRegistryBusinessCategory;
+        $dataRegistryBusinessCategory = empty($dataRegistryBusinessCategory) ? $model['registryBusinessCategories'] : $dataRegistryBusinessCategory;
         $dataRegistryBusinessProductCategoryParent = empty($dataRegistryBusinessProductCategoryParent) ? $registryBusinessProductCategoryParent : $dataRegistryBusinessProductCategoryParent;
         $dataRegistryBusinessProductCategoryChild = empty($dataRegistryBusinessProductCategoryChild) ? $registryBusinessProductCategoryChild : $dataRegistryBusinessProductCategoryChild;
-        $dataRegistryBusinessFacility = empty($dataRegistryBusinessFacility) ? $model->registryBusinessFacilities : $dataRegistryBusinessFacility;
+        $dataRegistryBusinessFacility = empty($dataRegistryBusinessFacility) ? $model['registryBusinessFacilities'] : $dataRegistryBusinessFacility;
         
         return $this->render('update_marketing_info', [
             'model' => $model,

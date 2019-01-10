@@ -121,18 +121,10 @@ echo $ajaxRequest->component(); ?>
                                             
                                 </div>
                                 <div class="col-xs-4 col-sm-3">
-                                
-                                    <?= $form->field($model, 'district_id')->textInput([
-                                        'style' => 'width: 100%'
-                                    ]) ?>
-                                    
+                                    <?= $form->field($model, 'district_id')->textInput(['style' => 'width: 100%']) ?>
                                 </div>
                                 <div class="col-xs-4 col-sm-3">
-                                
-                                    <?= $form->field($model, 'village_id')->textInput([
-                                        'style' => 'width: 100%'
-                                    ]) ?>
-                                    
+                                    <?= $form->field($model, 'village_id')->textInput(['style' => 'width: 100%']) ?>
                                 </div>
                             </div>
 

@@ -3,12 +3,12 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
-use core\models\Category;
-use core\models\ProductCategory;
-use core\models\Facility;
 use kartik\touchspin\TouchSpin;
 use sycomponent\AjaxRequest;
 use sycomponent\NotificationDialog;
+use core\models\Category;
+use core\models\ProductCategory;
+use core\models\Facility;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
@@ -282,29 +282,6 @@ echo $ajaxRequest->component(); ?>
 </div>
 
 <?php
-$cssscript = '
-    .select2-grid-system ul.select2-results__options > li.select2-results__option {
-        float: left;
-        width: 50%;
-    }
-
-    @media (min-width: 768px) {
-        .select2-grid-system ul.select2-results__options > li.select2-results__option {
-            float: left;
-            width: 33.33333333%;
-        }
-    }
-
-    @media (min-width: 1200px) {
-        .select2-grid-system ul.select2-results__options > li.select2-results__option {
-            float: left;
-            width: 20%;
-        }
-    }
-';
-
-$this->registerCss($cssscript);
-
 $jscript = '
     $("#registrybusinesscategory-category_id").select2({
         theme: "krajee",

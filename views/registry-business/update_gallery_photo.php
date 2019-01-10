@@ -8,7 +8,6 @@ use sycomponent\Tools;
 
 /* @var $this yii\web\View */
 /* @var $model core\models\RegistryBusiness */
-/* @var $dataRegistryBusinessImage array */
 /* @var $id string */
 /* @var $appBId string */
 /* @var $actid string */
