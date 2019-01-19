@@ -73,6 +73,9 @@ echo $ajaxRequest->component(); ?>
                                 <div class="row">
 
                                     <?php
+                                    $imageOrder = range(0, count($model['registryBusinessImages']));
+                                    unset($imageOrder[0]);
+                                    
                                     foreach ($model['registryBusinessImages'] as $registryBusinessImage): ?>
 
                                         <div class="col-xs-6 col-sm-3">
@@ -89,23 +92,29 @@ echo $ajaxRequest->component(); ?>
                                                     </div>
                                                 </div>
                                                 <div class="mt-10">
+                                                
+                                                	<div class="row">
+                                                		<div class="col-xs-6">
                                     
-                                                	<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', $registryBusinessImage['category'], ['Ambience' => 'Suasana', 'Menu' => 'Menu', 'QR-Code' => 'QR Code'], ['class' => 'photo-category']) ?>
-                                                	
-                                                	<div class="clearfix" style="margin-bottom: 5px"></div>
+                                                			<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', $registryBusinessImage['category'], ['Ambience' => 'Suasana', 'Menu' => 'Menu', 'QR-Code' => 'QR Code'], ['class' => 'photo-category']) ?>
+                                                			
+                                            			</div>
+                                            			<div class="col-xs-6">
+                                                			
+                                            				<?= Html::dropDownList('order['. $registryBusinessImage['id'] .']', $registryBusinessImage['order'], $imageOrder, ['class' => 'image-order']) ?>
+                                                		
+                                                		</div>
+                                            		</div>
+                                                	<div class="row mt-10">
+                                                		<div class="col-xs-12">
                                                     
-                                                    <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', ($registryBusinessImage['type'] == 'Profile'), ['label' => 'Set as Profile']) ?>
-                                                    
-                                                    <div class="clearfix"></div>
-                                                    
-                                                    <?= Html::radio('thumbnail', $registryBusinessImage['is_primary'], ['label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
-                                                    
-                                                    <div class="clearfix"></div>
-                                                    
-                                                    <?php
-                                                    echo Html::a('<i class="fa fa-arrow-left"></i>', ['up', 'id' => $registryBusinessImage['id'], 'bid' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default', 'title' => 'Left']);
-                                                    echo Html::a('<i class="fa fa-arrow-right"></i>', ['down', 'id' => $registryBusinessImage['id'], 'bid' => $id, 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid], ['class' => 'btn btn-default', 'title' => 'Right']); ?>
-                                                    
+                                                            <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', ($registryBusinessImage['type'] == 'Profile'), ['label' => 'Set as Profile']) ?>
+                                                            
+                                                            <div class="clearfix"></div>
+                                                            
+                                                            <?= Html::radio('thumbnail', $registryBusinessImage['is_primary'], ['label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
+                                                    	</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,6 +155,11 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific
 
 $jscript = '
     $(".photo-category").select2({
+        theme: "krajee",
+        minimumResultsForSearch: Infinity
+    });
+
+    $(".image-order").select2({
         theme: "krajee",
         minimumResultsForSearch: Infinity
     });
