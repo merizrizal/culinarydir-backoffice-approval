@@ -95,23 +95,16 @@ echo $ajaxRequest->component(); ?>
                                                 
                                                 	<div class="row">
                                                 		<div class="col-xs-6">
-                                    
                                                 			<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', $registryBusinessImage['category'], ['Ambience' => 'Suasana', 'Menu' => 'Menu', 'QR-Code' => 'QR Code'], ['class' => 'photo-category']) ?>
-                                                			
                                             			</div>
                                             			<div class="col-xs-6">
-                                                			
                                             				<?= Html::dropDownList('order['. $registryBusinessImage['id'] .']', $registryBusinessImage['order'], $imageOrder, ['class' => 'image-order']) ?>
-                                                		
                                                 		</div>
                                             		</div>
                                                 	<div class="row mt-10">
                                                 		<div class="col-xs-12">
-                                                    
                                                             <?= Html::checkbox('profile['. $registryBusinessImage['id'] .']', ($registryBusinessImage['type'] == 'Profile'), ['label' => 'Set as Profile']) ?>
-                                                            
                                                             <div class="clearfix"></div>
-                                                            
                                                             <?= Html::radio('thumbnail', $registryBusinessImage['is_primary'], ['label' => 'Set as Thumbnail', 'value' => $registryBusinessImage['id']]) ?>
                                                     	</div>
                                                     </div>

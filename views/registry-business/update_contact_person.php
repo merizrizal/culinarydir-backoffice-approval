@@ -294,6 +294,12 @@ $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/i
 $jscript = '
     var indexCount = ' . count($dataRegistryBusinessContactPerson) . ';
 
+    $(".main-form").find(".select-position").select2({
+        theme: "krajee",
+        placeholder: "' . Yii::t('app', 'Position') . '",
+        minimumResultsForSearch: "Infinity"
+    });
+
     function addValidator(index) {
 
         $("#registry-business-form").yiiActiveForm("add", {
@@ -376,11 +382,10 @@ $jscript = '
         return contentClone;
     };
 
-    $(".main-form").find(".select-position").select2({
-        theme: "krajee",
-        placeholder: "' . Yii::t('app', 'Position') . '",
-        minimumResultsForSearch: "Infinity"
-    });
+    for (var i = 0; i < indexCount; i++) {
+
+        addValidator(i);
+    }
 
     $(".add-contact-person").on("click", function() {
 
