@@ -78,7 +78,7 @@ echo $ajaxRequest->component(false); ?>
                                 }
                             ),
                             [
-                                'id' => 'registrybusiness-district_id',
+                                'id' => 'registrybusiness-district_name',
                                 'class' => 'form-control',
                                 'prompt' => Yii::t('app', 'District'),
                             ]
@@ -95,7 +95,7 @@ echo $ajaxRequest->component(false); ?>
                                 }
                             ),
                             [
-                                'id' => 'registrybusiness-village_id',
+                                'id' => 'registrybusiness-village_name',
                                 'class' => 'form-control',
                                 'prompt' => Yii::t('app', 'Village'),
                             ]
@@ -198,11 +198,11 @@ echo $modalDialog->renderDialog();
 $jscript = ''
     . $modalDialog->getScript() . '
 
-    $("#registrybusiness-district_id").select2({
+    $("#registrybusiness-district_name").select2({
         theme: "krajee",
     });
 
-    $("#registrybusiness-village_id").select2({
+    $("#registrybusiness-village_name").select2({
         theme: "krajee",
     });
 
