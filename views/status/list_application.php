@@ -68,10 +68,10 @@ echo $ajaxRequest->component(false); ?>
             <div class="clearfix"></div>
             <div class="row">
                 <div class="col-lg-4 col-md-4">
-                    ' . Html::dropDownList('RegistryBusinessSearch[district_id]', (!empty(Yii::$app->request->get('RegistryBusinessSearch')['district_id']) ? Yii::$app->request->get('RegistryBusinessSearch')['district_id'] : null),
+                    ' . Html::dropDownList('RegistryBusinessSearch[district.name]', (!empty(Yii::$app->request->get('RegistryBusinessSearch')['district.name']) ? Yii::$app->request->get('RegistryBusinessSearch')['district.name'] : null),
                             ArrayHelper::map(
                                 District::find()->orderBy('name')->asArray()->all(),
-                                'id',
+                                'name',
                                 function ($data) {
                                     
                                     return $data['name'];
@@ -85,10 +85,10 @@ echo $ajaxRequest->component(false); ?>
                     ) . '
                 </div>
                 <div class="col-lg-4 col-md-4">
-                    ' . Html::dropDownList('RegistryBusinessSearch[village_id]', (!empty(Yii::$app->request->get('RegistryBusinessSearch')['village_id']) ? Yii::$app->request->get('RegistryBusinessSearch')['village_id'] : null),
+                    ' . Html::dropDownList('RegistryBusinessSearch[village.name]', (!empty(Yii::$app->request->get('RegistryBusinessSearch')['village.name']) ? Yii::$app->request->get('RegistryBusinessSearch')['village.name'] : null),
                             ArrayHelper::map(
                                 Village::find()->orderBy('name')->asArray()->all(),
-                                'id',
+                                'name',
                                 function ($data) {
                                     
                                     return $data['name'];
