@@ -354,7 +354,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
         
         foreach ($model['registryBusinessProductCategories'] as $existModelRegistryBusinessProductCategory) {
             
-            if ($existModelRegistryBusinessProductCategory['productCategory']['is_parent']) {
+            if ($existModelRegistryBusinessProductCategory['productCategory']['type'] == 'General') {
                 
                 $registryBusinessProductCategoryParent[] = $existModelRegistryBusinessProductCategory;
             } else {
