@@ -20,6 +20,7 @@ use core\models\ContractMembership;
 use core\models\BusinessPayment;
 use core\models\BusinessDelivery;
 use yii\filters\VerbFilter;
+use core\models\BusinessProduct;
 
 /**
  * StatusApprovalController implements the CRUD actions for Status model.
@@ -87,7 +88,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             ])
             ->andWhere(['registry_business.id' => $regBId])
             ->one();
-
+                
         $modelBusiness = new Business();
         $modelBusiness->membership_type_id = $modelRegistryBusiness->membership_type_id;
         $modelBusiness->application_business_id = $modelRegistryBusiness->application_business_id;
@@ -281,6 +282,29 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessDelivery->description = !empty($dataRegistryBusinessDelivery->description) ? $dataRegistryBusinessDelivery->description : null;
                 
                 if (!($flag = $modelBusinessDelivery->save())) {
+                    
+                    break;
+                }
+            }
+        }
+        
+        if ($flag) {
+            
+            $dataMenu = explode("\n", $modelRegistryBusiness->menu);
+            
+            foreach ($dataMenu as $i => $menu) {
+                
+                $menuTemp = explode(",", $menu);
+                
+                $modelBusinessProduct = new BusinessProduct();
+                $modelBusinessProduct->business_id = $modelBusiness->id;
+                $modelBusinessProduct->name = trim($menuTemp[0]);
+                $modelBusinessProduct->price = (int)trim($menuTemp[1]);
+                $modelBusinessProduct->not_active = false;
+                $modelBusinessProduct->order = $i + 1;
+                $modelBusinessProduct->product_category_id = 'menuutama';
+                
+                if (!($flag = $modelBusinessProduct->save())) {
                     
                     break;
                 }
