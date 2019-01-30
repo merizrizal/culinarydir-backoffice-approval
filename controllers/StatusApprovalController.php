@@ -290,16 +290,16 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
         
         if ($flag) {
             
-            $dataMenu = explode("\n", $modelRegistryBusiness->menu);
+            $menuList = explode("\n", $modelRegistryBusiness->menu);
             
-            foreach ($dataMenu as $i => $menu) {
+            foreach ($menuList as $i => $menu) {
                 
-                $menuTemp = explode(",", $menu);
+                $menuItem = explode(",", $menu);
                 
                 $modelBusinessProduct = new BusinessProduct();
                 $modelBusinessProduct->business_id = $modelBusiness->id;
-                $modelBusinessProduct->name = trim($menuTemp[0]);
-                $modelBusinessProduct->price = (int)trim($menuTemp[1]);
+                $modelBusinessProduct->name = trim($menuItem[0]);
+                $modelBusinessProduct->price = trim($menuItem[1]);
                 $modelBusinessProduct->not_active = false;
                 $modelBusinessProduct->order = $i + 1;
                 $modelBusinessProduct->product_category_id = 'menuutama';
