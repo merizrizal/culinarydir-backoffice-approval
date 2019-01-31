@@ -133,15 +133,22 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
         }
 
         if ($flag) {
+            
+            $orderProductCategory = 0;
 
-            foreach ($modelRegistryBusiness->registryBusinessProductCategories as $i => $dataRegistryBusinessProductCategory) {
+            foreach ($modelRegistryBusiness->registryBusinessProductCategories as $dataRegistryBusinessProductCategory) {
 
                 $modelBusinessProductCategory = new BusinessProductCategory();
                 $modelBusinessProductCategory->unique_id = $modelBusiness->id . '-' . $dataRegistryBusinessProductCategory->product_category_id;
                 $modelBusinessProductCategory->business_id = $modelBusiness->id;
                 $modelBusinessProductCategory->product_category_id = $dataRegistryBusinessProductCategory->product_category_id;
                 $modelBusinessProductCategory->is_active = $dataRegistryBusinessProductCategory->is_active;
-                $modelBusinessProductCategory->order = $i + 1;
+                
+                if ($modelBusinessProductCategory->is_active) {
+                    
+                    $orderProductCategory++;
+                    $modelBusinessProductCategory->order = $orderProductCategory;
+                }
 
                 if (!($flag = $modelBusinessProductCategory->save())) {
                     
@@ -291,23 +298,26 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
         
         if ($flag) {
             
-            $menuList = explode("\n", $modelRegistryBusiness->menu);
-            
-            foreach ($menuList as $i => $menu) {
+            if (!empty($modelRegistryBusiness->menu)) {
                 
-                $menuItem = explode(",", $menu);
+                $menuList = explode("\n", $modelRegistryBusiness->menu);
                 
-                $modelBusinessProduct = new BusinessProduct();
-                $modelBusinessProduct->business_id = $modelBusiness->id;
-                $modelBusinessProduct->name = trim($menuItem[0]);
-                $modelBusinessProduct->price = trim($menuItem[1]);
-                $modelBusinessProduct->not_active = false;
-                $modelBusinessProduct->order = $i + 1;
-                $modelBusinessProduct->product_category_id = 'menuutama';
-                
-                if (!($flag = $modelBusinessProduct->save())) {
+                foreach ($menuList as $i => $menu) {
                     
-                    break;
+                    $menuItem = explode(",", $menu);
+                    
+                    $modelBusinessProduct = new BusinessProduct();
+                    $modelBusinessProduct->business_id = $modelBusiness->id;
+                    $modelBusinessProduct->name = trim($menuItem[0]);
+                    $modelBusinessProduct->price = trim($menuItem[1]);
+                    $modelBusinessProduct->not_active = false;
+                    $modelBusinessProduct->order = $i + 1;
+                    $modelBusinessProduct->product_category_id = 'menuutama';
+                    
+                    if (!($flag = $modelBusinessProduct->save())) {
+                        
+                        break;
+                    }
                 }
             }
         }
