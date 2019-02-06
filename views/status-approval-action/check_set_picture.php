@@ -574,7 +574,35 @@ echo $ajaxRequest->component(); ?>
                             } ?>
                             
                         </div>
-						
+                        
+                        <hr>
+                        
+                        <div class="row">
+                        	<div class="col-sm-12">
+                                <?= Html::label(Yii::t('app', 'Menu')) ?>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                        	<div class="col-sm-12">
+                        	
+                        		<?php
+                        		if (!empty($model['menu'])) {
+                        		    
+                        		    $listMenu = explode("\n", $model['menu']);
+                        		    
+                        		    foreach ($listMenu as $dataMenu) {
+                        		        
+                        		        echo $dataMenu . '<br>';
+                        		    }
+                        		} else {
+                        		    
+                        		    echo 'Data menu masih kosong';
+                        		}?>
+                        		
+                        	</div>
+                        </div>
+                        
 						<?php
                         echo '<hr>' . Html::submitButton('<i class="fa fa-check-circle"></i> OK & Save', ['class' => 'btn btn-success']);
                         
