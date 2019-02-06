@@ -304,7 +304,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 
                 foreach ($menuList as $i => $menu) {
                     
-                    $menuItem = explode(",", $menu);
+                    $menuItem = explode(',', $menu);
                     
                     $modelBusinessProduct = new BusinessProduct();
                     $modelBusinessProduct->business_id = $modelBusiness->id;
