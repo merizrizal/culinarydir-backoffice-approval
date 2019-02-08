@@ -94,10 +94,10 @@ echo $ajaxRequest->component(); ?>
                                                 <div class="mt-10">
                                                 
                                                 	<div class="row">
-                                                		<div class="col-xs-6">
-                                                			<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', $registryBusinessImage['category'], ['Ambience' => 'Suasana', 'Menu' => 'Menu', 'QR-Code' => 'QR Code'], ['class' => 'photo-category']) ?>
+                                                		<div class="col-xs-7">
+                                                			<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', $registryBusinessImage['category'], ['Ambience' => 'Suasana', 'Menu' => 'Menu', 'QR-Code' => 'QR Code'], ['class' => 'photo-category', 'style' => 'width:100%']) ?>
                                             			</div>
-                                            			<div class="col-xs-6">
+                                            			<div class="col-xs-5">
                                             				<?= Html::dropDownList('order['. $registryBusinessImage['id'] .']', $registryBusinessImage['order'], $imageOrder, ['class' => 'image-order']) ?>
                                                 		</div>
                                             		</div>
