@@ -312,7 +312,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessProduct->price = trim($menuItem[1]);
                     $modelBusinessProduct->not_active = false;
                     $modelBusinessProduct->order = $i + 1;
-                    $modelBusinessProduct->product_category_id = 'menuutama';
+                    $modelBusinessProduct->business_product_category_id = null;
                     
                     if (!($flag = $modelBusinessProduct->save())) {
                         
