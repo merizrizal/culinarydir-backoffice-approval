@@ -134,8 +134,6 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
 
         if ($flag) {
             
-            $orderProductCategory = 0;
-
             foreach ($modelRegistryBusiness->registryBusinessProductCategories as $dataRegistryBusinessProductCategory) {
 
                 $modelBusinessProductCategory = new BusinessProductCategory();
@@ -144,12 +142,6 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessProductCategory->product_category_id = $dataRegistryBusinessProductCategory->product_category_id;
                 $modelBusinessProductCategory->is_active = $dataRegistryBusinessProductCategory->is_active;
                 
-                if ($modelBusinessProductCategory->is_active) {
-                    
-                    $orderProductCategory++;
-                    $modelBusinessProductCategory->order = $orderProductCategory;
-                }
-
                 if (!($flag = $modelBusinessProductCategory->save())) {
                     
                     break;
