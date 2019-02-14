@@ -115,7 +115,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             $modelBusinessLocation->coordinate = $modelRegistryBusiness->coordinate;
         }
 
-        if ($flag = $modelBusinessLocation->save()) {
+        if (($flag = $modelBusinessLocation->save())) {
 
             foreach ($modelRegistryBusiness->registryBusinessCategories as $dataRegistryBusinessCategory) {
 
@@ -208,11 +208,9 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             $modelBusinessDetail->price_min = $modelRegistryBusiness->price_min;
             $modelBusinessDetail->price_max = $modelRegistryBusiness->price_max;
             $modelBusinessDetail->note_business_hour = $modelRegistryBusiness->note_business_hour;
-
-            $flag = $modelBusinessDetail->save();
         }
 
-        if ($flag) {
+        if (($flag = $modelBusinessDetail->save())) {
 
             foreach ($modelRegistryBusiness->registryBusinessImages as $dataRegistryBusinessImage) {
 
