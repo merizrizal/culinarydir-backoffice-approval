@@ -39,7 +39,7 @@ if ($status !== null) {
 
 $this->title = Yii::t('app', 'Payment Methods');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Application'), 'url' =>  ['status/view-application', 'id' => $modelRegistryBusiness['id'], 'appBId' => $appBId]];
-$this->params['breadcrumbs'][] = ['label' => $modelRegistryBusiness['name'], 'url' => ['status-approval-action/check-set-picture', 'id' => $modelRegistryBusiness['id'], 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
+$this->params['breadcrumbs'][] = ['label' => $modelRegistryBusiness['name'], 'url' => ['status-approval-action/check-set-payment-method', 'id' => $modelRegistryBusiness['id'], 'appBId' => $appBId, 'actid' => $actid, 'logsaid' => $logsaid]];
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $ajaxRequest->component(true); ?>

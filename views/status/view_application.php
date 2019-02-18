@@ -150,7 +150,7 @@ echo $ajaxRequest->component(false); ?>
                                                 }
                                             }
 
-                                            echo Html::a('<i class="fa fa-external-link-alt"></i> '. $dataStatusApprovalAction['name'], $url, ['class' => 'btn btn-xs' . $btn, 'data-method' => 'post']);
+                                            echo Html::a('<i class="fa fa-external-link-alt"></i> '. $dataStatusApprovalAction['name'], $url, ['class' => 'btn btn-xs' . $btn, 'data-method' => 'post']) . '&nbsp';
                                         } ?>
 
                                     </div>
