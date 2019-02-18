@@ -126,10 +126,8 @@ echo $ajaxRequest->component(); ?>
 </div>
 
 <?php
-$this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/skins/all.css', ['depends' => 'yii\web\YiiAsset']);
 $this->registerCssFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/magnific-popup.css', ['depends' => 'yii\web\YiiAsset']);
 
-$this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/icheck/icheck.min.js', ['depends' => 'yii\web\YiiAsset']);
 $this->registerJsFile($this->params['assetCommon']->baseUrl . '/plugins/Magnific-Popup/dist/jquery.magnific-popup.js', ['depends' => 'yii\web\YiiAsset']);
 
 $jscript = '
@@ -147,4 +145,4 @@ $jscript = '
     });
 ';
 
-$this->registerJs(Yii::$app->params['checkbox-radio-script']() . $jscript); ?>
+$this->registerJs($jscript); ?>
