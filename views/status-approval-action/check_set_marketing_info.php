@@ -123,7 +123,7 @@ echo $ajaxRequest->component(); ?>
                                 if (!empty($productCategoryParent)) {
 
                                     echo '
-                                        <div class="col-xs-12">
+                                        <div class="col-xs-12 mt-10">
                                             - ' . Html::label(Yii::t('app', 'Product Category General')) . ' -
                                         </div>';
 
@@ -139,7 +139,7 @@ echo $ajaxRequest->component(); ?>
                                 if (!empty($productCategoryChild)) {
 
                                     echo '
-                                        <div class="col-xs-12">
+                                        <div class="col-xs-12 mt-10">
                                             - ' . Html::label(Yii::t('app', 'Product Category Specific')) . ' -
                                         </div>';
 

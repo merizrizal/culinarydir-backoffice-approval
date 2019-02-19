@@ -202,7 +202,10 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
     {
         $model = RegistryBusiness::find()
             ->joinWith([
-                'registryBusinessContactPeople',
+                'registryBusinessContactPeople' => function ($query) {
+                    
+                    $query->orderBy(['registry_business_contact_person.created_at' => SORT_ASC]);
+                },
                 'registryBusinessContactPeople.person',
             ])
             ->andWhere(['registry_business.id' => $id])

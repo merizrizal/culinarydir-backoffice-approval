@@ -471,7 +471,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
             ->joinWith([
                 'registryBusinessContactPeople' => function ($query) {
                 
-                    $query->orderBy(['registry_business_contact_person.id' => SORT_ASC]);
+                    $query->orderBy(['registry_business_contact_person.created_at' => SORT_ASC]);
                 },
                 'registryBusinessContactPeople.person'
             ])
@@ -501,47 +501,50 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
                     }
                 }
                 
-                if (!empty($post['Person']) && !empty($post['RegistryBusinessContactPerson'])) {
-                    
-                    foreach ($post['Person'] as $i => $dataPerson) {
+                if ($flag) {
+                
+                    if (!empty($post['Person']) && !empty($post['RegistryBusinessContactPerson'])) {
                         
-                        if (!empty($post['RegistryBusinessContactPersonExisted'][$i])) {
+                        foreach ($post['Person'] as $i => $dataPerson) {
                             
-                            $newModelPerson = Person::findOne(['id' => $post['RegistryBusinessContactPersonExisted'][$i]]);
-                        } else {
-                            
-                            $newModelPerson = new Person();
-                        }
-                        
-                        $newModelPerson->first_name = $dataPerson['first_name'];
-                        $newModelPerson->last_name = !empty($dataPerson['last_name']) ? $dataPerson['last_name'] : null;
-                        $newModelPerson->phone = !empty($dataPerson['phone']) ? $dataPerson['phone'] : null;
-                        $newModelPerson->email = !empty($dataPerson['email']) ? $dataPerson['email'] : null;
-                        
-                        if (!($flag = $newModelPerson->save())) {
-                            
-                            break;
-                        } else {
-                            
-                            $newModelRegistryBusinessContactPerson = RegistryBusinessContactPerson::findOne(['person_id' => $newModelPerson->id]);
-                            
-                            if (empty($newModelRegistryBusinessContactPerson)) {
+                            if (!empty($post['RegistryBusinessContactPersonExisted'][$i])) {
                                 
-                                $newModelRegistryBusinessContactPerson = new RegistryBusinessContactPerson();
-                                $newModelRegistryBusinessContactPerson->registry_business_id = $model->id;
-                                $newModelRegistryBusinessContactPerson->person_id = $newModelPerson->id;
+                                $newModelPerson = Person::findOne(['id' => $post['RegistryBusinessContactPersonExisted'][$i]]);
+                            } else {
+                                
+                                $newModelPerson = new Person();
                             }
                             
-                            $newModelRegistryBusinessContactPerson->position = $post['RegistryBusinessContactPerson'][$i]['position'];
-                            $newModelRegistryBusinessContactPerson->is_primary_contact = !empty($post['RegistryBusinessContactPerson'][$i]['is_primary_contact']) ? true : false;
-                            $newModelRegistryBusinessContactPerson->note = !empty($post['RegistryBusinessContactPerson'][$i]['note']) ? $post['RegistryBusinessContactPerson'][$i]['note'] : null;
+                            $newModelPerson->first_name = $dataPerson['first_name'];
+                            $newModelPerson->last_name = !empty($dataPerson['last_name']) ? $dataPerson['last_name'] : null;
+                            $newModelPerson->phone = !empty($dataPerson['phone']) ? $dataPerson['phone'] : null;
+                            $newModelPerson->email = !empty($dataPerson['email']) ? $dataPerson['email'] : null;
                             
-                            if (!($flag = $newModelRegistryBusinessContactPerson->save())) {
+                            if (!($flag = $newModelPerson->save())) {
                                 
                                 break;
                             } else {
                                 
-                                array_push($dataRegistryBusinessContactPerson, ArrayHelper::merge($newModelRegistryBusinessContactPerson->toArray(), $newModelPerson->toArray()));
+                                $newModelRegistryBusinessContactPerson = RegistryBusinessContactPerson::findOne(['person_id' => $newModelPerson->id]);
+                                
+                                if (empty($newModelRegistryBusinessContactPerson)) {
+                                    
+                                    $newModelRegistryBusinessContactPerson = new RegistryBusinessContactPerson();
+                                    $newModelRegistryBusinessContactPerson->registry_business_id = $model->id;
+                                    $newModelRegistryBusinessContactPerson->person_id = $newModelPerson->id;
+                                }
+                                
+                                $newModelRegistryBusinessContactPerson->position = $post['RegistryBusinessContactPerson'][$i]['position'];
+                                $newModelRegistryBusinessContactPerson->is_primary_contact = !empty($post['RegistryBusinessContactPerson'][$i]['is_primary_contact']) ? true : false;
+                                $newModelRegistryBusinessContactPerson->note = !empty($post['RegistryBusinessContactPerson'][$i]['note']) ? $post['RegistryBusinessContactPerson'][$i]['note'] : null;
+                                
+                                if (!($flag = $newModelRegistryBusinessContactPerson->save())) {
+                                    
+                                    break;
+                                } else {
+                                    
+                                    array_push($dataRegistryBusinessContactPerson, ArrayHelper::merge($newModelRegistryBusinessContactPerson->toArray(), $newModelPerson->toArray()));
+                                }
                             }
                         }
                     }
