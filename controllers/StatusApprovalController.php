@@ -294,19 +294,22 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 
                 foreach ($menuList as $i => $menu) {
                     
-                    $menuItem = explode(',', $menu);
-                    
-                    $modelBusinessProduct = new BusinessProduct();
-                    $modelBusinessProduct->business_id = $modelBusiness->id;
-                    $modelBusinessProduct->name = trim($menuItem[0]);
-                    $modelBusinessProduct->price = trim($menuItem[1]);
-                    $modelBusinessProduct->not_active = false;
-                    $modelBusinessProduct->order = $i + 1;
-                    $modelBusinessProduct->business_product_category_id = null;
-                    
-                    if (!($flag = $modelBusinessProduct->save())) {
+                    if (!empty($menu)) {
                         
-                        break;
+                        $menuItem = explode(',', $menu);
+                        
+                        $modelBusinessProduct = new BusinessProduct();
+                        $modelBusinessProduct->business_id = $modelBusiness->id;
+                        $modelBusinessProduct->name = trim($menuItem[0]);
+                        $modelBusinessProduct->price = trim($menuItem[1]);
+                        $modelBusinessProduct->not_active = false;
+                        $modelBusinessProduct->order = $i + 1;
+                        $modelBusinessProduct->business_product_category_id = null;
+                        
+                        if (!($flag = $modelBusinessProduct->save())) {
+                            
+                            break;
+                        }
                     }
                 }
             }
