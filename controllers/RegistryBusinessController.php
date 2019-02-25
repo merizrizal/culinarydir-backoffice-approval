@@ -535,7 +535,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
                                 }
                                 
                                 $newModelRegistryBusinessContactPerson->position = $post['RegistryBusinessContactPerson'][$i]['position'];
-                                $newModelRegistryBusinessContactPerson->is_primary_contact = !empty($post['RegistryBusinessContactPerson'][$i]['is_primary_contact']) ? true : false;
+                                $newModelRegistryBusinessContactPerson->is_primary_contact = !empty($post['RegistryBusinessContactPerson'][$i]['is_primary_contact']);
                                 $newModelRegistryBusinessContactPerson->note = !empty($post['RegistryBusinessContactPerson'][$i]['note']) ? $post['RegistryBusinessContactPerson'][$i]['note'] : null;
                                 
                                 if (!($flag = $newModelRegistryBusinessContactPerson->save())) {
