@@ -428,7 +428,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
                 foreach ($model->registryBusinessImages as $modelRegistryBusinessImage) {
                     
                     $modelRegistryBusinessImage->type = !empty($post['profile'][$modelRegistryBusinessImage->id]) ? 'Profile' : 'Gallery';
-                    $modelRegistryBusinessImage->is_primary = !empty($post['thumbnail']) && $post['thumbnail'] == $modelRegistryBusinessImage->id ? true : false;
+                    $modelRegistryBusinessImage->is_primary = !empty($post['thumbnail']) && $post['thumbnail'] == $modelRegistryBusinessImage->id;
                     $modelRegistryBusinessImage->category = $post['category'][$modelRegistryBusinessImage->id];
                     $modelRegistryBusinessImage->order = $post['order'][$modelRegistryBusinessImage->id];
                     
@@ -633,7 +633,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
                             $newModelRegistryBusinessHourDay->day = $day;
                         }
                         
-                        $newModelRegistryBusinessHourDay->is_open = !empty($post['RegistryBusinessHour'][$dayName]['is_open']) ? true : false;
+                        $newModelRegistryBusinessHourDay->is_open = !empty($post['RegistryBusinessHour'][$dayName]['is_open']);
                         $newModelRegistryBusinessHourDay->open_at = !empty($post['RegistryBusinessHour'][$dayName]['open_at']) ? $post['RegistryBusinessHour'][$dayName]['open_at'] : null;
                         $newModelRegistryBusinessHourDay->close_at = !empty($post['RegistryBusinessHour'][$dayName]['close_at']) ? $post['RegistryBusinessHour'][$dayName]['close_at'] : null;
                         
