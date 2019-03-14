@@ -95,10 +95,20 @@ echo $ajaxRequest->component(); ?>
                                                 
                                                 	<div class="row">
                                                 		<div class="col-xs-7">
-                                                			<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', $registryBusinessImage['category'], ['Ambience' => 'Suasana', 'Menu' => 'Menu', 'QR-Code' => 'QR Code'], ['class' => 'photo-category', 'style' => 'width:100%']) ?>
+                                                		
+                                                			<?= Html::dropDownList('category['. $registryBusinessImage['id'] .']', $registryBusinessImage['category'], ['Ambience' => 'Suasana', 'Menu' => 'Menu', 'QR-Code' => 'QR Code'], [
+                                                			    'class' => 'photo-category', 
+                                                			    'style' => 'width:100%'
+                                                			]) ?>
+                                                			
                                             			</div>
                                             			<div class="col-xs-5">
-                                            				<?= Html::dropDownList('order['. $registryBusinessImage['id'] .']', $registryBusinessImage['order'], $imageOrder, ['class' => 'image-order']) ?>
+                                            			
+                                            				<?= Html::dropDownList('order['. $registryBusinessImage['id'] .']', $registryBusinessImage['order'], $imageOrder, [
+                                            				    'class' => 'image-order',
+                                            				    'style' => 'width:100%'
+                                            				]) ?>
+                                            				
                                                 		</div>
                                             		</div>
                                                 	<div class="row mt-10">
