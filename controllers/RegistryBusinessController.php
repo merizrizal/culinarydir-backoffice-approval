@@ -51,6 +51,7 @@ class RegistryBusinessController extends \backoffice\controllers\BaseController
                 return ActiveForm::validate($model);
             } else {
                 
+                $model->address = trim(str_replace("\n", '', Yii::$app->request->post()['RegistryBusiness']['address']));
                 $model->setCoordinate();
                 
                 if ($model->save()) {
