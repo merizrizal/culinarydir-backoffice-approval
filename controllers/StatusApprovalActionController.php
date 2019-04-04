@@ -57,6 +57,11 @@ class StatusApprovalActionController extends \backoffice\controllers\BaseControl
             ->joinWith([
                 'membershipType',
                 'userInCharge',
+                'registryBusinessCategories' => function ($query) {
+                
+                    $query->andOnCondition(['registry_business_category.is_active' => true]);
+                },
+                'registryBusinessCategories.category',
                 'registryBusinessImages' => function ($query) {
                     
                     $query->orderBy(['registry_business_image.order' => SORT_ASC]);

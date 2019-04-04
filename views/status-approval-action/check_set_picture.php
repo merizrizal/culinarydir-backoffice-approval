@@ -74,6 +74,30 @@ echo $ajaxRequest->component(); ?>
                         </div>
                         
                         <hr>
+                        
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <?= Html::label(Yii::t('app', 'Business Category')) ?>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+    
+                            <?php
+                            if (!empty($model['registryBusinessCategories'])) {
+                                
+                                foreach ($model['registryBusinessCategories'] as $dataBusinessCategory) {
+    
+                                    echo '
+                                        <div class="col-xs-4 col-sm-2">
+                                            ' . $dataBusinessCategory['category']['name'] . '
+                                        </div>';
+                                }
+                            } ?>
+    
+                        </div>
+    
+                        <hr>
 
                         <div class="row">
                             <div class="col-xs-12">
