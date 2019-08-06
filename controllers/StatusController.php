@@ -53,8 +53,6 @@ class StatusController extends \backoffice\controllers\BaseController
                 'district',
                 'village',
                 'userInCharge',
-                'registryBusinessFacilities.facility',
-                'registryBusinessImages',
                 'applicationBusiness',
                 'applicationBusiness.logStatusApprovals',
                 'applicationBusiness.logStatusApprovals.statusApproval',
@@ -63,13 +61,13 @@ class StatusController extends \backoffice\controllers\BaseController
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval status_approval_req',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalRequires0.statusApproval.logStatusApprovals log_status_approval_req' => function ($query) use ($appBId) {
-                    
+
                     $query->andOnCondition(['log_status_approval_req.application_business_id' => $appBId]);
                 },
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions log_status_approval_action_act',
                 'applicationBusiness.logStatusApprovals.statusApproval.statusApprovalActions.logStatusApprovalActions.logStatusApproval log_status_approval_act' => function ($query) use ($appBId) {
-                    
+
                     $query->andOnCondition(['log_status_approval_act.application_business_id' => $appBId]);
                 },
             ])
@@ -105,15 +103,15 @@ class StatusController extends \backoffice\controllers\BaseController
 
             $require = [];
             $err1 = '';
-            
+
             foreach ($modelStatusApproval['statusApprovalRequires'] as $key => $dataStatusApprovalRequire) {
-                
+
                 $require[$key] = false;
 
                 foreach ($modelApplicationBusiness['logStatusApprovals'] as $dataLogStatusApproval) {
-                    
+
                     if ($dataStatusApprovalRequire['require_status_approval_id'] == $dataLogStatusApproval['status_approval_id'] && $dataLogStatusApproval['is_actual']) {
-                        
+
                         $require[$key] = true;
                         break;
                     }
@@ -124,16 +122,16 @@ class StatusController extends \backoffice\controllers\BaseController
             }
 
             $result = true;
-            
+
             foreach ($require as $value) {
                 $result = $result && $value;
             }
 
             $require = [];
             $err2 = '';
-            
+
             foreach ($modelStatusApproval['statusApprovalRequireActions'] as $key => $dataStatusApprovalRequireAction) {
-                
+
                 $require[$key] = false;
 
                 foreach ($modelApplicationBusiness['logStatusApprovals'] as $dataLogStatusApproval) {
@@ -141,7 +139,7 @@ class StatusController extends \backoffice\controllers\BaseController
                     foreach ($dataLogStatusApproval['logStatusApprovalActions'] as $dataLogStatusApprovalAction) {
 
                         if ($dataStatusApprovalRequireAction['status_approval_action_id'] == $dataLogStatusApprovalAction['status_approval_action_id'] && $dataLogStatusApprovalAction['logStatusApproval']['application_business_counter'] == $modelApplicationBusiness['counter']) {
-                            
+
                             $require[$key] = true;
                             break;
                         }
@@ -153,7 +151,7 @@ class StatusController extends \backoffice\controllers\BaseController
             }
 
             foreach ($require as $value) {
-                
+
                 $result = $result && $value;
             }
 
@@ -193,15 +191,15 @@ class StatusController extends \backoffice\controllers\BaseController
                                 ->asArray()->all();
 
                             $require = [];
-                            
+
                             foreach ($modelStatusApprovalRequire as $key => $$dataStatusApprovalRequire) {
-                                
+
                                 $require[$key] = false;
 
                                 foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
-                                    
+
                                     if ($$dataStatusApprovalRequire['status_approval_id'] == $dataCheckLogStatusApproval['status_approval_id']) {
-                                        
+
                                         $require[$key] = true;
                                         break;
                                     }
@@ -209,13 +207,13 @@ class StatusController extends \backoffice\controllers\BaseController
                             }
 
                             foreach ($require as $value) {
-                                
+
                                 $result = $result && $value;
                             }
                         }
 
                         if (($flag = $result) && $modelStatusApproval['branch'] != 0) {
-                            
+
                             $modelLogStatusApproval = LogStatusApproval::find()
                                 ->andWhere(['status_approval_id' => $statusActual])
                                 ->andWhere(['application_business_id' => $modelApplicationBusiness['id']])
@@ -232,9 +230,9 @@ class StatusController extends \backoffice\controllers\BaseController
                             if ($modelStatusApproval['status'] != 'Finished-Fail') {
 
                                 $requireStatusApprovalId = [];
-                                
+
                                 foreach ($modelStatusApproval['statusApprovalRequires'] as $dataStatusApprovalRequire) {
-                                    
+
                                     $requireStatusApprovalId[] = $dataStatusApprovalRequire['require_status_approval_id'];
                                 }
 
@@ -244,18 +242,18 @@ class StatusController extends \backoffice\controllers\BaseController
                                     ->asArray()->all();
 
                                 $result = true;
-                                
+
                                 foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
-                                    
+
                                     $result = $result && $dataCheckLogStatusApproval['is_actual'];
                                 }
 
                                 if ($result) {
-                                    
+
                                     $flag = LogStatusApproval::updateAll(['is_actual' => false], ['AND', ['application_business_id' => $modelApplicationBusiness['id'], 'status_approval_id' => $requireStatusApprovalId]]) > 0;
                                 }
                             } else {
-                                
+
                                 $flag = LogStatusApproval::updateAll(['is_actual' => false], 'is_actual = TRUE AND status_approval_id != :said AND application_business_id = :appbid', ['said' => $post['status_approval_id'], 'appbid' => $modelApplicationBusiness['id']]) > 0;
                             }
                         }
@@ -263,9 +261,9 @@ class StatusController extends \backoffice\controllers\BaseController
                 }
 
                 if ($flag) {
-                    
+
                     if (!empty($modelStatusApproval['execute_action'])) {
-                        
+
                         $flag = $this->run($modelStatusApproval['execute_action'], ['appBId' => $modelApplicationBusiness['id'], 'regBId' => $rbid]);
                     }
                 }
@@ -290,7 +288,7 @@ class StatusController extends \backoffice\controllers\BaseController
                 $msg = '';
 
                 if (!empty($err1)) {
-                    
+
                     $msg = 'Data ini belum melewati status: (<b>' . $err1 . '</b>)';
 
                     if (!empty($err2))
@@ -298,7 +296,7 @@ class StatusController extends \backoffice\controllers\BaseController
                 }
 
                 if (!empty($err2)) {
-                    
+
                     $msg .= 'Data ini belum melewati action: (<b>' . trim($err2, ', ') . '</b>)';
                 }
 
