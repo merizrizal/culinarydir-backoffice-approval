@@ -117,13 +117,16 @@ class StatusController extends \backoffice\controllers\BaseController
                     }
                 }
 
-                if (!$require[$key])
+                if (!$require[$key]) {
+
                     $err1 .= $dataStatusApprovalRequire['require_status_approval_id'] . ' ';
+                }
             }
 
             $result = true;
 
             foreach ($require as $value) {
+
                 $result = $result && $value;
             }
 
@@ -146,8 +149,10 @@ class StatusController extends \backoffice\controllers\BaseController
                     }
                 }
 
-                if (!$require[$key])
+                if (!$require[$key]) {
+
                     $err2 .= $dataStatusApprovalRequireAction['statusApprovalAction']['name'] . ', ';
+                }
             }
 
             foreach ($require as $value) {
@@ -192,13 +197,13 @@ class StatusController extends \backoffice\controllers\BaseController
 
                             $require = [];
 
-                            foreach ($modelStatusApprovalRequire as $key => $$dataStatusApprovalRequire) {
+                            foreach ($modelStatusApprovalRequire as $key => $dataStatusApprovalRequire) {
 
                                 $require[$key] = false;
 
                                 foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
 
-                                    if ($$dataStatusApprovalRequire['status_approval_id'] == $dataCheckLogStatusApproval['status_approval_id']) {
+                                    if ($dataStatusApprovalRequire['status_approval_id'] == $dataCheckLogStatusApproval['status_approval_id']) {
 
                                         $require[$key] = true;
                                         break;
@@ -221,40 +226,41 @@ class StatusController extends \backoffice\controllers\BaseController
                                 ->one();
 
                             $modelLogStatusApproval->is_actual = 0;
-
-                            $flag = $modelLogStatusApproval->save();
                         }
 
-                        if ($modelStatusApproval['branch'] == 0) {
+                        if (($flag = $modelLogStatusApproval->save())) {
 
-                            if ($modelStatusApproval['status'] != 'Finished-Fail') {
+                            if ($modelStatusApproval['branch'] == 0) {
 
-                                $requireStatusApprovalId = [];
+                                if ($modelStatusApproval['status'] != 'Finished-Fail') {
 
-                                foreach ($modelStatusApproval['statusApprovalRequires'] as $dataStatusApprovalRequire) {
+                                    $requireStatusApprovalId = [];
 
-                                    $requireStatusApprovalId[] = $dataStatusApprovalRequire['require_status_approval_id'];
+                                    foreach ($modelStatusApproval['statusApprovalRequires'] as $dataStatusApprovalRequire) {
+
+                                        $requireStatusApprovalId[] = $dataStatusApprovalRequire['require_status_approval_id'];
+                                    }
+
+                                    $checkLogStatusApproval = LogStatusApproval::find()
+                                        ->andWhere(['application_business_id' => $modelApplicationBusiness['id']])
+                                        ->andWhere(['status_approval_id' => $requireStatusApprovalId])
+                                        ->asArray()->all();
+
+                                    $result = true;
+
+                                    foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
+
+                                        $result = $result && $dataCheckLogStatusApproval['is_actual'];
+                                    }
+
+                                    if ($result) {
+
+                                        $flag = LogStatusApproval::updateAll(['is_actual' => false], ['AND', ['application_business_id' => $modelApplicationBusiness['id'], 'status_approval_id' => $requireStatusApprovalId]]) > 0;
+                                    }
+                                } else {
+
+                                    $flag = LogStatusApproval::updateAll(['is_actual' => false], 'is_actual = TRUE AND status_approval_id != :said AND application_business_id = :appbid', ['said' => $post['status_approval_id'], 'appbid' => $modelApplicationBusiness['id']]) > 0;
                                 }
-
-                                $checkLogStatusApproval = LogStatusApproval::find()
-                                    ->andWhere(['application_business_id' => $modelApplicationBusiness['id']])
-                                    ->andWhere(['status_approval_id' => $requireStatusApprovalId])
-                                    ->asArray()->all();
-
-                                $result = true;
-
-                                foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
-
-                                    $result = $result && $dataCheckLogStatusApproval['is_actual'];
-                                }
-
-                                if ($result) {
-
-                                    $flag = LogStatusApproval::updateAll(['is_actual' => false], ['AND', ['application_business_id' => $modelApplicationBusiness['id'], 'status_approval_id' => $requireStatusApprovalId]]) > 0;
-                                }
-                            } else {
-
-                                $flag = LogStatusApproval::updateAll(['is_actual' => false], 'is_actual = TRUE AND status_approval_id != :said AND application_business_id = :appbid', ['said' => $post['status_approval_id'], 'appbid' => $modelApplicationBusiness['id']]) > 0;
                             }
                         }
                     }
@@ -291,8 +297,10 @@ class StatusController extends \backoffice\controllers\BaseController
 
                     $msg = 'Data ini belum melewati status: (<b>' . $err1 . '</b>)';
 
-                    if (!empty($err2))
+                    if (!empty($err2)) {
+
                         $msg .= ' dan ';
+                    }
                 }
 
                 if (!empty($err2)) {

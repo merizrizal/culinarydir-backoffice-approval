@@ -81,14 +81,14 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
         $modelRegistryBusiness = RegistryBusiness::find()
             ->joinWith([
                 'registryBusinessHours' => function ($query) {
-                    
+
                     $query->orderBy(['registry_business_hour.day' => SORT_ASC]);
                 },
-                'registryBusinessHours.registryBusinessHourAdditionals' 
+                'registryBusinessHours.registryBusinessHourAdditionals'
             ])
             ->andWhere(['registry_business.id' => $regBId])
             ->one();
-                
+
         $modelBusiness = new Business();
         $modelBusiness->membership_type_id = $modelRegistryBusiness->membership_type_id;
         $modelBusiness->application_business_id = $modelRegistryBusiness->application_business_id;
@@ -113,9 +113,11 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             $modelBusinessLocation->district_id = $modelRegistryBusiness->district_id;
             $modelBusinessLocation->village_id = $modelRegistryBusiness->village_id;
             $modelBusinessLocation->coordinate = $modelRegistryBusiness->coordinate;
+
+            $flag = $modelBusinessLocation->save();
         }
 
-        if (($flag = $modelBusinessLocation->save())) {
+        if ($flag) {
 
             foreach ($modelRegistryBusiness->registryBusinessCategories as $dataRegistryBusinessCategory) {
 
@@ -126,14 +128,14 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessCategory->is_active = $dataRegistryBusinessCategory->is_active;
 
                 if (!($flag = $modelBusinessCategory->save())) {
-                    
+
                     break;
                 }
             }
         }
 
         if ($flag) {
-            
+
             foreach ($modelRegistryBusiness->registryBusinessProductCategories as $dataRegistryBusinessProductCategory) {
 
                 $modelBusinessProductCategory = new BusinessProductCategory();
@@ -141,9 +143,9 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessProductCategory->business_id = $modelBusiness->id;
                 $modelBusinessProductCategory->product_category_id = $dataRegistryBusinessProductCategory->product_category_id;
                 $modelBusinessProductCategory->is_active = $dataRegistryBusinessProductCategory->is_active;
-                
+
                 if (!($flag = $modelBusinessProductCategory->save())) {
-                    
+
                     break;
                 }
             }
@@ -160,7 +162,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessFacility->is_active = $dataRegistryBusinessFacility->is_active;
 
                 if (!($flag = $modelBusinessFacility->save())) {
-                    
+
                     break;
                 }
             }
@@ -179,12 +181,12 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessHour->close_at = $dataRegistryBusinessHour->close_at;
 
                 if (!($flag = $modelBusinessHour->save())) {
-                    
+
                     break;
                 }
-                
+
                 foreach ($dataRegistryBusinessHour->registryBusinessHourAdditionals as $i => $dataRegistryBusinessHourAdditional) {
-                    
+
                     $modelBusinessHourAdditional = new BusinessHourAdditional();
                     $modelBusinessHourAdditional->unique_id = $modelBusinessHour->id . '-' . $dataRegistryBusinessHourAdditional->day . '-' . ($i + 1);
                     $modelBusinessHourAdditional->business_hour_id = $modelBusinessHour->id;
@@ -192,9 +194,9 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessHourAdditional->is_open = $modelBusinessHour->is_open;
                     $modelBusinessHourAdditional->open_at = $dataRegistryBusinessHourAdditional->open_at;
                     $modelBusinessHourAdditional->close_at = $dataRegistryBusinessHourAdditional->close_at;
-                    
+
                     if (!($flag = $modelBusinessHourAdditional->save())) {
-                        
+
                         break;
                     }
                 }
@@ -208,9 +210,11 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             $modelBusinessDetail->price_min = $modelRegistryBusiness->price_min;
             $modelBusinessDetail->price_max = $modelRegistryBusiness->price_max;
             $modelBusinessDetail->note_business_hour = $modelRegistryBusiness->note_business_hour;
+
+            $flag = $modelBusinessDetail->save();
         }
 
-        if (($flag = $modelBusinessDetail->save())) {
+        if ($flag) {
 
             foreach ($modelRegistryBusiness->registryBusinessImages as $dataRegistryBusinessImage) {
 
@@ -223,7 +227,7 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                 $modelBusinessImage->order = $dataRegistryBusinessImage->order;
 
                 if (!($flag = $modelBusinessImage->save())) {
-                    
+
                     break;
                 }
             }
@@ -243,61 +247,61 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                     $modelBusinessContactPerson->position = $dataRegistryBusinessContactPerson->position;
 
                     if (!($flag = $modelBusinessContactPerson->save())) {
-                        
+
                         break;
                     }
                 }
             }
         }
-            
+
         if ($flag) {
-            
+
             foreach ($modelRegistryBusiness->registryBusinessPayments as $dataRegistryBusinessPayment) {
-            
+
                 $modelBusinessPayment = new BusinessPayment();
                 $modelBusinessPayment->business_id = $modelBusiness->id;
                 $modelBusinessPayment->payment_method_id = $dataRegistryBusinessPayment->payment_method_id;
                 $modelBusinessPayment->is_active = $dataRegistryBusinessPayment->is_active;
                 $modelBusinessPayment->note = !empty($dataRegistryBusinessPayment->note) ? $dataRegistryBusinessPayment->note : null;
                 $modelBusinessPayment->description = !empty($dataRegistryBusinessPayment->description) ? $dataRegistryBusinessPayment->description : null;
-                
+
                 if (!($flag = $modelBusinessPayment->save())) {
-                    
+
                     break;
                 }
             }
         }
-            
+
         if ($flag) {
-            
+
             foreach ($modelRegistryBusiness->registryBusinessDeliveries as $dataRegistryBusinessDelivery) {
-                
+
                 $modelBusinessDelivery = new BusinessDelivery();
                 $modelBusinessDelivery->business_id = $modelBusiness->id;
                 $modelBusinessDelivery->delivery_method_id = $dataRegistryBusinessDelivery->delivery_method_id;
                 $modelBusinessDelivery->is_active = $dataRegistryBusinessDelivery->is_active;
                 $modelBusinessDelivery->note = !empty($dataRegistryBusinessDelivery->note) ? $dataRegistryBusinessDelivery->note : null;
                 $modelBusinessDelivery->description = !empty($dataRegistryBusinessDelivery->description) ? $dataRegistryBusinessDelivery->description : null;
-                
+
                 if (!($flag = $modelBusinessDelivery->save())) {
-                    
+
                     break;
                 }
             }
         }
-        
+
         if ($flag) {
-            
+
             if (!empty($modelRegistryBusiness->menu)) {
-                
+
                 $menuList = explode("\n", $modelRegistryBusiness->menu);
-                
+
                 foreach ($menuList as $i => $menu) {
-                    
+
                     if (!empty($menu)) {
-                        
+
                         $menuItem = explode(',', $menu);
-                        
+
                         $modelBusinessProduct = new BusinessProduct();
                         $modelBusinessProduct->business_id = $modelBusiness->id;
                         $modelBusinessProduct->name = trim($menuItem[0]);
@@ -305,9 +309,9 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
                         $modelBusinessProduct->not_active = false;
                         $modelBusinessProduct->order = $i + 1;
                         $modelBusinessProduct->business_product_category_id = null;
-                        
+
                         if (!($flag = $modelBusinessProduct->save())) {
-                            
+
                             break;
                         }
                     }
@@ -325,10 +329,10 @@ class StatusApprovalController extends \backoffice\controllers\BaseController
             $modelContractMembership->started_at = Yii::$app->formatter->asDatetime(time());
 
             if (empty($modelRegistryBusiness->membershipType->time_limit)) {
-                
+
                 $modelContractMembership->due_at = null;
             } else {
-                
+
                 $modelContractMembership->due_at = Yii::$app->formatter->asDatetime(time() + ($modelRegistryBusiness->membershipType->time_limit * 30 * 24 * 3600));
             }
 
