@@ -230,39 +230,36 @@ class StatusController extends \backoffice\controllers\BaseController
                             $flag = $modelLogStatusApproval->save();
                         }
 
-                        if ($flag) {
+                        if ($modelStatusApproval['branch'] == 0) {
 
-                            if ($modelStatusApproval['branch'] == 0) {
+                            if ($modelStatusApproval['status'] != 'Finished-Fail') {
 
-                                if ($modelStatusApproval['status'] != 'Finished-Fail') {
+                                $requireStatusApprovalId = [];
 
-                                    $requireStatusApprovalId = [];
+                                foreach ($modelStatusApproval['statusApprovalRequires'] as $dataStatusApprovalRequire) {
 
-                                    foreach ($modelStatusApproval['statusApprovalRequires'] as $dataStatusApprovalRequire) {
-
-                                        $requireStatusApprovalId[] = $dataStatusApprovalRequire['require_status_approval_id'];
-                                    }
-
-                                    $checkLogStatusApproval = LogStatusApproval::find()
-                                        ->andWhere(['application_business_id' => $modelApplicationBusiness['id']])
-                                        ->andWhere(['status_approval_id' => $requireStatusApprovalId])
-                                        ->asArray()->all();
-
-                                    $result = true;
-
-                                    foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
-
-                                        $result = $result && $dataCheckLogStatusApproval['is_actual'];
-                                    }
-
-                                    if ($result) {
-
-                                        $flag = LogStatusApproval::updateAll(['is_actual' => false], ['AND', ['application_business_id' => $modelApplicationBusiness['id'], 'status_approval_id' => $requireStatusApprovalId]]) > 0;
-                                    }
-                                } else {
-
-                                    $flag = LogStatusApproval::updateAll(['is_actual' => false], 'is_actual = TRUE AND status_approval_id != :said AND application_business_id = :appbid', ['said' => $post['status_approval_id'], 'appbid' => $modelApplicationBusiness['id']]) > 0;
+                                    $requireStatusApprovalId[] = $dataStatusApprovalRequire['require_status_approval_id'];
                                 }
+
+                                $checkLogStatusApproval = LogStatusApproval::find()
+                                    ->andWhere(['application_business_id' => $modelApplicationBusiness['id']])
+                                    ->andWhere(['status_approval_id' => $requireStatusApprovalId])
+                                    ->asArray()->all();
+
+                                $result = true;
+
+                                foreach ($checkLogStatusApproval as $dataCheckLogStatusApproval) {
+
+                                    $result = $result && $dataCheckLogStatusApproval['is_actual'];
+                                }
+
+                                if ($result) {
+
+                                    $flag = LogStatusApproval::updateAll(['is_actual' => false], ['AND', ['application_business_id' => $modelApplicationBusiness['id'], 'status_approval_id' => $requireStatusApprovalId]]) > 0;
+                                }
+                            } else {
+
+                                $flag = LogStatusApproval::updateAll(['is_actual' => false], 'is_actual = TRUE AND status_approval_id != :said AND application_business_id = :appbid', ['said' => $post['status_approval_id'], 'appbid' => $modelApplicationBusiness['id']]) > 0;
                             }
                         }
                     }
