@@ -226,9 +226,11 @@ class StatusController extends \backoffice\controllers\BaseController
                                 ->one();
 
                             $modelLogStatusApproval->is_actual = 0;
+
+                            $flag = $modelLogStatusApproval->save();
                         }
 
-                        if (($flag = $modelLogStatusApproval->save())) {
+                        if ($flag) {
 
                             if ($modelStatusApproval['branch'] == 0) {
 
